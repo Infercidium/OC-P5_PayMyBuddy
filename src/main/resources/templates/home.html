@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+    <head>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="custom.css"/>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Pay My Buddy</title>
+    </head>
+    <body>
+        <!--NavBar Principal-->
+        <nav class="pmb-navbar navbar navbar-expand-lg">
+            <div class="container-fluid">
+                <a class="pmb-navbar-icon mx-0 my-0 rounded-3" href="#">Pay My Buddy</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                        <li class="nav-item pe-4">
+                            <a class="nav-link active blue" aria-current="page" href="#">Home</a>
+                        </li>
+                        <li class="nav-item pe-4">
+                            <a class="nav-link" href="transfer.html">Transfer</a>
+                        </li>
+                        <li class="nav-item pe-4">
+                            <a class="nav-link" href="profile.html">Profile</a>
+                        </li>
+                        <li class="nav-item pe-4">
+                            <a class="nav-link" href="contact.html">Contact</a>
+                        </li>
+                        <li class="nav-item pe-4">
+                            <a class="nav-link" data-bs-toggle="modal" data-bs-target="#LogOut" href="#">Log off</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <!-- Modal -->
+        <div class="modal fade" id="LogOut" tabindex="-1" aria-labelledby="Log-off" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="Log-off">Disconnect ?</h5>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn-blue text-decoration-none rounded-3 p-1 mx-2" data-bs-dismiss="modal">Not now</button>
+                        <button th:href="@{/logout}" type="button" class="btn-blue text-decoration-none rounded-3 p-1 mx-2">Disconnect</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--BreadCrumb Secondary-->
+        <nav aria-label="breadcrumb">
+            <ol class="pmb-breadcrumb breadcrumb">
+                <li class="breadcrumb-item active pe-2 grey" aria-current="page">Home</li>
+            </ol>
+        </nav>
+        <!--Contenue-->
+        <Section>
+            <div class="container text-center">
+                <div class="row pt-4">
+                    <div class="col text-start">Balance</div>
+                    <div class="col text-end">
+                        <button type="button" class="btn btn-blue rounded-3 px-5">Add Money</button>
+                        <button type="button" class="btn btn-blue rounded-3">Withdraw Money</button>
+                    </div>
+                </div>
+                <div class="row row-element">
+                    <div class="col">
+                        <a class="€" th:text="${user.pay}">108,50</a>
+                        <a class="€">€</a>
+                    </div>
+                </div>
+            </div>
+        </Section>
+        <Section>
+            <div class="container pt-4">
+                Received Transactions
+                <table class="table table-green text-center table-striped table-borderless table-hover mb-0">
+                    <thead class="thead">
+                    <tr>
+                        <th scope="col">Connections</th>
+                        <th scope="col">Description</th>
+                        <th scope="col">Amount</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr role="button" data-bs-toggle="modal" data-bs-target="#Transfer">
+                        <td>Mike</td>
+                        <td>Common gift</td>
+                        <td>32€</td>
+                    </tr>
+                    <tr role="button" data-bs-toggle="modal" data-bs-target="#Transfer">
+                        <td>Smith</td>
+                        <td>French baguette</td>
+                        <td>5€</td>
+                    </tr>
+                    <tr role="button" data-bs-toggle="modal" data-bs-target="#Transfer">
+                        <td>Mike</td>
+                        <td>Movie tickets</td>
+                        <td>12€</td>
+                    </tr>
+                    </tbody>
+                </table>
+                <nav aria-label="Pagination">
+                    <ul class="pagination justify-content-center">
+                        <li class="page-item">
+                            <a class="page-link" href="#" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
+                        <li class="page-item"><a class="page-link" href="#">1</a></li>
+                        <li class="page-item"><a class="page-link" href="#">2</a></li>
+                        <li class="page-item"><a class="page-link" href="#">3</a></li>
+                        <li class="page-item"><a class="page-link" href="#">4</a></li>
+                        <li class="page-item"><a class="page-link" href="#">5</a></li>
+                        <li class="page-item">
+                            <a class="page-link" href="#" aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </Section>
+        <!-- Modal Transfer-->
+        <div class="modal fade" id="Transfer" tabindex="-1" aria-labelledby="Transaction" aria-hidden="true">
+            <div class="modal-dialog modal-lg modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="Transaction">Transfer</h5>
+                    </div>
+                    <div class="modal-body text-center">
+                        <div class="row row-element py-4">
+                            <a class="col-1 transfer"><i class="bi bi-person-plus-fill"></i></a>
+                            <a class="col-1 transfer" style="text-decoration-line: underline; font-size: x-large;">Credited</a>
+                            <a class="col transfer">example</a>
+                        </div>
+                        <div class="row row-element bg-white py-4">
+                            <a class="col-1 transfer"><i class="bi bi-person-dash-fill"></i></a>
+                            <a class="col-1 transfer" style="text-decoration-line: underline; font-size: x-large;">Debited</a>
+                            <a class="col transfer">Example</a>
+                        </div>
+                        <div class="row row-element py-4">
+                            <a class="col-1 transfer"><i class="bi bi-piggy-bank-fill"></i></a>
+                            <a class="col-1 transfer" style="text-decoration-line: underline; font-size: x-large;">Amount</a>
+                            <a class="col transfer">xXx</a>
+                        </div>
+                        <div class="row row-element bg-white py-4">
+                            <a class="col-1 transfer"><i class="bi bi-file-text-fill"></i></a>
+                            <a class="col-1 transfer" style="text-decoration-line: underline; font-size: x-large;">Description</a>
+                            <a class="col transfer">xXx</a>
+                        </div>
+                        <div class="row row-element py-4">
+                            <a class="col-1 transfer"><i class="bi bi-calendar-fill"></i></a>
+                            <a class="col-1 transfer" style="text-decoration-line: underline; font-size: x-large;">Time</a>
+                            <a class="col transfer">xXx</a>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn-blue text-decoration-none rounded-3 p-1 mx-2" data-bs-dismiss="modal">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
