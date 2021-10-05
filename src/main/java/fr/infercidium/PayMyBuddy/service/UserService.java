@@ -1,11 +1,13 @@
 package fr.infercidium.PayMyBuddy.service;
 
+import fr.infercidium.PayMyBuddy.model.Authority;
 import fr.infercidium.PayMyBuddy.model.User;
 import fr.infercidium.PayMyBuddy.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -14,13 +16,17 @@ public class UserService implements UserI {
     private static final Logger LOGGER = LoggerFactory.getLogger(UserService.class);
 
     private final UserRepository userR;
+    private final AuthorityService authorityS;
 
-    public UserService(final UserRepository userRe) {
+    public UserService(final UserRepository userRe, final AuthorityService authoritySe) {
         this.userR = userRe;
+        this.authorityS = authoritySe;
     }
 
     @Override
     public User postUser(final User user) {
+        List<Authority> authorities = Collections.singletonList(authorityS.getUser());
+        user.setAuthorities(authorities);
         return this.userR.save(user);
     }
 

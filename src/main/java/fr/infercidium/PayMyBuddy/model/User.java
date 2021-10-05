@@ -8,6 +8,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
@@ -40,23 +41,34 @@ public class User {
 
     private BigDecimal pay;
 
-    @OneToMany(fetch = FetchType.EAGER, targetEntity = Transfer.class)
-    @JoinTable(name = "HistoryCredited")
-    private Set<Transfer> historyCredited = new HashSet<>();
+    @OneToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "HistoryCredited",
+            joinColumns = @JoinColumn(name = "User_id"),
+            inverseJoinColumns = @JoinColumn(name = "Transfer_id"))
+    private Set<Transfer> historyCredited;
 
-    @OneToMany(fetch = FetchType.EAGER, targetEntity = Transfer.class)
-    @JoinTable(name = "HistoryDebited")
-    private Set<Transfer> historyDebited = new HashSet<>();
+    @OneToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "HistoryDebited",
+            joinColumns = @JoinColumn(name = "User_id"),
+            inverseJoinColumns = @JoinColumn(name = "Transfer_id"))
+    private Set<Transfer> historyDebited;
 
-    @ManyToMany
-    @JoinTable(name = "Users_Users")
-    private Set<User> knowUser = new HashSet<>();
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "User_User")
+    private Set<User> knowUser;
 
-    @ManyToMany
-    @JoinTable(name = "User_Role")
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "User_Role",
+            joinColumns = @JoinColumn(name = "User_id"),
+            inverseJoinColumns = @JoinColumn(name = "Authority_id"))
     private List<Authority> authorities;
 
     public User() {
+        this.pay = BigDecimal.valueOf(0);
+        this.historyCredited = new HashSet<>();
+        this.historyDebited = new HashSet<>();
+        this.knowUser = new HashSet<>();
+        this.authorities = new ArrayList<>();
     }
 
     public User(final String email, final String password, final String userName) {

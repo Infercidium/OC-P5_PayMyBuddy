@@ -15,7 +15,7 @@ body{
     background-color: #f5f5f5;
     color: black;
     font-size: x-large;
-    padding: .4em 0em .4em 1.7em;
+    padding: .35em 0em .35em 1.7em;
 }
 
 .pmb-navbar-icon,
@@ -78,7 +78,7 @@ body{
     border-style: solid;
     border-color: black;
     border-width: 0.1em;
-    line-height: 4em;
+    line-height: 3.8em;
 }
 
 .table-green .thead {
@@ -102,11 +102,13 @@ body{
 
 .btn-blue {
     background-color: #0275d8;
+    border-color: transparent;
 }
 
 .btn-green {
     background-color: #5cb85c;
     padding: 0.2em 4em 0.2em 4em;
+    border-color: transparent;
 }
 
 .pagination .page-item .page-link {

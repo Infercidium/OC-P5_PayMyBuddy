@@ -1,5 +1,6 @@
 package fr.infercidium.PayMyBuddy.controller;
 
+import fr.infercidium.PayMyBuddy.dto.UserRegistrationDto;
 import fr.infercidium.PayMyBuddy.model.User;
 import fr.infercidium.PayMyBuddy.service.UserI;
 import org.slf4j.Logger;

@@ -14,8 +14,8 @@ public class TransferController {
     private UserI userS;
 
     @GetMapping(value = "/transfer")
-    public String home(Model model) {
-        User user = userS.getUser("max@email.com");
+    public String transfer(Model model) {
+        User user = userS.getUser("test@T.fr");
         model.addAttribute("user", user);
         return "transfer";
     }

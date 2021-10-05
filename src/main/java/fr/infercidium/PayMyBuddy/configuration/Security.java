@@ -19,23 +19,25 @@ public class Security extends WebSecurityConfigurerAdapter {
     }
 
     @Override
-    public void configure(HttpSecurity http) throws Exception {
+    public void configure(final HttpSecurity http) throws Exception {
        http
-                .authorizeRequests()
-                .antMatchers("/admin").hasRole("ADMIN")
-                .antMatchers("/user").hasRole("USER")
-                .anyRequest()
-                .authenticated().and().formLogin().loginPage("/login").permitAll()
-               .usernameParameter("email")
-               .passwordParameter("password")
-               .defaultSuccessUrl("/home")
+               .authorizeRequests()
+               .antMatchers("/custom.css").permitAll()
+               .antMatchers("/registration").permitAll()
+               .anyRequest().authenticated()
+               .and().formLogin()
+                    .permitAll()
+                    .loginPage("/login")
+                    .usernameParameter("email")
+                    .passwordParameter("password")
+                    .defaultSuccessUrl("/home")
                .and().logout()
-               .logoutUrl("/logout")
-               .logoutSuccessUrl("/login");
+                   .permitAll()
+                   .logoutSuccessUrl("/login?logout");
     }
 
     @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+    protected void configure(final AuthenticationManagerBuilder auth) throws Exception {
       auth.inMemoryAuthentication()
               .withUser("springuser@test.fr").password(passwordEncoder().encode("spring123")).roles("USER")
          .and()

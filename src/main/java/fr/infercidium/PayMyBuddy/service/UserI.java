@@ -1,5 +1,6 @@
 package fr.infercidium.PayMyBuddy.service;
 
+import fr.infercidium.PayMyBuddy.dto.UserRegistrationDto;
 import fr.infercidium.PayMyBuddy.model.User;
 
 import java.util.List;

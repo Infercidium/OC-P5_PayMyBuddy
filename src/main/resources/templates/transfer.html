@@ -22,16 +22,16 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                         <li class="nav-item pe-4">
-                            <a class="nav-link" href="home.html">Home</a>
+                            <a class="nav-link" th:href="@{/home}" type="submit" href="home.html">Home</a>
                         </li>
                         <li class="nav-item pe-4">
                             <a class="nav-link active blue" aria-current="page" href="#">Transfer</a>
                         </li>
                         <li class="nav-item pe-4">
-                            <a class="nav-link" href="profile.html">Profile</a>
+                            <a class="nav-link" th:href="@{/profile}" type="submit" href="profile.html">Profile</a>
                         </li>
                         <li class="nav-item pe-4">
-                            <a class="nav-link" href="contact.html">Contact</a>
+                            <a class="nav-link" th:href="@{/contact}" type="submit" href="contact.html">Contact</a>
                         </li>
                         <li class="nav-item pe-4">
                             <a class="nav-link" data-bs-toggle="modal" data-bs-target="#LogOut" href="#">Log off</a>
@@ -47,17 +47,17 @@
                     <div class="modal-header">
                         <h5 class="modal-title" id="Log-off">Disconnect ?</h5>
                     </div>
-                    <div class="modal-footer">
+                    <form class="modal-footer" th:action="@{/logout}" method="post">
                         <button type="button" class="btn-blue text-decoration-none rounded-3 p-1 mx-2" data-bs-dismiss="modal">Not now</button>
-                        <button type="button" class="btn-blue text-decoration-none rounded-3 p-1 mx-2">Disconnect</button>
-                    </div>
+                        <button href="#" type="submit" class="btn-blue text-decoration-none rounded-3 p-1 mx-2">Disconnect</button>
+                    </form>
                 </div>
             </div>
         </div>
         <!--BreadCrumb Secondary-->
         <nav aria-label="breadcrumb">
             <ol class="pmb-breadcrumb breadcrumb">
-                <li class="breadcrumb-item pe-2"><a class="breadcrumb-lien blue" href="home.html">Home</a></li>
+                <li class="breadcrumb-item pe-2"><a class="breadcrumb-lien blue" th:href="@{/home}" type="submit" href="home.html">Home</a></li>
                 <li class="breadcrumb-item active pe-2 grey" aria-current="page">Transfer</li>
             </ol>
         </nav>

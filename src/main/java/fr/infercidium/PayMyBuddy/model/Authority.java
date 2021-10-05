@@ -6,7 +6,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import java.util.ArrayList;
@@ -27,6 +26,7 @@ public class Authority {
     private List<User> users;
 
     public Authority() {
+        this.users = new ArrayList<>();
     }
 
     public Authority(final String nameC, final List<User> usersC) {

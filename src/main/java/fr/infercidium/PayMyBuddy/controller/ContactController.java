@@ -14,8 +14,8 @@ public class ContactController {
     private UserI userS;
 
     @GetMapping(value = "/contact")
-    public String home(Model model) {
-        User user = userS.getUser("max@email.com");
+    public String contact(Model model) {
+        User user = userS.getUser("test@T.fr");
         model.addAttribute("user", user);
         return "contact";
     }

@@ -21,8 +21,7 @@ public class Transfer {
     @JsonIgnore
     private Long id;
 
-    @ManyToOne(targetEntity = User.class)
-    @JoinTable(name = "HistoryCredited")
+    @ManyToOne
     private User credited;
 
     private BigDecimal amount;
@@ -32,11 +31,11 @@ public class Transfer {
     @PastOrPresent
     private LocalDateTime dateTime;
 
-    @ManyToOne(targetEntity = User.class)
-    @JoinTable(name = "HistoryDebited")
+    @ManyToOne
     private User debited;
 
     public Transfer() {
+        this.dateTime = LocalDateTime.now();
     }
 
     public Transfer(final User creditedC,

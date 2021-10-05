@@ -13,9 +13,9 @@ public class HomeController {
     @Autowired
     private UserI userS;
 
-    @GetMapping(value = "/home")
+    @GetMapping(value = {"/", "/home"})
     public String home(Model model) {
-        User user = userS.getUser("max@email.com");
+        User user = userS.getUser("test@T.fr");
         model.addAttribute("user", user);
         return "home";
     }
