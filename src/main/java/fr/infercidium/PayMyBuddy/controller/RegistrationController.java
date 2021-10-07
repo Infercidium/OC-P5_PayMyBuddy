@@ -5,8 +5,6 @@ import fr.infercidium.PayMyBuddy.mapper.UserMapper;
 import fr.infercidium.PayMyBuddy.model.User;
 import fr.infercidium.PayMyBuddy.service.UserService;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

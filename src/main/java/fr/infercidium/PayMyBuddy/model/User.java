@@ -16,10 +16,7 @@ import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Table(name = "Users")
@@ -63,15 +60,22 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "Authority_id"))
     private List<Authority> authorities;
 
+    @OneToMany
+    @JoinTable(name = "Bank_User",
+            joinColumns = @JoinColumn(name = "User_id"),
+            inverseJoinColumns = @JoinColumn(name = "Bank_id"))
+    private List<BankAccount> bankAccounts;
+
     public User() {
         this.pay = BigDecimal.valueOf(0);
         this.historyCredited = new HashSet<>();
         this.historyDebited = new HashSet<>();
         this.knowUser = new HashSet<>();
         this.authorities = new ArrayList<>();
+        this.bankAccounts = new ArrayList<>();
     }
 
-    public User(final String email, final String password, final String userName) {
+    public User(final String email, final String password, final String userName, final BankAccount bankAccount) {
         this.email = email;
         this.password = password;
         this.userName = userName;
@@ -80,6 +84,7 @@ public class User {
         this.historyDebited = new HashSet<>();
         this.knowUser = new HashSet<>();
         this.authorities = new ArrayList<>();
+        this.bankAccounts = Collections.singletonList(bankAccount);
     }
 
     public User(final User user) {
@@ -92,6 +97,7 @@ public class User {
         this.historyDebited = user.getHistoryDebited();
         this.knowUser = user.getKnowUser();
         this.authorities = user.getAuthorities();
+        this.bankAccounts = user.getBankAccounts();
     }
 
     public Long getId() {
@@ -164,6 +170,14 @@ public class User {
 
     public void setAuthorities(final List<Authority> authoritiesS) {
         this.authorities = authoritiesS;
+    }
+
+    public List<BankAccount> getBankAccounts() {
+        return new ArrayList<>(bankAccounts);
+    }
+
+    public void setBankAccounts(final List<BankAccount> bankAccountsS) {
+        this.bankAccounts = bankAccountsS;
     }
 
     public void addHistoryCredited(final Transfer transfer) {
