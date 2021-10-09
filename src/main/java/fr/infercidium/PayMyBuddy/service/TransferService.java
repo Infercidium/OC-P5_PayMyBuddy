@@ -67,10 +67,10 @@ public class TransferService implements TransferI {
         if (transfer.getAmount() == null) {
             transfer.setAmount(origineTransfer.getAmount());
         }
-        if (transfer.getCredited() == null) {
+        if (transfer.getCredited().getId() == null) {
             transfer.setCredited(origineTransfer.getCredited());
         }
-        if (transfer.getDebited() == null) {
+        if (transfer.getDebited().getId() == null) {
             transfer.setDebited(origineTransfer.getDebited());
         }
         if (transfer.getDateTime() == null) {

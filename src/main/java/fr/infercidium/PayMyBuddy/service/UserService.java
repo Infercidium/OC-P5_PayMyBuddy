@@ -90,19 +90,19 @@ public class UserService implements UserI {
         if (user.getPassword() == null) {
             user.setPassword(origineUser.getPassword());
         }
-        if (user.getKnowUser() == null) {
+        if (user.getKnowUser().isEmpty()) {
             user.setKnowUser(origineUser.getKnowUser());
         }
         if (user.getPay() == null) {
             user.setPay(origineUser.getPay());
         }
-        if (user.getHistoryCredited() == null) {
+        if (user.getHistoryCredited().isEmpty()) {
             user.setHistoryCredited(origineUser.getHistoryCredited());
         }
-        if (user.getHistoryDebited() == null) {
+        if (user.getHistoryDebited().isEmpty()) {
             user.setHistoryDebited(origineUser.getHistoryDebited());
         }
-        if (user.getAuthorities() == null) {
+        if (user.getAuthorities().isEmpty()) {
             user.setAuthorities(origineUser.getAuthorities());
         }
         LOGGER.debug("Verification of User fields");

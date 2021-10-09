@@ -74,10 +74,9 @@
                     <div class="col">
                         <select class="custom-select px-3 py-2" aria-label="Connection Select">
                             <option selected>Select A Connection</option>
-                            <option value="1">Hayley</option>
-                            <option value="2">Smith</option>
-                            <option value="3">Clara</option>
-                            <option value="4">Mike</option>
+                            <div th:each="connection : ${connexion}">
+                            <option th:text="${connection.userName}">Hayley</option>
+                            </div>
                         </select>
                     </div>
                     <div class="col">
@@ -146,37 +145,25 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr role="button" data-bs-toggle="modal" data-bs-target="#Transfer">
-                        <td>Hayley</td>
-                        <td>Restaurant bill share</td>
-                        <td>10€</td>
-                    </tr>
-                    <tr role="button" data-bs-toggle="modal" data-bs-target="#Transfer">
-                        <td>Clara</td>
-                        <td>Trip money</td>
-                        <td>25€</td>
-                    </tr>
-                    <tr role="button" data-bs-toggle="modal" data-bs-target="#Transfer">
-                        <td>Smith</td>
-                        <td>Movie tickets</td>
-                        <td>8€</td>
+                    <tr role="button" data-bs-toggle="modal" data-bs-target="#Transfer" th:each="transfer : ${debitedHistory}">
+                        <td th:text="${transfer.credited.userName}">Exemple</td>
+                        <td th:text="${transfer.description}">exemple</td>
+                        <td th:text="${transfer.amount} + €">xx€</td>
                     </tr>
                     </tbody>
                 </table>
                 <nav aria-label="Pagination">
                     <ul class="pagination justify-content-center">
-                        <li class="page-item">
-                            <a class="page-link" href="#" aria-label="Previous">
+                        <li class="page-item" th:if="${currentPage != 1}">
+                            <a class="page-link" th:href="@{'/transfer?page=' + ${previous}}" aria-label="Previous">
                                 <span aria-hidden="true">&laquo;</span>
                             </a>
                         </li>
-                        <li class="page-item"><a class="page-link" href="#">1</a></li>
-                        <li class="page-item"><a class="page-link" href="#">2</a></li>
-                        <li class="page-item"><a class="page-link" href="#">3</a></li>
-                        <li class="page-item"><a class="page-link" href="#">4</a></li>
-                        <li class="page-item"><a class="page-link" href="#">5</a></li>
-                        <li class="page-item">
-                            <a class="page-link" href="#" aria-label="Next">
+                        <li class="page-item" th:each="page : ${pageCount}">
+                            <a class="page-link" th:href="@{'/transfer?page=' + ${page}}" th:text="${page}">x</a>
+                        </li>
+                        <li class="page-item" th:if="${currentPage != pageCount.size}">
+                            <a class="page-link" th:href="@{'/transfer?page=' + ${next}}" aria-label="Next">
                                 <span aria-hidden="true">&raquo;</span>
                             </a>
                         </li>

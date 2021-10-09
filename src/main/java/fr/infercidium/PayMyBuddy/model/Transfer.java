@@ -1,5 +1,6 @@
 package fr.infercidium.PayMyBuddy.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.Entity;
@@ -30,6 +31,7 @@ public class Transfer {
     private String description;
 
     @PastOrPresent
+    @JsonFormat(pattern = "dd/MM/yyyy HH:mm")
     private LocalDateTime dateTime;
 
     @ManyToOne

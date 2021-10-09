@@ -59,34 +59,26 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr role="button" data-bs-toggle="modal" data-bs-target="#Card">
-                        <td>Perso</td>
-                        <td>Max</td>
-                        <td>10/10/2021</td>
-                        <td><button type="button" class="btn btn-blue rounded-3" data-bs-toggle="modal" data-bs-target="#Remove"><i class="bi bi-x-lg"></i></button></td>
-                    </tr>
-                    <tr role="button" data-bs-toggle="modal" data-bs-target="#Card">
-                        <td>Commun</td>
-                        <td>Max</td>
-                        <td>12/05/2022</td>
+                    <tr role="button" data-bs-toggle="modal" data-bs-target="#Card" th:each="card : ${cards}">
+                        <td th:text="${card.name}">exemple</td>
+                        <td th:text="${card.holder.userName}">Exemple</td>
+                        <td th:text="${card.expirationDate}">xx/xx/xxxx</td>
                         <td><button type="button" class="btn btn-blue rounded-3" data-bs-toggle="modal" data-bs-target="#Remove"><i class="bi bi-x-lg"></i></button></td>
                     </tr>
                     </tbody>
                 </table>
                 <nav aria-label="Pagination">
                     <ul class="pagination justify-content-center">
-                        <li class="page-item">
-                            <a class="page-link" href="#" aria-label="Previous">
+                        <li class="page-item" th:if="${currentPage != 1}">
+                            <a class="page-link" th:href="@{'/profile?page=' + ${previous}}" aria-label="Previous">
                                 <span aria-hidden="true">&laquo;</span>
                             </a>
                         </li>
-                        <li class="page-item"><a class="page-link" href="#">1</a></li>
-                        <li class="page-item"><a class="page-link" href="#">2</a></li>
-                        <li class="page-item"><a class="page-link" href="#">3</a></li>
-                        <li class="page-item"><a class="page-link" href="#">4</a></li>
-                        <li class="page-item"><a class="page-link" href="#">5</a></li>
-                        <li class="page-item">
-                            <a class="page-link" href="#" aria-label="Next">
+                        <li class="page-item" th:each="page : ${pageCount}">
+                            <a class="page-link" th:href="@{'/profile?page=' + ${page}}" th:text="${page}">x</a>
+                        </li>
+                        <li class="page-item" th:if="${currentPage != pageCount.size}">
+                            <a class="page-link" th:href="@{'/profile?page=' + ${next}}" aria-label="Next">
                                 <span aria-hidden="true">&raquo;</span>
                             </a>
                         </li>
