@@ -12,7 +12,57 @@
         <title>Pay My Buddy</title>
     </head>
     <body>
-        <div th:include="menu :: #menu"></div>
+    <!--NavBar Principal-->
+    <div id="menu">
+        <nav class="pmb-navbar navbar navbar-expand">
+            <div class="container-fluid">
+                <a class="pmb-navbar-icon mx-0 my-0 rounded-3" href="#">Pay My Buddy</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                        <li class="nav-item pe-4">
+                            <a class="nav-link" th:href="@{/home}" type="submit" href="home.html">Home</a>
+                        </li>
+                        <li class="nav-item pe-4">
+                            <a class="nav-link" th:href="@{/transfer}" type="submit" href="transfer.html">Transfer</a>
+                        </li>
+                        <li class="nav-item pe-4">
+                            <a class="nav-link active blue" aria-current="page" href="#">Profile</a>
+                        </li>
+                        <li class="nav-item pe-4">
+                            <a class="nav-link" th:href="@{/contact}" type="submit" href="contact.html">Contact</a>
+                        </li>
+                        <li class="nav-item pe-4">
+                            <a class="nav-link" data-bs-toggle="modal" data-bs-target="#LogOut" href="#">Log off</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <!-- Modal -->
+        <div class="modal fade" id="LogOut" tabindex="-1" aria-labelledby="Log-off" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="Log-off">Disconnect ?</h5>
+                    </div>
+                    <form class="modal-footer" th:action="@{/logout}" method="post">
+                        <button type="button" class="btn-blue text-decoration-none rounded-3 p-1 mx-2" data-bs-dismiss="modal">Not now</button>
+                        <button href="#" type="submit" class="btn-blue text-decoration-none rounded-3 p-1 mx-2">Disconnect</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!--BreadCrumb Secondary-->
+        <nav aria-label="breadcrumb">
+            <ol class="pmb-breadcrumb breadcrumb">
+                <li class="breadcrumb-item pe-2"><a class="breadcrumb-lien blue" th:href="@{/home}" type="submit" href="home.html">Home</a></li>
+                <li class="breadcrumb-item active pe-2 grey" aria-current="page">Profile</li>
+            </ol>
+        </nav>
+    </div>
         <!--Contenue-->
         <Section class="container text-center pt-4">
             <div class="row row-element py-4">
@@ -59,9 +109,9 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr role="button" data-bs-toggle="modal" data-bs-target="#Card" th:each="card : ${cards}">
-                        <td th:text="${card.name}">exemple</td>
-                        <td th:text="${card.holder.userName}">Exemple</td>
+                    <tr role="button" data-bs-toggle="modal" th:each="card : ${cards}" th:attr="data-bs-target=${'#card'+ card.id}">
+                        <td th:text="${card.name}">example</td>
+                        <td th:text="${card.holder.userName}">Example</td>
                         <td th:text="${card.expirationDate}">xx/xx/xxxx</td>
                         <td><button type="button" class="btn btn-blue rounded-3" data-bs-toggle="modal" data-bs-target="#Remove"><i class="bi bi-x-lg"></i></button></td>
                     </tr>
@@ -101,7 +151,7 @@
             </div>
         </div>
         <!-- Modal Bank Account-->
-        <div class="modal fade" id="Card" tabindex="-1" aria-labelledby="CardBank" aria-hidden="true">
+        <div class="modal fade"  th:each="card : ${cards}" th:attr="id=${'card' + card.id}" tabindex="-1" aria-labelledby="CardBank" aria-hidden="true">
             <div class="modal-dialog modal-lg modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -111,37 +161,37 @@
                         <div class="row row-element py-4">
                             <a class="col-1 transfer"><i class="bi bi-hash"></i></a>
                             <a class="col-5 transfer" style="text-decoration-line: underline; font-size: x-large;">Name</a>
-                            <a class="col transfer">example</a>
+                            <a class="col transfer" th:text="${card.name}">example</a>
                         </div>
                         <div class="row row-element bg-white py-4">
                             <a class="col-1 transfer"><i class="bi bi-person-fill"></i></a>
                             <a class="col-5 transfer" style="text-decoration-line: underline; font-size: x-large;">Holder</a>
-                            <a class="col transfer">Example</a>
+                            <a class="col transfer" th:text="${card.holder.userName}">Example</a>
                         </div>
                         <div class="row row-element py-4">
                             <a class="col-1 transfer"><i class="bi bi-credit-card-fill"></i></a>
                             <a class="col-5 transfer" style="text-decoration-line: underline; font-size: x-large;">card Number</a>
-                            <a class="col transfer">0001000200030004</a>
+                            <a class="col transfer" th:text="${card.cardNumber}">0001000200030004</a>
                         </div>
                         <div class="row row-element bg-white py-4">
                             <a class="col-1 transfer"><i class="bi bi-credit-card-2-front-fill"></i></a>
                             <a class="col-5 transfer" style="text-decoration-line: underline; font-size: x-large;">Cryptogram</a>
-                            <a class="col transfer">000</a>
+                            <a class="col transfer" th:text="${card.cryptogram}">000</a>
                         </div>
                         <div class="row row-element py-4">
                             <a class="col-1 transfer"><i class="bi bi-calendar-x-fill"></i></a>
                             <a class="col-5 transfer" style="text-decoration-line: underline; font-size: x-large;">Expiration Date</a>
-                            <a class="col transfer">xx/xx/xxxx</a>
+                            <a class="col transfer" th:text="${card.expirationDate}">xx/xx/xxxx</a>
                         </div>
                         <div class="row row-element bg-white py-4">
                             <a class="col-1 transfer"><i class="bi bi-bank2"></i></a>
                             <a class="col-5 transfer" style="text-decoration-line: underline; font-size: x-large;">IBAN</a>
-                            <a class="col transfer">xx0100020003000400050006007</a>
+                            <a class="col transfer" th:text="${card.iban}">xx0100020003000400050006007</a>
                         </div>
                         <div class="row row-element py-4">
                             <a class="col-1 transfer"><i class="bi bi-bank2"></i></a>
                             <a class="col-5 transfer" style="text-decoration-line: underline; font-size: x-large;">BIC</a>
-                            <a class="col transfer">xxxxxxxx001</a>
+                            <a class="col transfer" th:text="${card.bic}">xxxxxxxx001</a>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -151,7 +201,7 @@
                 </div>
             </div>
         </div>
-        <!-- Modal Profil-->
+        <!-- Modal Profile-->
         <div class="modal fade" id="Modification-Profile" tabindex="-1" aria-labelledby="Modification" aria-hidden="true">
             <div class="modal-dialog modal-xl">
                 <div class="modal-content">

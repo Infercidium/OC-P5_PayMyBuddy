@@ -93,9 +93,9 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr role="button" data-bs-toggle="modal" data-bs-target="#Transfer" th:each="transfer : ${creditedHistory}">
-                        <td th:text="${transfer.debited.userName}">Exemple</td>
-                        <td th:text="${transfer.description}">exemple</td>
+                    <tr role="button" data-bs-toggle="modal" th:each="transfer : ${creditedHistory}" th:attr="data-bs-target=${'#transfer'+ transfer.id}">
+                        <td th:text="${transfer.debited.userName}">Example</td>
+                        <td th:text="${transfer.description}">example</td>
                         <td th:text="${transfer.amount} + €">xx€</td>
                     </tr>
                     </tbody>
@@ -120,7 +120,7 @@
             </div>
         </Section>
         <!-- Modal Transfer-->
-        <div class="modal fade" id="Transfer" tabindex="-1" aria-labelledby="Transaction" aria-hidden="true">
+        <div class="modal fade" th:each="transfer : ${creditedHistory}" th:attr="id=${'transfer' + transfer.id}" tabindex="-1" aria-labelledby="Transaction" aria-hidden="true">
             <div class="modal-dialog modal-lg modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -130,27 +130,27 @@
                         <div class="row row-element py-4">
                             <a class="col-1 transfer"><i class="bi bi-person-plus-fill"></i></a>
                             <a class="col-1 transfer" style="text-decoration-line: underline; font-size: x-large;">Credited</a>
-                            <a class="col transfer">example</a>
+                            <a class="col transfer" th:text="${transfer.credited.userName}">example</a>
                         </div>
                         <div class="row row-element bg-white py-4">
                             <a class="col-1 transfer"><i class="bi bi-person-dash-fill"></i></a>
                             <a class="col-1 transfer" style="text-decoration-line: underline; font-size: x-large;">Debited</a>
-                            <a class="col transfer">Example</a>
+                            <a class="col transfer" th:text="${transfer.debited.userName}">Example</a>
                         </div>
                         <div class="row row-element py-4">
                             <a class="col-1 transfer"><i class="bi bi-piggy-bank-fill"></i></a>
                             <a class="col-1 transfer" style="text-decoration-line: underline; font-size: x-large;">Amount</a>
-                            <a class="col transfer">xXx</a>
+                            <a class="col transfer" th:text="${transfer.amount} + ' €'">xXx</a>
                         </div>
                         <div class="row row-element bg-white py-4">
                             <a class="col-1 transfer"><i class="bi bi-file-text-fill"></i></a>
                             <a class="col-1 transfer" style="text-decoration-line: underline; font-size: x-large;">Description</a>
-                            <a class="col transfer">xXx</a>
+                            <a class="col transfer" th:text="${transfer.description}">xXx</a>
                         </div>
                         <div class="row row-element py-4">
                             <a class="col-1 transfer"><i class="bi bi-calendar-fill"></i></a>
                             <a class="col-1 transfer" style="text-decoration-line: underline; font-size: x-large;">Time</a>
-                            <a class="col transfer">xXx</a>
+                            <a class="col transfer" th:text="${transfer.dateTime}">xXx</a>
                         </div>
                     </div>
                     <div class="modal-footer">

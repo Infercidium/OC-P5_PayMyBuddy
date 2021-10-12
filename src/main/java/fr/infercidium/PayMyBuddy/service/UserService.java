@@ -45,7 +45,7 @@ public class UserService implements UserI {
     @Override
     public void editUser(final String email, final User user) {
         User verifiedUser = userVerification(email, user);
-        postUser(verifiedUser);
+        userR.save(verifiedUser);
     }
 
     @Override
@@ -61,11 +61,13 @@ public class UserService implements UserI {
     @Override
     public User getUser(final String email) {
         User user = this.userR.findByEmailIgnoreCase(email);
-        if (user != null) {
-            return user;
-        } else {
-            throw  new NullPointerException();
-        }
+        return user;
+    }
+
+    @Override
+    public User getUser(final Long id) {
+        User user = this.userR.findById(id).get();
+        return user;
     }
 
     @Override

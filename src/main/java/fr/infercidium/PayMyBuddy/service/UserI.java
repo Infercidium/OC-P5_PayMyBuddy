@@ -16,4 +16,6 @@ public interface UserI extends UserDetailsService {
     User getUser(String email);
 
     List<User> getUsers();
+
+    User getUser(Long id);
 }
