@@ -1,19 +1,16 @@
 package fr.infercidium.PayMyBuddy.model;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.PastOrPresent;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.Set;
 
 @Entity
 @Table(name = "Transfers")
@@ -31,7 +28,6 @@ public class Transfer {
     private String description;
 
     @PastOrPresent
-    @JsonFormat(pattern = "dd/MM/yyyy HH:mm")
     private LocalDateTime dateTime;
 
     @ManyToOne

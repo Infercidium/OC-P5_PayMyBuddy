@@ -37,7 +37,7 @@ public class HomeController {
         for (int i = 0; i<transferPage.getPageCount(); i++) {
             pagecount.add(i+1);
         }
-        model.addAttribute("card", user.getBankAccounts().stream().sorted(Comparator.comparing(BankAccount::getName)).collect(Collectors.toList()));
+        model.addAttribute("cards", user.getBankAccounts().stream().sorted(Comparator.comparing(BankAccount::getName)).collect(Collectors.toList()));
         model.addAttribute("pay", user.getPay());
         model.addAttribute("creditedHistory", transferPage.getPageList());
         model.addAttribute("pageCount", pagecount);

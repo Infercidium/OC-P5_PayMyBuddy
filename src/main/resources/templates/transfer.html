@@ -63,11 +63,23 @@
         </nav>
         <!--Contenue-->
         <Section>
+            <div th:if="${param.addCo}" class="alert alert-success text-center" style="font-size: medium;">
+                Connection successfully added
+            </div>
+            <div th:if="${param.successPay}" class="alert alert-success text-center" style="font-size: medium;">
+                Transaction completed
+            </div>
+            <div th:if="${param.addError}" class="alert alert-danger text-center" style="font-size: medium;">
+                Connection already in the list
+            </div>
+            <div th:if="${param.addMiss}" class="alert alert-danger text-center" style="font-size: medium;">
+                Connection not exist
+            </div>
             <div class="container text-center">
                 <div class="row pt-4">
                     <div class="col text-start">Send Money</div>
                     <div class="col">
-                        <button type="button" class="btn btn-blue float-end rounded-3 px-5" data-bs-toggle="modal" data-bs-target="#Connection">Add Connection</button>
+                        <button type="button" class="btn btn-blue float-end rounded-3 px-5" onclick="openModal()">Add Connection</button>
                     </div>
                 </div>
                 <div class="row row-element align-items-center">
@@ -84,14 +96,14 @@
                         <a class="€">€</a>
                     </div>
                     <div class="col">
-                        <button type="button" class="btn btn-green  rounded-3" data-bs-toggle="modal" data-bs-target="#Pay">Pay</button>
+                        <button type="button" id="pay-button" class="btn btn-green  rounded-3" data-bs-toggle="modal" data-bs-target="#Pay">Pay</button>
                     </div>
                 </div>
             </div>
             <!-- Modal Connection-->
             <div class="modal fade" id="Connection" tabindex="-1" aria-labelledby="NewConnection" aria-hidden="true">
                 <div class="modal-dialog">
-                    <div class="modal-content">
+                    <form class="modal-content" th:action="@{/transfer/addCo}" method="post">
                         <div class="modal-header">
                             <h5 class="modal-title" id="NewConnection">New Connection</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -100,15 +112,15 @@
                             <div class="mb-3">
                                 <div class="input-group col email my-2">
                                     <div class="input-group-text symbol-group rounded-start border-end-0 bg-white"><i class="bi bi-envelope"></i></div>
-                                    <input type="email" class="form-control rounded-end border-start-0" placeholder="Email" aria-label="Email">
+                                    <input type="email" name="email" class="form-control rounded-end border-start-0" placeholder="Email" aria-label="Email">
                                 </div>
                             </div>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-blue" data-bs-dismiss="modal">Cancel</button>
-                            <button type="button" class="btn btn-green">Add</button>
+                            <button type="submit" class="btn btn-green">Add</button>
                         </div>
-                    </div>
+                    </form>
                 </div>
             </div>
             <!-- Modal Pay-->
@@ -212,4 +224,8 @@
             </div>
         </div>
     </body>
+    <script>
+        fonction openModal() {document.getElementById("pay-button").click();}
+        openModal();
+    </script>
 </html>

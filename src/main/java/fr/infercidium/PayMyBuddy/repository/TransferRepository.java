@@ -4,4 +4,5 @@ import fr.infercidium.PayMyBuddy.model.Transfer;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface TransferRepository extends JpaRepository<Transfer, Long> {
+    findb(email, peageable)
 }

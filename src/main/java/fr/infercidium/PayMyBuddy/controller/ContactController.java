@@ -8,7 +8,11 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -50,7 +54,9 @@ public class ContactController {
         User user = userS.getUser(currentPrincipalName);
         User removed = userS.getUser(id);
         user.removeKnowUser(removed);
+        removed.removeKnowUser(user);
         userS.editUser(currentPrincipalName, user);
+        userS.editUser(removed.getEmail(), removed);
         return "redirect:/contact?remove";
     }
 
@@ -63,11 +69,13 @@ public class ContactController {
             return "redirect:/contact?addMiss";
         }
         User added = userS.getUser(email);
-        if (user.getKnowUser().contains(added)) {
+        if (user.getKnowUser().contains(added) || user.getEmail() == added.getEmail()) {
             return "redirect:/contact?addError";
         }
         user.addKnowUser(added);
+        added.addKnowUser(user);
         userS.editUser(currentPrincipalName, user);
+        userS.editUser(added.getEmail(), added);
         return "redirect:/contact?addCo";
     }
 }
