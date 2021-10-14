@@ -24,6 +24,8 @@ public class HomeController {
     @Autowired
     private UserI userS;
 
+
+
     @GetMapping(value = {"/", "/home"})
     public String home(final Model model, @RequestParam(defaultValue = "1") int page) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

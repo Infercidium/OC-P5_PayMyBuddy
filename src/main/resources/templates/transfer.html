@@ -79,7 +79,7 @@
                 <div class="row pt-4">
                     <div class="col text-start">Send Money</div>
                     <div class="col">
-                        <button type="button" class="btn btn-blue float-end rounded-3 px-5" onclick="openModal()">Add Connection</button>
+                        <button type="button" class="btn btn-blue float-end rounded-3 px-5" data-bs-toggle="modal" data-bs-target="#Connection">Add Connection</button>
                     </div>
                 </div>
                 <div class="row row-element align-items-center">
@@ -87,7 +87,7 @@
                         <select class="custom-select px-3 py-2" aria-label="Connection Select">
                             <option selected>Select A Connection</option>
                             <div th:each="connection : ${connexion}">
-                                <option th:text="${connection.userName}">Hayley</option>
+                                <option th:text="${connection.userName}">Exemple</option>
                             </div>
                         </select>
                     </div>
@@ -96,7 +96,10 @@
                         <a class="€">€</a>
                     </div>
                     <div class="col">
-                        <button type="button" id="pay-button" class="btn btn-green  rounded-3" data-bs-toggle="modal" data-bs-target="#Pay">Pay</button>
+                        <textarea class="form-control" id="Description" rows="2" placeholder="Description" name="description"></textarea>
+                    </div>
+                    <div class="col">
+                        <button type="button" id="pay-button" class="btn btn-green  rounded-3">Pay</button>
                     </div>
                 </div>
             </div>
@@ -121,27 +124,6 @@
                             <button type="submit" class="btn btn-green">Add</button>
                         </div>
                     </form>
-                </div>
-            </div>
-            <!-- Modal Pay-->
-            <div class="modal fade" id="Pay" tabindex="-1" aria-labelledby="Payment" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="Payment">Payment</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <div class="mb-3">
-                                <label for="Description" class="form-label">Description</label>
-                                <textarea class="form-control" id="Description" rows="3"></textarea>
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-blue" data-bs-dismiss="modal">Cancel</button>
-                            <button type="button" class="btn btn-green">Pay</button>
-                        </div>
-                    </div>
                 </div>
             </div>
         </Section>
@@ -214,7 +196,7 @@
                         <div class="row row-element py-4">
                             <a class="col-1 transfer"><i class="bi bi-calendar-fill"></i></a>
                             <a class="col-1 transfer" style="text-decoration-line: underline; font-size: x-large;">Time</a>
-                            <a class="col transfer" th:text="${transfer.dateTime}">xXx</a>
+                            <a class="col transfer" th:text="${#temporals.format(transfer.dateTime, 'dd/MM/yyyy HH:mm:ss')}">xXx</a>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -224,8 +206,4 @@
             </div>
         </div>
     </body>
-    <script>
-        fonction openModal() {document.getElementById("pay-button").click();}
-        openModal();
-    </script>
 </html>

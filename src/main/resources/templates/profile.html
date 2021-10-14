@@ -112,7 +112,7 @@
                     <tr role="button" data-bs-toggle="modal" th:each="card : ${cards}" th:attr="data-bs-target=${'#card'+ card.id}">
                         <td th:text="${card.name}">example</td>
                         <td th:text="${card.holder}">Example</td>
-                        <td th:text="${card.expirationDate}">xx/xx/xxxx</td>
+                        <td th:text="${#temporals.format(card.expirationDate, 'dd/MM/yyyy')}">xx/xx/xxxx</td>
                         <td><button type="button" class="btn btn-blue rounded-3" data-bs-toggle="modal" data-bs-target="#Remove"><i class="bi bi-x-lg"></i></button></td>
                     </tr>
                     </tbody>
@@ -181,7 +181,7 @@
                         <div class="row row-element py-4">
                             <a class="col-1 transfer"><i class="bi bi-calendar-x-fill"></i></a>
                             <a class="col-5 transfer" style="text-decoration-line: underline; font-size: x-large;">Expiration Date</a>
-                            <a class="col transfer" th:text="${card.expirationDate}">xx/xx/xxxx</a>
+                            <a class="col transfer" th:text="${#temporals.format(card.expirationDate, 'dd/MM/yyyy')}">xx/xx/xxxx</a>
                         </div>
                         <div class="row row-element bg-white py-4">
                             <a class="col-1 transfer"><i class="bi bi-bank2"></i></a>
