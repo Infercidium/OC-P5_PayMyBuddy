@@ -4,6 +4,8 @@ import fr.infercidium.PayMyBuddy.model.Transfer;
 import fr.infercidium.PayMyBuddy.repository.TransferRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -59,6 +61,26 @@ public class TransferService implements TransferI {
         } else {
             throw new NullPointerException();
         }
+    }
+
+    @Override
+    public Page<Transfer> getTransferPageCredited(final String email, final Pageable pageable) {
+        return transfertR.findByCreditedEmailIgnoreCase(email, pageable);
+    }
+
+    @Override
+    public Page<Transfer> getTransferPageDebited(final String email, final Pageable pageable) {
+        return transfertR.findByDebitedEmailIgnoreCase(email, pageable);
+    }
+
+    @Override
+    public List<Transfer> getTransferCredited(final String email) {
+        return transfertR.findByCreditedEmailIgnoreCase(email);
+    }
+
+    @Override
+    public List<Transfer> getTransferDebited(final String email) {
+        return transfertR.findByDebitedEmailIgnoreCase(email);
     }
 
     private Transfer transferVerification(final Long id, final Transfer transfer) {

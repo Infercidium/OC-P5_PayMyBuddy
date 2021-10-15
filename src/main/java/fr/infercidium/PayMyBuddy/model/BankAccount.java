@@ -2,13 +2,7 @@ package fr.infercidium.PayMyBuddy.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.FutureOrPresent;
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDate;
@@ -25,6 +19,9 @@ public class BankAccount {
     private String name;
 
     private String holder;
+
+    @ManyToOne
+    private User user;
 
     @FutureOrPresent
     private LocalDate expirationDate;
@@ -79,6 +76,14 @@ public class BankAccount {
         this.holder = holderS;
     }
 
+    public User getUser() {
+        return new User(user);
+    }
+
+    public void setUser(User userS) {
+        this.user = userS;
+    }
+
     public LocalDate getExpirationDate() {
         return expirationDate;
     }
@@ -125,6 +130,7 @@ public class BankAccount {
                 + "id = " + id
                 + ", name = '" + name + '\''
                 + ", holder = '" + holder + '\''
+                + ", user = " + user.getUserName() + '\''
                 + ", expirationDate = " + expirationDate
                 + ", cardNumber = '" + cardNumber + '\''
                 + ", cryptogram = '" + cryptogram + '\''

@@ -61,9 +61,6 @@ public class User {
     private List<Authority> authorities;
 
     @OneToMany
-    @JoinTable(name = "Bank_User",
-            joinColumns = @JoinColumn(name = "User_id"),
-            inverseJoinColumns = @JoinColumn(name = "Bank_id"))
     private List<BankAccount> bankAccounts;
 
     public User() {

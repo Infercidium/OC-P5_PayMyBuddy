@@ -6,6 +6,8 @@ import fr.infercidium.PayMyBuddy.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -71,6 +73,16 @@ public class UserService implements UserI {
     }
 
     @Override
+    public Page<User> getKnowUser(final String email, final Pageable pageable) {
+        return userR.findByKnowUserEmailIgnoreCase(email, pageable);
+    }
+
+    @Override
+    public List<User> getKnowUser(final String email) {
+        return userR.findByKnowUserEmailIgnoreCase(email);
+    }
+
+    @Override
     public List<User> getUsers() {
         List<User> userList = this.userR.findAll();
         if (!userList.isEmpty()) {
@@ -93,6 +105,7 @@ public class UserService implements UserI {
             user.setPassword(origineUser.getPassword());
         }
         if (user.getKnowUser().isEmpty()) {
+            System.out.println("test");
             user.setKnowUser(origineUser.getKnowUser());
         }
         if (user.getPay() == null) {
