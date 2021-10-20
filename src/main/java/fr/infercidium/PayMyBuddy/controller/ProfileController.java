@@ -1,6 +1,7 @@
 package fr.infercidium.PayMyBuddy.controller;
 
 import fr.infercidium.PayMyBuddy.configuration.UserComponent;
+import fr.infercidium.PayMyBuddy.dto.UserRegistrationDto;
 import fr.infercidium.PayMyBuddy.model.BankAccount;
 import fr.infercidium.PayMyBuddy.model.Transfer;
 import fr.infercidium.PayMyBuddy.model.User;
@@ -12,15 +13,23 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Controller
+@RequestMapping(value = "/profile")
 public class ProfileController {
 
     @Autowired
@@ -35,10 +44,18 @@ public class ProfileController {
     @Autowired
     private BankAccountI bankAccountS;
 
-    @GetMapping(value = "/profile")
+    @ModelAttribute("user")
+    public UserRegistrationDto userRegistrationDto() {
+        return new UserRegistrationDto();
+    }
+
+    @GetMapping
     public String profile(Model model, @RequestParam(defaultValue = "1") int page) {
         //Component
-        User user = userComponent.saveUser();
+        User user;
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentPrincipalName = authentication.getName();
+        user = userS.getUser(currentPrincipalName);
 
         // Creation of the Pagination
         Pageable pageable = PageRequest.of((page - 1), 2, Sort.by("name").ascending());
@@ -72,5 +89,37 @@ public class ProfileController {
 
         // Referral to the affected html page
         return "profile";
+    }
+
+    @PostMapping(value = "/edit")
+    public String editProfile(@ModelAttribute("user") UserRegistrationDto registrationDto) {
+        //Component
+        User user;
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentPrincipalName = authentication.getName();
+        user = userS.getUser(currentPrincipalName);
+
+        if (!registrationDto.getPassword().equals(registrationDto.getPassword2())) {
+            return "redirect:/profile?errorPassword";
+        }
+
+        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        if (!passwordEncoder.matches(registrationDto.getOldPassword(), user.getPassword())) {
+            return "redirect:/profile?errorOldPassword";
+        }
+
+        if (!registrationDto.getEmail().isEmpty()) {
+            user.setEmail(registrationDto.getEmail());
+        }
+        if (!registrationDto.getPassword().isEmpty()) {
+            user.setPassword(passwordEncoder.encode(registrationDto.getPassword()));
+        }
+        if (!registrationDto.getUserName().isEmpty()) {
+            user.setUserName(registrationDto.getUserName());
+        }
+
+        userS.updateUser(user);
+
+        return "redirect:/profile?success";
     }
 }

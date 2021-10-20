@@ -16,7 +16,11 @@ import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import java.math.BigDecimal;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "Users")
@@ -39,15 +43,9 @@ public class User {
     private BigDecimal pay;
 
     @OneToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "HistoryCredited",
-            joinColumns = @JoinColumn(name = "User_id"),
-            inverseJoinColumns = @JoinColumn(name = "Transfer_id"))
     private Set<Transfer> historyCredited;
 
     @OneToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "HistoryDebited",
-            joinColumns = @JoinColumn(name = "User_id"),
-            inverseJoinColumns = @JoinColumn(name = "Transfer_id"))
     private Set<Transfer> historyDebited;
 
     @ManyToMany(fetch = FetchType.EAGER)
@@ -211,8 +209,16 @@ public class User {
                 + ", pay = " + pay
                 + ", historyCredited = " + historyCredited
                 + ", historyDebited = " + historyDebited
-                + ", knowUser = " + knowUser
+                + ", knowUser = " + this.knowUserString()
                 + ", authorities = " + authorities
                 + '}';
+    }
+
+    public String knowUserString() {
+        StringBuilder knowUserString = new StringBuilder();
+        for (User user: knowUser) {
+            knowUserString.append(user.getUserName()).append(", ");
+        }
+        return "User : " + userName + " {" + knowUserString + "}";
     }
 }

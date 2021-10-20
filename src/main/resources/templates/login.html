@@ -22,6 +22,9 @@
             <div th:if="${param.logout}" class="alert alert-success text-center" style="font-size: medium;">
                 You have been logged out
             </div>
+            <div th:if="${param.errorPassword}" class="alert alert-danger text-center" style="font-size: medium;">
+                Passwords are not the same
+            </div>
             <div class="row">
                 <div class="col-3"></div>
                 <div class="input-group col email my-5 form-group">
@@ -87,7 +90,7 @@
                             <div class="col">
                                 <div class="input-group col password my-5 form-group">
                                     <div class="input-group-text symbol-group rounded-start border-end-0 bg-white"><i class="bi bi-asterisk"></i></div>
-                                    <input type="password" id="inputRegPassword2" class="form-control rounded-end border-start-0" placeholder="Password" aria-label="Password" required autofocus="autofocus">
+                                    <input type="password" name="password2" id="inputRegPassword2" class="form-control rounded-end border-start-0" placeholder="Password" aria-label="Password" required autofocus="autofocus">
                                 </div>
                             </div>
                             <div class="col-3"></div>

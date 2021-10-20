@@ -75,6 +75,9 @@
             <div th:if="${param.addMiss}" class="alert alert-danger text-center" style="font-size: medium;">
                 Connection not exist
             </div>
+            <div th:if="${param.errorPay}" class="alert alert-danger text-center" style="font-size: medium;">
+                Transaction error
+            </div>
             <div class="container text-center">
                 <div class="row pt-4">
                     <div class="col text-start">Send Money</div>
@@ -82,12 +85,12 @@
                         <button type="button" class="btn btn-blue float-end rounded-3 px-5" data-bs-toggle="modal" data-bs-target="#Connection">Add Connection</button>
                     </div>
                 </div>
-                <div class="row row-element align-items-center">
+                <form class="row row-element align-items-center" th:action="@{/pay}" method="post">
                     <div class="col">
-                        <select class="custom-select px-3 py-2" aria-label="Connection Select">
+                        <select class="custom-select px-3 py-2" aria-label="Connection Select" name="Credited">
                             <option selected>Select A Connection</option>
                             <div th:each="connection : ${connexion}">
-                                <option th:text="${connection.userName}">Exemple</option>
+                                <option th:value="${connection.id}" th:text="${connection.userName}">Exemple</option>
                             </div>
                         </select>
                     </div>
@@ -99,14 +102,14 @@
                         <textarea class="form-control" id="Description" rows="2" placeholder="Description" name="description"></textarea>
                     </div>
                     <div class="col">
-                        <button type="button" id="pay-button" class="btn btn-green  rounded-3">Pay</button>
+                        <button type="submit" id="pay-button" class="btn btn-green  rounded-3">Pay</button>
                     </div>
-                </div>
+                </form>
             </div>
             <!-- Modal Connection-->
             <div class="modal fade" id="Connection" tabindex="-1" aria-labelledby="NewConnection" aria-hidden="true">
                 <div class="modal-dialog">
-                    <form class="modal-content" th:action="@{/transfer/addCo}" method="post">
+                    <form class="modal-content" th:action="@{/addCoT}" method="post">
                         <div class="modal-header">
                             <h5 class="modal-title" id="NewConnection">New Connection</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -140,7 +143,8 @@
                     </thead>
                     <tbody>
                     <tr role="button" data-bs-toggle="modal" th:each="transfer : ${debitedHistory}" th:attr="data-bs-target=${'#transfer'+ transfer.id}">
-                        <td th:text="${transfer.credited.userName}">Example</td>
+                        <td th:if="${transfer.getClass().getSimpleName() == 'TransferUser'}" th:text="${transfer.credited.userName}">Example</td>
+                        <td th:if="${transfer.getClass().getSimpleName() == 'TransferRemov'}" th:text="${transfer.bankAccount.name}">Example</td>
                         <td th:text="${transfer.description}">example</td>
                         <td th:text="${transfer.amount} + €">xx€</td>
                     </tr>
@@ -156,7 +160,7 @@
                         <li class="page-item" th:each="page : ${pageCount}">
                             <a class="page-link" th:href="@{'/transfer?page=' + ${page}}" th:text="${page}">x</a>
                         </li>
-                        <li class="page-item" th:if="${currentPage != pageCount.size}">
+                        <li class="page-item" th:if="${currentPage != pageCount.size && pageCount.size != 0}">
                             <a class="page-link" th:href="@{'/transfer?page=' + ${next}}" aria-label="Next">
                                 <span aria-hidden="true">&raquo;</span>
                             </a>
@@ -173,10 +177,15 @@
                         <h5 class="modal-title" id="Transaction">Transfer</h5>
                     </div>
                     <div class="modal-body text-center">
-                        <div class="row row-element py-4">
+                        <div class="row row-element py-4" th:if="${transfer.getClass().getSimpleName() == 'TransferUser'}">
                             <a class="col-1 transfer"><i class="bi bi-person-plus-fill"></i></a>
                             <a class="col-1 transfer" style="text-decoration-line: underline; font-size: x-large;">Credited</a>
                             <a class="col transfer" th:text="${transfer.credited.userName}">example</a>
+                        </div>
+                        <div class="row row-element bg-white py-4" th:if="${transfer.getClass().getSimpleName() == 'TransferRemov'}">
+                            <a class="col-1 transfer"><i class="bi bi-person-dash-fill"></i></a>
+                            <a class="col-1 transfer" style="text-decoration-line: underline; font-size: x-large;">Credited</a>
+                            <a class="col transfer" th:text="${'Card: ' + transfer.bankAccount.name}">Example</a>
                         </div>
                         <div class="row row-element bg-white py-4">
                             <a class="col-1 transfer"><i class="bi bi-person-dash-fill"></i></a>

@@ -45,19 +45,8 @@ public class UserService implements UserI {
     }
 
     @Override
-    public void editUser(final String email, final User user) {
-        User verifiedUser = userVerification(email, user);
-        userR.save(verifiedUser);
-    }
-
-    @Override
-    public void removeUser(final String email, final String password) {
-        User user = this.userR.findByEmailIgnoreCaseAndPassword(email, password);
-        if (user != null) {
-            this.userR.delete(user);
-        } else {
-            throw new NullPointerException();
-        }
+    public void updateUser(final User user){
+        userR.save(user);
     }
 
     @Override
@@ -82,16 +71,7 @@ public class UserService implements UserI {
         return userR.findByKnowUserEmailIgnoreCase(email);
     }
 
-    @Override
-    public List<User> getUsers() {
-        List<User> userList = this.userR.findAll();
-        if (!userList.isEmpty()) {
-            return userList;
-        } else {
-            throw new NullPointerException();
-        }
-    }
-    
+    //TODO à voir
     private User userVerification(final String email, final User user) {
         User origineUser = getUser(email);
         user.setId(origineUser.getId());
@@ -105,7 +85,6 @@ public class UserService implements UserI {
             user.setPassword(origineUser.getPassword());
         }
         if (user.getKnowUser().isEmpty()) {
-            System.out.println("test");
             user.setKnowUser(origineUser.getKnowUser());
         }
         if (user.getPay() == null) {

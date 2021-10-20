@@ -10,6 +10,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -38,7 +40,10 @@ public class TransferController {
     @GetMapping
     public String transfer(Model model, @RequestParam(defaultValue = "1") int page) {
         //Component
-        User user = userComponent.saveUser();
+        User user;
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentPrincipalName = authentication.getName();
+        user = userS.getUser(currentPrincipalName);
 
         // Creation of the Pagination
         Pageable pageable = PageRequest.of((page - 1), 3, Sort.by("dateTime").descending());
@@ -62,25 +67,5 @@ public class TransferController {
 
         // Referral to the affected html page
         return "transfer";
-    }
-
-    @PostMapping(value = "/addCo")
-    public String addcontact(String email) {
-        //Component
-        User user = userComponent.saveUser();
-
-        if (userS.getUser(email) == null) {
-            return "redirect:/transfer?addMiss";
-        }
-        User added = userS.getUser(email);
-        if (user.getKnowUser().contains(added) || user.getEmail().equals(added.getEmail())) {
-            return "redirect:/transfer?addError";
-        }
-        user.addKnowUser(added);
-        added.addKnowUser(user);
-        userS.editUser(user.getEmail(), user);
-        userS.editUser(added.getEmail(), added);
-        userComponent.cleanUser();
-        return "redirect:/transfer?addCo";
     }
 }

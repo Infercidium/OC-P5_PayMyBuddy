@@ -4,6 +4,8 @@ public class UserRegistrationDto {
 
     private String email;
     private String password;
+    private String password2;
+    private String oldPassword;
     private String userName;
 
     public String getEmail() {
@@ -20,6 +22,22 @@ public class UserRegistrationDto {
 
     public void setPassword(final String passwordS) {
         this.password = passwordS;
+    }
+
+    public String getPassword2() {
+        return password2;
+    }
+
+    public void setPassword2(String password2) {
+        this.password2 = password2;
+    }
+
+    public String getOldPassword() {
+        return oldPassword;
+    }
+
+    public void setOldPassword(String oldPassword) {
+        this.oldPassword = oldPassword;
     }
 
     public String getUserName() {

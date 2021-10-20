@@ -20,6 +20,7 @@ public class UserComponent {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             String currentPrincipalName = authentication.getName();
             user = userS.getUser(currentPrincipalName);
+            System.out.println(user.knowUserString());
             System.out.println("Sauver");
         }
         return user;

@@ -2,10 +2,21 @@ package fr.infercidium.PayMyBuddy.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import javax.validation.constraints.FutureOrPresent;
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "Bank_Account")
@@ -39,10 +50,22 @@ public class BankAccount {
     @NotBlank(message = "bic cannot be null or empty.")
     private String bic;
 
+    @OneToMany
+    @JoinTable(name = "History",
+            joinColumns = @JoinColumn(name = "BankAccount_id"),
+            inverseJoinColumns = @JoinColumn(name = "Transfer_id"))
+    private Set<Transfer> history;
+
+    //2 last card number
+    private String deer;
+
     public BankAccount() {
+        this.history = new HashSet<>();
     }
 
-    public BankAccount(final String nameC, final String holderC, final LocalDate expirationDateC, final String cardNumberC, final String cryptogramC, final String ibanC, final String bicC) {
+    public BankAccount(final String nameC, final String holderC, final LocalDate expirationDateC,
+                       final String cardNumberC, final String cryptogramC, final String ibanC,
+                       final String bicC, final Set<Transfer> historyC, final String deerC) {
         this.name = nameC;
         this.holder = holderC;
         this.expirationDate = expirationDateC;
@@ -50,6 +73,20 @@ public class BankAccount {
         this.cryptogram = cryptogramC;
         this.iban = ibanC;
         this.bic = bicC;
+        this.history = historyC;
+        this.deer = deerC;
+    }
+
+    public BankAccount(BankAccount bankAccountC) {
+        this.name = bankAccountC.getName();
+        this.holder = bankAccountC.getHolder();
+        this.expirationDate = bankAccountC.getExpirationDate();
+        this.cardNumber = bankAccountC.getCardNumber();
+        this.cryptogram = bankAccountC.getCryptogram();
+        this.iban = bankAccountC.getIban();
+        this.bic = bankAccountC.getBic();
+        this.history = bankAccountC.getHistory();
+        this.deer = bankAccountC.getDeer();
     }
 
     public Long getId() {
@@ -124,6 +161,22 @@ public class BankAccount {
         this.bic = bicS;
     }
 
+    public Set<Transfer> getHistory() {
+        return new HashSet<>(history);
+    }
+
+    public void setHistory(Set<Transfer> history) {
+        this.history = history;
+    }
+
+    public String getDeer() {
+        return deer;
+    }
+
+    public void setDeer(String deer) {
+        this.deer = deer;
+    }
+
     @Override
     public String toString() {
         return "BankAccount{"
@@ -136,6 +189,8 @@ public class BankAccount {
                 + ", cryptogram = '" + cryptogram + '\''
                 + ", iban = '" + iban + '\''
                 + ", bic = '" + bic + '\''
+                + ", history = '" + history + '\''
+                + ", deer = '" + deer + '\''
                 + '}';
     }
 }

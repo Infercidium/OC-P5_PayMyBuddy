@@ -66,6 +66,12 @@
                 <div th:if="${param.registration}" class="alert alert-success text-center" style="font-size: medium;">
                     Welcome to Pay My Buddy
                 </div>
+                <div th:if="${param.success}" class="alert alert-success text-center" style="font-size: medium;">
+                    Transaction completed
+                </div>
+                <div th:if="${param.error}" class="alert alert-danger text-center" style="font-size: medium;">
+                    Transaction error
+                </div>
                 <div class="row pt-4">
                     <div class="col text-start">Balance</div>
                     <div class="col text-end">
@@ -94,7 +100,8 @@
                     </thead>
                     <tbody>
                     <tr role="button" data-bs-toggle="modal" th:each="transfer : ${creditedHistory}" th:attr="data-bs-target=${'#transfer'+ transfer.id}">
-                        <td th:text="${transfer.debited.userName}">Example</td>
+                        <td th:if="${transfer.getClass().getSimpleName() == 'TransferUser'}" th:text="${transfer.debited.userName}">Example</td>
+                        <td th:if="${transfer.getClass().getSimpleName() == 'TransferAdd'}" th:text="${transfer.bankAccount.name}">Example</td>
                         <td th:text="${transfer.description}">example</td>
                         <td th:text="${transfer.amount} + €">xx€</td>
                     </tr>
@@ -110,7 +117,7 @@
                         <li class="page-item" th:each="page : ${pageCount}">
                             <a class="page-link" th:href="@{'/home?page=' + ${page}}" th:text="${page}">x</a>
                         </li>
-                        <li class="page-item" th:if="${currentPage != pageCount.size}">
+                        <li class="page-item" th:if="${currentPage != pageCount.size && pageCount.size != 0}">
                             <a class="page-link" th:href="@{'/home?page=' + ${next}}" aria-label="Next">
                                 <span aria-hidden="true">&raquo;</span>
                             </a>
@@ -132,10 +139,15 @@
                             <a class="col-1 transfer" style="text-decoration-line: underline; font-size: x-large;">Credited</a>
                             <a class="col transfer" th:text="${transfer.credited.userName}">example</a>
                         </div>
-                        <div class="row row-element bg-white py-4">
+                        <div class="row row-element bg-white py-4" th:if="${transfer.getClass().getSimpleName() == 'TransferUser'}">
                             <a class="col-1 transfer"><i class="bi bi-person-dash-fill"></i></a>
                             <a class="col-1 transfer" style="text-decoration-line: underline; font-size: x-large;">Debited</a>
                             <a class="col transfer" th:text="${transfer.debited.userName}">Example</a>
+                        </div>
+                        <div class="row row-element bg-white py-4" th:if="${transfer.getClass().getSimpleName() == 'TransferAdd'}">
+                            <a class="col-1 transfer"><i class="bi bi-person-dash-fill"></i></a>
+                            <a class="col-1 transfer" style="text-decoration-line: underline; font-size: x-large;">Debited</a>
+                            <a class="col transfer" th:text="${'Card: ' + transfer.bankAccount.name}">Example</a>
                         </div>
                         <div class="row row-element py-4">
                             <a class="col-1 transfer"><i class="bi bi-piggy-bank-fill"></i></a>
@@ -162,7 +174,7 @@
         <!-- Modal Add Money-->
         <div class="modal fade" id="Add" tabindex="-1" aria-labelledby="Add" aria-hidden="true">
             <div class="modal-dialog">
-                <div class="modal-content">
+                <form class="modal-content" th:action="@{/addmoney}" method="post">
                     <div class="modal-header">
                         <h5 class="modal-title" id="AddMoney">Add Money</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -170,10 +182,10 @@
                     <div class="modal-body">
                         <div class="row align-items-center py-4">
                             <div class="col">
-                                <select class="custom-select px-3 py-2" aria-label="Connection Select">
+                                <select class="custom-select px-3 py-2" aria-label="Connection Select" name="BankAccount">
                                     <option selected>Select A Bank Account</option>
                                     <div th:each="card : ${cards}">
-                                        <option th:text="${card.name}">Exemple</option>
+                                        <option th:value="${card.id}" th:text="${card.name}">Example</option>
                                     </div>
                                 </select>
                             </div>
@@ -184,20 +196,20 @@
                         </div>
                         <div class="mb-3">
                             <label for="DescriptionAdd" class="form-label">Description</label>
-                            <textarea class="form-control" id="DescriptionAdd" rows="3"></textarea>
+                            <textarea class="form-control" id="DescriptionAdd" rows="3" name="Description"></textarea>
                         </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-blue" data-bs-dismiss="modal">Cancel</button>
-                        <button type="button" class="btn btn-green">Transfer</button>
+                        <button type="submit" class="btn btn-green">Transfer</button>
                     </div>
-                </div>
+                </form>
             </div>
         </div>
         <!-- Modal Withdraw-->
         <div class="modal fade" id="Withdraw" tabindex="-1" aria-labelledby="Withdraw" aria-hidden="true">
             <div class="modal-dialog">
-                <div class="modal-content">
+                <form class="modal-content" th:action="@{/removmoney}" method="post">
                     <div class="modal-header">
                         <h5 class="modal-title" id="WithdrawMoney">Withdraw Money</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -205,10 +217,10 @@
                     <div class="modal-body">
                         <div class="row align-items-center py-4">
                             <div class="col">
-                                <select class="custom-select px-3 py-2" aria-label="Connection Select">
+                                <select class="custom-select px-3 py-2" aria-label="Connection Select" name="BankAccount">
                                     <option selected>Select A Bank Account</option>
                                     <div th:each="card : ${cards}">
-                                        <option th:text="${card.name}">Exemple</option>
+                                        <option th:value="${card.id}" th:text="${card.name}">Example</option>
                                     </div>
                                 </select>
                             </div>
@@ -219,14 +231,14 @@
                         </div>
                         <div class="mb-3">
                             <label for="DescriptionAdd" class="form-label">Description</label>
-                            <textarea class="form-control" id="DescriptionAdd" rows="3"></textarea>
+                            <textarea class="form-control" id="DescriptionRemove" rows="3" name="Description"></textarea>
                         </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-blue" data-bs-dismiss="modal">Cancel</button>
-                        <button type="button" class="btn btn-green">Transfer</button>
+                        <button type="submit" class="btn btn-green">Transfer</button>
                     </div>
-                </div>
+                </form>
             </div>
         </div>
     </body>

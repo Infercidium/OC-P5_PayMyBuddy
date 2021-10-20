@@ -8,11 +8,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -32,7 +32,10 @@ public class ContactController {
     @GetMapping
     public String contact(Model model, @RequestParam(defaultValue = "1") int page) {
         //Component
-        User user = userComponent.saveUser();
+        User user;
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentPrincipalName = authentication.getName();
+        user = userS.getUser(currentPrincipalName);
 
         // Creation of the Pagination
         Pageable pageable = PageRequest.of((page - 1), 5, Sort.by("userName").ascending());
@@ -52,39 +55,5 @@ public class ContactController {
         model.addAttribute("next", userPage.getNumber() + 2);
 
         return "contact";
-    }
-
-    @GetMapping(value = "/remove{id}")
-    public String removecontact(@PathVariable Long id) {
-        //Component
-        User user = userComponent.saveUser();
-
-        User removed = userS.getUser(id);
-        user.removeKnowUser(removed);
-        removed.removeKnowUser(user);
-        userS.editUser(user.getEmail(), user);
-        userS.editUser(removed.getEmail(), removed);
-        userComponent.cleanUser();
-        return "redirect:/contact?remove";
-    }
-
-    @PostMapping(value = "/addCo")
-    public String addcontact(String email) {
-        //Component
-        User user = userComponent.saveUser();
-
-        if (userS.getUser(email) == null) {
-            return "redirect:/contact?addMiss";
-        }
-        User added = userS.getUser(email);
-        if (user.getKnowUser().contains(added) || user.getEmail().equals(added.getEmail())) {
-            return "redirect:/contact?addError";
-        }
-        user.addKnowUser(added);
-        added.addKnowUser(user);
-        userS.editUser(user.getEmail(), user);
-        userS.editUser(added.getEmail(), added);
-        userComponent.cleanUser();
-        return "redirect:/contact?addCo";
     }
 }

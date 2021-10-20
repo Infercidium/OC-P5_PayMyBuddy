@@ -28,12 +28,6 @@ public class TransferService implements TransferI {
     }
 
     @Override
-    public void editTransfer(final Long id, final Transfer transfer) {
-        Transfer verifiedTransfer = transferVerification(id, transfer);
-        postTransfer(verifiedTransfer);
-    }
-
-    @Override
     public void removeTransfer(Long id) {
         Transfer transfer = getTransfer(id);
         if (transfer != null) {
@@ -81,27 +75,5 @@ public class TransferService implements TransferI {
     @Override
     public List<Transfer> getTransferDebited(final String email) {
         return transfertR.findByDebitedEmailIgnoreCase(email);
-    }
-
-    private Transfer transferVerification(final Long id, final Transfer transfer) {
-        Transfer origineTransfer = getTransfer(id);
-        transfer.setId(origineTransfer.getId());
-        if (transfer.getAmount() == null) {
-            transfer.setAmount(origineTransfer.getAmount());
-        }
-        if (transfer.getCredited().getId() == null) {
-            transfer.setCredited(origineTransfer.getCredited());
-        }
-        if (transfer.getDebited().getId() == null) {
-            transfer.setDebited(origineTransfer.getDebited());
-        }
-        if (transfer.getDateTime() == null) {
-            transfer.setDateTime(origineTransfer.getDateTime());
-        }
-        if (transfer.getDescription() == null) {
-            transfer.setDescription(origineTransfer.getDescription());
-        }
-        LOGGER.debug("Verification of Transfer fields");
-        return transfer;
     }
 }

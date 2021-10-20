@@ -33,6 +33,9 @@ public class Transfer {
     @ManyToOne
     private User debited;
 
+    @ManyToOne
+    private BankAccount bankAccount;
+
     public Transfer() {
         this.dateTime = LocalDateTime.now();
     }
@@ -40,12 +43,14 @@ public class Transfer {
     public Transfer(final User creditedC,
                     final BigDecimal amountC,
                     final String descriptionC,
-                    final User debitedC) {
+                    final User debitedC,
+                    final BankAccount bankAccountC) {
         this.credited = creditedC;
         this.amount = amountC;
         this.description = descriptionC;
         this.dateTime = LocalDateTime.now();
         this.debited = debitedC;
+        this.bankAccount = bankAccountC;
     }
 
     public Long getId() {
@@ -96,15 +101,11 @@ public class Transfer {
         this.debited = debitedS;
     }
 
-    @Override
-    public String toString() {
-        return "Transfert{"
-                + "id = " + id
-                + ", credited = " + credited
-                + ", amount = " + amount
-                + ", description = '" + description + '\''
-                + ", dateTime = " + dateTime
-                + ", debited = " + debited
-                + '}';
+    public BankAccount getBankAccount() {
+        return new BankAccount(bankAccount);
+    }
+
+    public void setBankAccount(BankAccount bankAccount) {
+        this.bankAccount = bankAccount;
     }
 }
