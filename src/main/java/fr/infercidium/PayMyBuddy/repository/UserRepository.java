@@ -12,8 +12,7 @@ import java.util.List;
 public interface UserRepository extends JpaRepository<User, Long> {
     User findByEmailIgnoreCase(String email);
 
-    User findByEmailIgnoreCaseAndPassword(String email, String password);
-
     Page<User> findByKnowUserEmailIgnoreCase(String email, Pageable pageable);
+
     List<User> findByKnowUserEmailIgnoreCase(String email);
 }

@@ -11,8 +11,10 @@ import java.util.List;
 @Repository
 public interface TransferRepository extends JpaRepository<Transfer, Long> {
     Page<Transfer> findByCreditedEmailIgnoreCase(String email, Pageable pageable);
+
     Page<Transfer> findByDebitedEmailIgnoreCase(String email, Pageable pageable);
 
     List<Transfer> findByCreditedEmailIgnoreCase(String email);
+
     List<Transfer> findByDebitedEmailIgnoreCase(String email);
 }

@@ -20,6 +20,16 @@ public class BankAccountService implements BankAccountI {
     private BankAccountRepository bankAccountR;
 
     @Override
+    public void postBankAccount(final BankAccount bankAccount) {
+        bankAccountR.save(bankAccount);
+    }
+
+    @Override
+    public BankAccount getBankAccount(final Long id) {
+        return bankAccountR.getById(id);
+    }
+
+    @Override
     public List<BankAccount> getUserBankAccount(final String email) {
         return bankAccountR.findByUserEmailIgnoreCase(email);
     }

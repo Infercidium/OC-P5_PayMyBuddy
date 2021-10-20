@@ -28,20 +28,18 @@ public class UserService implements UserI {
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
 
-    private final UserRepository userR;
-    private final AuthorityService authorityS;
+    @Autowired
+    private UserRepository userR;
 
-    public UserService(final UserRepository userRe, final AuthorityService authoritySe) {
-        this.userR = userRe;
-        this.authorityS = authoritySe;
-    }
+    @Autowired
+    private AuthorityService authorityS;
 
     @Override
-    public User postUser(final User user) {
+    public void postUser(final User user) {
         List<Authority> authorities = Collections.singletonList(authorityS.getUser());
         user.setAuthorities(authorities);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        return this.userR.save(user);
+        userR.save(user);
     }
 
     @Override
@@ -51,14 +49,12 @@ public class UserService implements UserI {
 
     @Override
     public User getUser(final String email) {
-        User user = this.userR.findByEmailIgnoreCase(email);
-        return user;
+        return userR.findByEmailIgnoreCase(email);
     }
 
     @Override
     public User getUser(final Long id) {
-        User user = this.userR.findById(id).get();
-        return user;
+        return userR.findById(id).get();
     }
 
     @Override
@@ -69,38 +65,6 @@ public class UserService implements UserI {
     @Override
     public List<User> getKnowUser(final String email) {
         return userR.findByKnowUserEmailIgnoreCase(email);
-    }
-
-    //TODO à voir
-    private User userVerification(final String email, final User user) {
-        User origineUser = getUser(email);
-        user.setId(origineUser.getId());
-        if (user.getUserName() == null) {
-            user.setUserName(origineUser.getUserName());
-        }
-        if (user.getEmail() == null) {
-            user.setEmail(origineUser.getEmail());
-        }
-        if (user.getPassword() == null) {
-            user.setPassword(origineUser.getPassword());
-        }
-        if (user.getKnowUser().isEmpty()) {
-            user.setKnowUser(origineUser.getKnowUser());
-        }
-        if (user.getPay() == null) {
-            user.setPay(origineUser.getPay());
-        }
-        if (user.getHistoryCredited().isEmpty()) {
-            user.setHistoryCredited(origineUser.getHistoryCredited());
-        }
-        if (user.getHistoryDebited().isEmpty()) {
-            user.setHistoryDebited(origineUser.getHistoryDebited());
-        }
-        if (user.getAuthorities().isEmpty()) {
-            user.setAuthorities(origineUser.getAuthorities());
-        }
-        LOGGER.debug("Verification of User fields");
-        return user;
     }
 
     @Override

@@ -199,6 +199,14 @@ public class User {
         authorities.remove(authority);
     }
 
+    public void addBankAccount(final BankAccount bankAccount) {
+        bankAccounts.add(bankAccount);
+    }
+
+    public void removeBankAccount(final BankAccount bankAccount) {
+        bankAccounts.remove(bankAccount);
+    }
+
     @Override
     public String toString() {
         return "User{"
@@ -211,14 +219,23 @@ public class User {
                 + ", historyDebited = " + historyDebited
                 + ", knowUser = " + this.knowUserString()
                 + ", authorities = " + authorities
+                + ", bankAccount = " + this.bankAccountString()
                 + '}';
     }
 
     public String knowUserString() {
         StringBuilder knowUserString = new StringBuilder();
-        for (User user: knowUser) {
+        for (User user : knowUser) {
             knowUserString.append(user.getUserName()).append(", ");
         }
-        return "User : " + userName + " {" + knowUserString + "}";
+        return "User : {" + knowUserString + "}";
+    }
+
+    public String bankAccountString() {
+        StringBuilder bankAccountString = new StringBuilder();
+        for (BankAccount bankAccount : bankAccounts) {
+            bankAccountString.append(bankAccount.getName()).append(", ");
+        }
+        return "BankAccount : {" + bankAccountString + "}";
     }
 }
