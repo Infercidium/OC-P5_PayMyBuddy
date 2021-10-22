@@ -4,6 +4,7 @@ import fr.infercidium.PayMyBuddy.model.Authority;
 import fr.infercidium.PayMyBuddy.repository.AuthorityRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -11,15 +12,12 @@ public class AuthorityService implements AuthorityI {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AuthorityService.class);
 
+    @Autowired
     private AuthorityRepository authorityR;
-
-    public AuthorityService(final AuthorityRepository authorityRe) {
-        this.authorityR = authorityRe;
-    }
-
 
     @Override
     public Authority getUser() {
+        LOGGER.debug("'User' role found");
         return authorityR.findByNameIgnoreCase("user");
     }
 }

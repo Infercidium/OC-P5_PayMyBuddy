@@ -1,5 +1,6 @@
 package fr.infercidium.PayMyBuddy.controller;
 
+import fr.infercidium.PayMyBuddy.configuration.UserComponent;
 import fr.infercidium.PayMyBuddy.model.TransferAdd;
 import fr.infercidium.PayMyBuddy.model.TransferRemov;
 import fr.infercidium.PayMyBuddy.model.TransferUser;
@@ -7,8 +8,6 @@ import fr.infercidium.PayMyBuddy.model.User;
 import fr.infercidium.PayMyBuddy.service.TransferI;
 import fr.infercidium.PayMyBuddy.service.UserI;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -19,6 +18,9 @@ import java.math.BigDecimal;
 @Controller
 @Transactional
 public class MoneyController {
+
+    @Autowired
+    private UserComponent userComponent;
 
     @Autowired
     private TransferI transferS;
@@ -44,10 +46,7 @@ public class MoneyController {
     @PostMapping(value = "/addmoney")
     public String addMoney(@ModelAttribute("transferAdd") TransferAdd transferAdd) {
         //Component
-        User user;
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String currentPrincipalName = authentication.getName();
-        user = userS.getUser(currentPrincipalName);
+        User user = userComponent.saveUser();
 
         user.setPay(user.getPay().add(transferAdd.getAmount()));
 
@@ -61,10 +60,7 @@ public class MoneyController {
     @PostMapping(value = "/removmoney")
     public String removMoney(@ModelAttribute("transferRemov") TransferRemov transferRemov) {
         //Component
-        User user;
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String currentPrincipalName = authentication.getName();
-        user = userS.getUser(currentPrincipalName);
+        User user = userComponent.saveUser();
 
         if (user.getPay().compareTo(transferRemov.getAmount()) < 0) {
             return "redirect:/home?error";
@@ -82,10 +78,7 @@ public class MoneyController {
     @PostMapping(value = "/pay")
     public String pay(@ModelAttribute("transferUser")TransferUser transferUser) {
         //Component
-        User user;
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String currentPrincipalName = authentication.getName();
-        user = userS.getUser(currentPrincipalName);
+        User user = userComponent.saveUser();
 
         if (user.getPay().compareTo((transferUser.getAmount().multiply(BigDecimal.valueOf(1.005)))) < 0) {
             return "redirect:/transfer?errorPay";
@@ -101,6 +94,7 @@ public class MoneyController {
         userS.updateUser(user);
         userS.updateUser(credited);
 
+        userComponent.cleanUser();
         return "redirect:/transfer?successPay";
     }
 }

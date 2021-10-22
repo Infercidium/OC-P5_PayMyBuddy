@@ -7,5 +7,4 @@ import org.mapstruct.Mapper;
 @Mapper(componentModel = "spring")
 public interface BankAccountMapper {
     BankAccount dtoToModel(BankAccountDto bankAccountDto);
-    BankAccountDto modelToDto(BankAccount bankAccount);
 }

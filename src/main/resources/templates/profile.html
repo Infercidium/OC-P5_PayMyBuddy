@@ -12,415 +12,331 @@
         <title>Pay My Buddy</title>
     </head>
     <body>
-    <!--NavBar Principal-->
-    <div id="menu">
-        <nav class="pmb-navbar navbar navbar-expand">
-            <div class="container-fluid">
-                <a class="pmb-navbar-icon mx-0 my-0 rounded-3" href="#">Pay My Buddy</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                        <li class="nav-item pe-4">
-                            <a class="nav-link" th:href="@{/home}" type="submit" href="home.html">Home</a>
-                        </li>
-                        <li class="nav-item pe-4">
-                            <a class="nav-link" th:href="@{/transfer}" type="submit" href="transfer.html">Transfer</a>
-                        </li>
-                        <li class="nav-item pe-4">
-                            <a class="nav-link active blue" aria-current="page" href="#">Profile</a>
-                        </li>
-                        <li class="nav-item pe-4">
-                            <a class="nav-link" th:href="@{/contact}" type="submit" href="contact.html">Contact</a>
-                        </li>
-                        <li class="nav-item pe-4">
-                            <a class="nav-link" data-bs-toggle="modal" data-bs-target="#LogOut" href="#">Log off</a>
-                        </li>
-                    </ul>
+        <!--NavBar Principal-->
+        <div id="menu">
+            <nav class="pmb-navbar navbar navbar-expand">
+                <div class="container-fluid">
+                    <a class="pmb-navbar-icon mx-0 my-0 rounded-3" href="#">Pay My Buddy</a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                            <li class="nav-item pe-4">
+                                <a class="nav-link" th:href="@{/home}" type="submit" href="home.html">Home</a>
+                            </li>
+                            <li class="nav-item pe-4">
+                                <a class="nav-link" th:href="@{/transfer}" type="submit" href="transfer.html">Transfer</a>
+                            </li>
+                            <li class="nav-item pe-4">
+                                <a class="nav-link active blue" aria-current="page" href="#">Profile</a>
+                            </li>
+                            <li class="nav-item pe-4">
+                                <a class="nav-link" th:href="@{/contact}" type="submit" href="contact.html">Contact</a>
+                            </li>
+                            <li class="nav-item pe-4">
+                                <a class="nav-link" data-bs-toggle="modal" data-bs-target="#LogOut" href="#">Log off</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+            <!-- Modal -->
+            <div class="modal fade" id="LogOut" tabindex="-1" aria-labelledby="Log-off" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="Log-off">Disconnect ?</h5>
+                        </div>
+                        <form class="modal-footer" th:action="@{/logout}" method="post">
+                            <button type="button" class="btn-blue text-decoration-none rounded-3 p-1 mx-2" data-bs-dismiss="modal">Not now</button>
+                            <button href="#" type="submit" class="btn-blue text-decoration-none rounded-3 p-1 mx-2">Disconnect</button>
+                        </form>
+                    </div>
                 </div>
             </div>
-        </nav>
-        <!-- Modal -->
-        <div class="modal fade" id="LogOut" tabindex="-1" aria-labelledby="Log-off" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="Log-off">Disconnect ?</h5>
+            <!--BreadCrumb Secondary-->
+            <nav aria-label="breadcrumb">
+                <ol class="pmb-breadcrumb breadcrumb">
+                    <li class="breadcrumb-item pe-2"><a class="breadcrumb-lien blue" th:href="@{/home}" type="submit" href="home.html">Home</a></li>
+                    <li class="breadcrumb-item active pe-2 grey" aria-current="page">Profile</li>
+                </ol>
+            </nav>
+        </div>
+            <!--Contenue-->
+            <Section class="container text-center pt-4">
+                <div th:if="${param.success}" class="alert alert-success text-center" style="font-size: medium;">
+                    Profile information updated
+                </div>
+                <div th:if="${param.successBank}" class="alert alert-success text-center" style="font-size: medium;">
+                    Bank Account added
+                </div>
+                <div th:if="${param.successUpBank}" class="alert alert-success text-center" style="font-size: medium;">
+                    Bank Account updated
+                </div>
+                <div th:if="${param.successRemBank}" class="alert alert-success text-center" style="font-size: medium;">
+                    Bank Account deleted
+                </div>
+                <div th:if="${param.errorPassword}" class="alert alert-danger text-center" style="font-size: medium;">
+                    Passwords are not the same
+                </div>
+                <div th:if="${param.errorOldPassword}" class="alert alert-danger text-center" style="font-size: medium;">
+                    Incorrect password
+                </div>
+                <div class="row row-element py-4">
+                    <div class="col row">
+                        <a style="text-decoration-line: underline; font-size: x-large;">Email</a>
+                        <a th:text="${email}">exemple@exemple.exemple</a>
                     </div>
-                    <form class="modal-footer" th:action="@{/logout}" method="post">
-                        <button type="button" class="btn-blue text-decoration-none rounded-3 p-1 mx-2" data-bs-dismiss="modal">Not now</button>
-                        <button href="#" type="submit" class="btn-blue text-decoration-none rounded-3 p-1 mx-2">Disconnect</button>
+                    <div class="col row">
+                        <a style="text-decoration-line: underline; font-size: x-large;">Username</a>
+                        <a th:text="${userName}">Example</a>
+                    </div>
+                </div>
+                <div class="row row-element py-4">
+                    <div class="col row">
+                        <a style="text-decoration-line: underline; font-size: x-large;">Number of Contact</a>
+                        <a th:text="${connexionSize}">xXx</a>
+                    </div>
+                    <div class="col row">
+                        <a style="text-decoration-line: underline; font-size: x-large;">Number of "My Transactions"</a>
+                        <a th:text="${debitedHistorySize}">xXx</a>
+                    </div>
+                    <div class="col row">
+                        <a style="text-decoration-line: underline; font-size: x-large;">Number of "Received Transactions"</a>
+                        <a th:text="${creditedHistorySize}">xXx</a>
+                    </div>
+                </div>
+                <button type="button" class="btn btn-blue my-4" data-bs-toggle="modal" data-bs-target="#Modification-Profile">Modification</button>
+            </Section>
+            <Section>
+                <div class="container">
+                    <div class="row pt-2">
+                        <div class="col text-start">Bank Account</div>
+                        <div class="col text-end">
+                            <button type="button" class="btn btn-blue rounded-3 px-5" data-bs-toggle="modal" data-bs-target="#add-BankAccount">Add a bank account</button>
+                        </div>
+                    </div>
+                    <table class="table table-green text-center table-striped table-borderless table-hover mb-0">
+                        <thead class="thead">
+                        <tr>
+                            <th scope="col">Name</th>
+                            <th scope="col">Holder</th>
+                            <th scope="col">Card Number</th>
+                            <th scope="col">Expiration Date</th>
+                            <th scope="col">management</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr role="button" data-bs-toggle="modal" th:each="card : ${cards}" th:attr="data-bs-target=${'#card'+ card.id}">
+                            <td th:text="${card.name}">example</td>
+                            <td th:text="${card.holder}">Example</td>
+                            <td th:text="${card.deer}">Example</td>
+                            <td th:text="${#temporals.format(card.expirationDate, 'dd/MM/yyyy')}">xx/xx/xxxx</td>
+                            <td><button th:attr="data-bs-target=${'#removecard' + card.id}" data-row="${card}" type="button" class="btn btn-blue rounded-3" data-bs-toggle="modal"><i class="bi bi-x-lg"></i></button></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <nav aria-label="Pagination">
+                        <ul class="pagination justify-content-center">
+                            <li class="page-item" th:if="${currentPage != 1}">
+                                <a class="page-link" th:href="@{'/profile?page=' + ${previous}}" aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                </a>
+                            </li>
+                            <li class="page-item" th:each="page : ${pageCount}">
+                                <a class="page-link" th:href="@{'/profile?page=' + ${page}}" th:text="${page}">x</a>
+                            </li>
+                            <li class="page-item" th:if="${currentPage != pageCount.size && pageCount.size != 0}">
+                                <a class="page-link" th:href="@{'/profile?page=' + ${next}}" aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </Section>
+            <!-- Modal Remove-->
+            <div class="modal fade" th:each="card : ${cards}" th:attr="id=${'removecard' + card.id}" tabindex="-1" aria-labelledby="Removed" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" th:text="'Remove ' + ${card.name} + ' ?'" id="Removed">Remove Bank Account ?</h5>
+                        </div>
+                        <form th:action="@{/removeBank{id}(id=${card.id})}" th:object="${card}" method="get" class="modal-footer">
+                            <button type="button" class="btn-blue text-decoration-none rounded-3 p-1 mx-2" data-bs-dismiss="modal">Cancel</button>
+                            <button type="submit" class="btn-blue text-decoration-none rounded-3 p-1 mx-2">Valid</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <!-- Modal Bank Account-->
+            <div class="modal fade"  th:each="card : ${cards}" th:attr="id=${'card' + card.id}" tabindex="-1" aria-labelledby="CardBank" aria-hidden="true">
+                <div class="modal-dialog modal-lg modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="CardBank">Bank Account</h5>
+                        </div>
+                        <div class="modal-body text-center">
+                            <div class="row row-element py-4">
+                                <a class="col-1 transfer"><i class="bi bi-hash"></i></a>
+                                <a class="col-5 transfer" style="text-decoration-line: underline; font-size: x-large;">Name</a>
+                                <a class="col transfer" th:text="${card.name}">example</a>
+                            </div>
+                            <div class="row row-element bg-white py-4">
+                                <a class="col-1 transfer"><i class="bi bi-person-fill"></i></a>
+                                <a class="col-5 transfer" style="text-decoration-line: underline; font-size: x-large;">Holder</a>
+                                <a class="col transfer" th:text="${card.holder}">Example</a>
+                            </div>
+                            <div class="row row-element py-4">
+                                <a class="col-1 transfer"><i class="bi bi-credit-card-fill"></i></a>
+                                <a class="col-5 transfer" style="text-decoration-line: underline; font-size: x-large;">card Number</a>
+                                <a class="col transfer" th:text="${card.deer}">0001000200030004</a>
+                            </div>
+                            <div class="row row-element py-4">
+                                <a class="col-1 transfer"><i class="bi bi-calendar-x-fill"></i></a>
+                                <a class="col-5 transfer" style="text-decoration-line: underline; font-size: x-large;">Expiration Date</a>
+                                <a class="col transfer" th:text="${#temporals.format(card.expirationDate, 'dd/MM/yyyy')}">xx/xx/xxxx</a>
+                            </div>
+                            <div class="row row-element bg-white py-4">
+                                <a class="col-1 transfer"><i class="bi bi-bank2"></i></a>
+                                <a class="col-5 transfer" style="text-decoration-line: underline; font-size: x-large;">IBAN</a>
+                                <a class="col transfer" th:text="${card.iban}">xx0100020003000400050006007</a>
+                            </div>
+                            <div class="row row-element py-4">
+                                <a class="col-1 transfer"><i class="bi bi-bank2"></i></a>
+                                <a class="col-5 transfer" style="text-decoration-line: underline; font-size: x-large;">BIC</a>
+                                <a class="col transfer" th:text="${card.bic}">xxxxxxxx001</a>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn-blue text-decoration-none rounded-3 p-1 mx-2" data-bs-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Modal Profile-->
+            <div class="modal fade" id="Modification-Profile" tabindex="-1" aria-labelledby="Modification" aria-hidden="true">
+                <div class="modal-dialog modal-xl">
+                    <form class="modal-content" th:action="@{/profile/edit}" method="post">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="Modification">Modification</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-3"></div>
+                                <div class="input-group col email my-5">
+                                    <div class="input-group-text symbol-group rounded-start border-end-0 bg-white"><i class="bi bi-person-fill"></i></div>
+                                    <input type="text" name="userName" class="form-control rounded-end border-start-0" placeholder="New Username" aria-label="Username">
+                                </div>
+                                <div class="col-3"></div>
+                            </div>
+                            <div class="row">
+                                <div class="col-3"></div>
+                                <div class="col">
+                                    <div class="input-group col password my-5">
+                                        <div class="input-group-text symbol-group rounded-start border-end-0 bg-white"><i class="bi bi-asterisk"></i></div>
+                                        <input type="password" name="password" class="form-control rounded-end border-start-0" placeholder="New Password" aria-label="Password">
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="input-group col password my-5">
+                                        <div class="input-group-text symbol-group rounded-start border-end-0 bg-white"><i class="bi bi-asterisk"></i></div>
+                                        <input type="password" name="password2" class="form-control rounded-end border-start-0" placeholder="New Password" aria-label="Password">
+                                    </div>
+                                </div>
+                                <div class="col-3"></div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <div class="col"></div>
+                            <div class="input-group password col my-2">
+                                <div class="input-group-text symbol-group rounded-start border-end-0 bg-white"><i class="bi bi-asterisk"></i></div>
+                                <input type="password" name="oldPassword" class="form-control rounded-end border-start-0" placeholder="Password" aria-label="Password" required>
+                            </div>
+                            <div class="col text-end">
+                                <button type="button" class="btn btn-blue" data-bs-dismiss="modal">Cancel</button>
+                                <button type="submit" class="btn btn-green">Apply</button>
+                            </div>
+                        </div>
                     </form>
                 </div>
             </div>
-        </div>
-        <!--BreadCrumb Secondary-->
-        <nav aria-label="breadcrumb">
-            <ol class="pmb-breadcrumb breadcrumb">
-                <li class="breadcrumb-item pe-2"><a class="breadcrumb-lien blue" th:href="@{/home}" type="submit" href="home.html">Home</a></li>
-                <li class="breadcrumb-item active pe-2 grey" aria-current="page">Profile</li>
-            </ol>
-        </nav>
-    </div>
-        <!--Contenue-->
-        <Section class="container text-center pt-4">
-            <div th:if="${param.success}" class="alert alert-success text-center" style="font-size: medium;">
-                Profile information updated
-            </div>
-            <div th:if="${param.successBank}" class="alert alert-success text-center" style="font-size: medium;">
-                Bank Account added
-            </div>
-            <div th:if="${param.successUpBank}" class="alert alert-success text-center" style="font-size: medium;">
-                Bank Account updated
-            </div>
-            <div th:if="${param.successRemBank}" class="alert alert-success text-center" style="font-size: medium;">
-                Bank Account deleted
-            </div>
-            <div th:if="${param.errorPassword}" class="alert alert-danger text-center" style="font-size: medium;">
-                Passwords are not the same
-            </div>
-            <div th:if="${param.errorOldPassword}" class="alert alert-danger text-center" style="font-size: medium;">
-                Incorrect password
-            </div>
-            <div class="row row-element py-4">
-                <div class="col row">
-                    <a style="text-decoration-line: underline; font-size: x-large;">Email</a>
-                    <a th:text="${email}">exemple@exemple.exemple</a>
-                </div>
-                <div class="col row">
-                    <a style="text-decoration-line: underline; font-size: x-large;">Username</a>
-                    <a th:text="${userName}">Example</a>
-                </div>
-            </div>
-            <div class="row row-element py-4">
-                <div class="col row">
-                    <a style="text-decoration-line: underline; font-size: x-large;">Number of Contact</a>
-                    <a th:text="${connexionSize}">xXx</a>
-                </div>
-                <div class="col row">
-                    <a style="text-decoration-line: underline; font-size: x-large;">Number of "My Transactions"</a>
-                    <a th:text="${debitedHistorySize}">xXx</a>
-                </div>
-                <div class="col row">
-                    <a style="text-decoration-line: underline; font-size: x-large;">Number of "Received Transactions"</a>
-                    <a th:text="${creditedHistorySize}">xXx</a>
-                </div>
-            </div>
-            <button type="button" class="btn btn-blue my-4" data-bs-toggle="modal" data-bs-target="#Modification-Profile">Modification</button>
-        </Section>
-        <Section>
-            <div class="container">
-                <div class="row pt-2">
-                    <div class="col text-start">Bank Account</div>
-                    <div class="col text-end">
-                        <button type="button" class="btn btn-blue rounded-3 px-5" data-bs-toggle="modal" data-bs-target="#add-BankAccount">Add a bank account</button>
-                    </div>
-                </div>
-                <table class="table table-green text-center table-striped table-borderless table-hover mb-0">
-                    <thead class="thead">
-                    <tr>
-                        <th scope="col">Name</th>
-                        <th scope="col">Holder</th>
-                        <th scope="col">Card Number</th>
-                        <th scope="col">Expiration Date</th>
-                        <th scope="col">management</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr role="button" data-bs-toggle="modal" th:each="card : ${cards}" th:attr="data-bs-target=${'#card'+ card.id}">
-                        <td th:text="${card.name}">example</td>
-                        <td th:text="${card.holder}">Example</td>
-                        <td th:text="${card.deer}">Example</td>
-                        <td th:text="${#temporals.format(card.expirationDate, 'dd/MM/yyyy')}">xx/xx/xxxx</td>
-                        <td><button th:attr="data-bs-target=${'#removecard' + card.id}" data-row="${card}" type="button" class="btn btn-blue rounded-3" data-bs-toggle="modal"><i class="bi bi-x-lg"></i></button></td>
-                    </tr>
-                    </tbody>
-                </table>
-                <nav aria-label="Pagination">
-                    <ul class="pagination justify-content-center">
-                        <li class="page-item" th:if="${currentPage != 1}">
-                            <a class="page-link" th:href="@{'/profile?page=' + ${previous}}" aria-label="Previous">
-                                <span aria-hidden="true">&laquo;</span>
-                            </a>
-                        </li>
-                        <li class="page-item" th:each="page : ${pageCount}">
-                            <a class="page-link" th:href="@{'/profile?page=' + ${page}}" th:text="${page}">x</a>
-                        </li>
-                        <li class="page-item" th:if="${currentPage != pageCount.size && pageCount.size != 0}">
-                            <a class="page-link" th:href="@{'/profile?page=' + ${next}}" aria-label="Next">
-                                <span aria-hidden="true">&raquo;</span>
-                            </a>
-                        </li>
-                    </ul>
-                </nav>
-            </div>
-        </Section>
-        <!-- Modal Remove-->
-        <div class="modal fade" th:each="card : ${cards}" th:attr="id=${'removecard' + card.id}" tabindex="-1" aria-labelledby="Removed" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" th:text="'Remove ' + ${card.name} + ' ?'" id="Removed">Remove Bank Account ?</h5>
-                    </div>
-                    <form th:action="@{/removeBank{id}(id=${card.id})}" th:object="${card}" method="get" class="modal-footer">
-                        <button type="button" class="btn-blue text-decoration-none rounded-3 p-1 mx-2" data-bs-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn-blue text-decoration-none rounded-3 p-1 mx-2">Valid</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-        <!-- Modal Bank Account-->
-        <div class="modal fade"  th:each="card : ${cards}" th:attr="id=${'card' + card.id}" tabindex="-1" aria-labelledby="CardBank" aria-hidden="true">
-            <div class="modal-dialog modal-lg modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="CardBank">Bank Account</h5>
-                    </div>
-                    <div class="modal-body text-center">
-                        <div class="row row-element py-4">
-                            <a class="col-1 transfer"><i class="bi bi-hash"></i></a>
-                            <a class="col-5 transfer" style="text-decoration-line: underline; font-size: x-large;">Name</a>
-                            <a class="col transfer" th:text="${card.name}">example</a>
-                        </div>
-                        <div class="row row-element bg-white py-4">
-                            <a class="col-1 transfer"><i class="bi bi-person-fill"></i></a>
-                            <a class="col-5 transfer" style="text-decoration-line: underline; font-size: x-large;">Holder</a>
-                            <a class="col transfer" th:text="${card.holder}">Example</a>
-                        </div>
-                        <div class="row row-element py-4">
-                            <a class="col-1 transfer"><i class="bi bi-credit-card-fill"></i></a>
-                            <a class="col-5 transfer" style="text-decoration-line: underline; font-size: x-large;">card Number</a>
-                            <a class="col transfer" th:text="${card.deer}">0001000200030004</a>
-                        </div>
-                        <div class="row row-element py-4">
-                            <a class="col-1 transfer"><i class="bi bi-calendar-x-fill"></i></a>
-                            <a class="col-5 transfer" style="text-decoration-line: underline; font-size: x-large;">Expiration Date</a>
-                            <a class="col transfer" th:text="${#temporals.format(card.expirationDate, 'dd/MM/yyyy')}">xx/xx/xxxx</a>
-                        </div>
-                        <div class="row row-element bg-white py-4">
-                            <a class="col-1 transfer"><i class="bi bi-bank2"></i></a>
-                            <a class="col-5 transfer" style="text-decoration-line: underline; font-size: x-large;">IBAN</a>
-                            <a class="col transfer" th:text="${card.iban}">xx0100020003000400050006007</a>
-                        </div>
-                        <div class="row row-element py-4">
-                            <a class="col-1 transfer"><i class="bi bi-bank2"></i></a>
-                            <a class="col-5 transfer" style="text-decoration-line: underline; font-size: x-large;">BIC</a>
-                            <a class="col transfer" th:text="${card.bic}">xxxxxxxx001</a>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn-blue text-decoration-none rounded-3 p-1 mx-2" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#update-BankAccount">Modification</button>
-                        <button type="button" class="btn-blue text-decoration-none rounded-3 p-1 mx-2" data-bs-dismiss="modal">Cancel</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- Modal Profile-->
-        <div class="modal fade" id="Modification-Profile" tabindex="-1" aria-labelledby="Modification" aria-hidden="true">
+        <!-- Modal AddBank-->
+        <div class="modal fade" id="add-BankAccount" tabindex="-1" aria-labelledby="AddBankAccount" aria-hidden="true">
             <div class="modal-dialog modal-xl">
-                <form class="modal-content" th:action="@{/profile/edit}" method="post">
+                <form class="modal-content" th:action="@{/newBank}" method="post">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="Modification">Modification</h5>
+                        <h5 class="modal-title" id="BankAccount">New Bank Account</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
                         <div class="row">
-                            <div class="col-3"></div>
-                            <div class="input-group col email my-5">
-                                <div class="input-group-text symbol-group rounded-start border-end-0 bg-white"><i class="bi bi-envelope"></i></div>
-                                <input type="email" name="email" class="form-control rounded-end border-start-0" placeholder="New Email" aria-label="Email">
+                            <div class="input-group col my-3">
+                                <div class="input-group-text symbol-group rounded-start border-end-0 bg-white"><i class="bi bi-hash"></i></div>
+                                <input type="text" name="name" class="form-control rounded-end border-start-0" placeholder="Name" aria-label="Name" required>
                             </div>
-                            <div class="col-3"></div>
-                        </div>
-                        <div class="row">
-                            <div class="col-3"></div>
-                            <div class="input-group col email my-5">
+                            <div class="col-1"></div>
+                            <div class="input-group col my-3">
                                 <div class="input-group-text symbol-group rounded-start border-end-0 bg-white"><i class="bi bi-person-fill"></i></div>
-                                <input type="text" name="userName" class="form-control rounded-end border-start-0" placeholder="New Username" aria-label="Username">
+                                <input type="text" name="holder" class="form-control rounded-end border-start-0" placeholder="Holder" aria-label="Holder" required>
                             </div>
-                            <div class="col-3"></div>
                         </div>
                         <div class="row">
-                            <div class="col-3"></div>
+                            <div class="col-1"></div>
+                            <div class="input-group col my-3">
+                                <div class="input-group-text symbol-group rounded-start border-end-0 bg-white"><i class="bi bi-credit-card-fill"></i></div>
+                                <input type="number" name="cardNumber" class="form-control rounded-end border-start-0" placeholder="Card Number" aria-label="CardNumber" required>
+                            </div>
+                            <div class="col-1"></div>
+                        </div>
+                        <div class="row">
                             <div class="col">
-                                <div class="input-group col password my-5">
-                                    <div class="input-group-text symbol-group rounded-start border-end-0 bg-white"><i class="bi bi-asterisk"></i></div>
-                                    <input type="password" name="password" class="form-control rounded-end border-start-0" placeholder="New Password" aria-label="Password">
+                                <div class="input-group col my-3">
+                                    <div class="input-group-text symbol-group rounded-start border-end-0 bg-white"><i class="bi bi-credit-card-2-front-fill"></i></div>
+                                    <input type="number" name="cryptogram" class="form-control rounded-end border-start-0" placeholder="Cryptogram" aria-label="Cryptogram" required>
                                 </div>
                             </div>
+                            <div class="col-1"></div>
                             <div class="col">
-                                <div class="input-group col password my-5">
-                                    <div class="input-group-text symbol-group rounded-start border-end-0 bg-white"><i class="bi bi-asterisk"></i></div>
-                                    <input type="password" name="password2" class="form-control rounded-end border-start-0" placeholder="New Password" aria-label="Password">
+                                <label for="ExpirationDate">Expiration Date</label>
+                                <div class="input-group col">
+                                    <div class="input-group-text symbol-group rounded-start border-end-0 bg-white"><i class="bi bi-calendar-x-fill"></i></div>
+                                    <input type="date" name="expirationDate" id="ExpirationDate" class="form-control rounded-end border-start-0" placeholder="Expiration Date" aria-label="ExpirationDate" required>
                                 </div>
                             </div>
-                            <div class="col-3"></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-1"></div>
+                            <div class="input-group col my-3">
+                                <div class="input-group-text symbol-group rounded-start border-end-0 bg-white"><i class="bi bi-bank2"></i></div>
+                                <input type="text" name="iban" class="form-control rounded-end border-start-0" placeholder="IBAN" aria-label="IBAN" required>
+                            </div>
+                            <div class="col-1"></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-1"></div>
+                            <div class="input-group col my-3">
+                                <div class="input-group-text symbol-group rounded-start border-end-0 bg-white"><i class="bi bi-bank2"></i></div>
+                                <input type="text" name="bic" class="form-control rounded-end border-start-0" placeholder="BIC" aria-label="BIC" required>
+                            </div>
+                            <div class="col-1"></div>
                         </div>
                     </div>
                     <div class="modal-footer">
                         <div class="col"></div>
                         <div class="input-group password col my-2">
                             <div class="input-group-text symbol-group rounded-start border-end-0 bg-white"><i class="bi bi-asterisk"></i></div>
-                            <input type="password" name="oldPassword" class="form-control rounded-end border-start-0" placeholder="Old Password" aria-label="Password" required>
+                            <input type="password" name="password" class="form-control rounded-end border-start-0" placeholder="Password" aria-label="Password" required>
                         </div>
                         <div class="col text-end">
                             <button type="button" class="btn btn-blue" data-bs-dismiss="modal">Cancel</button>
-                            <button type="submit" class="btn btn-green">Apply</button>
+                            <button type="submit" class="btn btn-green">Add</button>
                         </div>
                     </div>
                 </form>
             </div>
         </div>
-    <!-- Modal AddBank-->
-    <div class="modal fade" id="add-BankAccount" tabindex="-1" aria-labelledby="AddBankAccount" aria-hidden="true">
-        <div class="modal-dialog modal-xl">
-            <form class="modal-content" th:action="@{/newBank}" method="post">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="BankAccount">New Bank Account</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="input-group col my-3">
-                            <div class="input-group-text symbol-group rounded-start border-end-0 bg-white"><i class="bi bi-hash"></i></div>
-                            <input type="text" name="name" class="form-control rounded-end border-start-0" placeholder="Name" aria-label="Name" required>
-                        </div>
-                        <div class="col-1"></div>
-                        <div class="input-group col my-3">
-                            <div class="input-group-text symbol-group rounded-start border-end-0 bg-white"><i class="bi bi-person-fill"></i></div>
-                            <input type="text" name="holder" class="form-control rounded-end border-start-0" placeholder="Holder" aria-label="Holder" required>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-1"></div>
-                        <div class="input-group col my-3">
-                            <div class="input-group-text symbol-group rounded-start border-end-0 bg-white"><i class="bi bi-credit-card-fill"></i></div>
-                            <input type="number" name="cardNumber" class="form-control rounded-end border-start-0" placeholder="Card Number" aria-label="CardNumber" required>
-                        </div>
-                        <div class="col-1"></div>
-                    </div>
-                    <div class="row">
-                        <div class="col">
-                            <div class="input-group col my-3">
-                                <div class="input-group-text symbol-group rounded-start border-end-0 bg-white"><i class="bi bi-credit-card-2-front-fill"></i></div>
-                                <input type="number" name="cryptogram" class="form-control rounded-end border-start-0" placeholder="Cryptogram" aria-label="Cryptogram" required>
-                            </div>
-                        </div>
-                        <div class="col-1"></div>
-                        <div class="col">
-                            <label for="ExpirationDate">Expiration Date</label>
-                            <div class="input-group col">
-                                <div class="input-group-text symbol-group rounded-start border-end-0 bg-white"><i class="bi bi-calendar-x-fill"></i></div>
-                                <input type="date" name="expirationDate" id="ExpirationDate" class="form-control rounded-end border-start-0" placeholder="Expiration Date" aria-label="ExpirationDate" required>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-1"></div>
-                        <div class="input-group col my-3">
-                            <div class="input-group-text symbol-group rounded-start border-end-0 bg-white"><i class="bi bi-bank2"></i></div>
-                            <input type="text" name="iban" class="form-control rounded-end border-start-0" placeholder="IBAN" aria-label="IBAN" required>
-                        </div>
-                        <div class="col-1"></div>
-                    </div>
-                    <div class="row">
-                        <div class="col-1"></div>
-                        <div class="input-group col my-3">
-                            <div class="input-group-text symbol-group rounded-start border-end-0 bg-white"><i class="bi bi-bank2"></i></div>
-                            <input type="text" name="bic" class="form-control rounded-end border-start-0" placeholder="BIC" aria-label="BIC" required>
-                        </div>
-                        <div class="col-1"></div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <div class="col"></div>
-                    <div class="input-group password col my-2">
-                        <div class="input-group-text symbol-group rounded-start border-end-0 bg-white"><i class="bi bi-asterisk"></i></div>
-                        <input type="password" name="password" class="form-control rounded-end border-start-0" placeholder="Password" aria-label="Password" required>
-                    </div>
-                    <div class="col text-end">
-                        <button type="button" class="btn btn-blue" data-bs-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-green">Add</button>
-                    </div>
-                </div>
-            </form>
-        </div>
-    </div>
-    <!-- Modal UpdateBank-->
-    <div class="modal fade" id="update-BankAccount" tabindex="-1" aria-labelledby="UpdateBankAccount" aria-hidden="true">
-        <div class="modal-dialog modal-xl">
-            <form class="modal-content" th:action="@{/updateBank}" method="post">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="BankAccountUpdate">Bank Account</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="input-group col my-3">
-                            <div class="input-group-text symbol-group rounded-start border-end-0 bg-white"><i class="bi bi-hash"></i></div>
-                            <input type="text" name="name" class="form-control rounded-end border-start-0" placeholder="Name" aria-label="Name">
-                        </div>
-                        <div class="col-1"></div>
-                        <div class="input-group col my-3">
-                            <div class="input-group-text symbol-group rounded-start border-end-0 bg-white"><i class="bi bi-person-fill"></i></div>
-                            <input type="text" name="holder" class="form-control rounded-end border-start-0" placeholder="Holder" aria-label="Holder">
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-1"></div>
-                        <div class="input-group col my-3">
-                            <div class="input-group-text symbol-group rounded-start border-end-0 bg-white"><i class="bi bi-credit-card-fill"></i></div>
-                            <input type="number" name="cardNumber" class="form-control rounded-end border-start-0" placeholder="Card Number" aria-label="CardNumber">
-                        </div>
-                        <div class="col-1"></div>
-                    </div>
-                    <div class="row">
-                        <div class="col">
-                            <div class="input-group col my-3">
-                                <div class="input-group-text symbol-group rounded-start border-end-0 bg-white"><i class="bi bi-credit-card-2-front-fill"></i></div>
-                                <input type="number" name="cryptogram" class="form-control rounded-end border-start-0" placeholder="Cryptogram" aria-label="Cryptogram">
-                            </div>
-                        </div>
-                        <div class="col-1"></div>
-                        <div class="col">
-                            <label for="ExpirationDate">Expiration Date</label>
-                            <div class="input-group col">
-                                <div class="input-group-text symbol-group rounded-start border-end-0 bg-white"><i class="bi bi-calendar-x-fill"></i></div>
-                                <input type="date" name="expirationDate" id="ExpirationDateUpdate" class="form-control rounded-end border-start-0" placeholder="Expiration Date" aria-label="ExpirationDate">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-1"></div>
-                        <div class="input-group col my-3">
-                            <div class="input-group-text symbol-group rounded-start border-end-0 bg-white"><i class="bi bi-bank2"></i></div>
-                            <input type="text" name="iban" class="form-control rounded-end border-start-0" placeholder="IBAN" aria-label="IBAN">
-                        </div>
-                        <div class="col-1"></div>
-                    </div>
-                    <div class="row">
-                        <div class="col-1"></div>
-                        <div class="input-group col my-3">
-                            <div class="input-group-text symbol-group rounded-start border-end-0 bg-white"><i class="bi bi-bank2"></i></div>
-                            <input type="text" name="bic" class="form-control rounded-end border-start-0" placeholder="BIC" aria-label="BIC">
-                        </div>
-                        <div class="col-1"></div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <div class="col"></div>
-                    <div class="input-group password col my-2">
-                        <div class="input-group-text symbol-group rounded-start border-end-0 bg-white"><i class="bi bi-asterisk"></i></div>
-                        <input type="password" name="password" class="form-control rounded-end border-start-0" placeholder="Password" aria-label="Password">
-                    </div>
-                    <div class="col text-end">
-                        <button type="button" class="btn btn-blue" data-bs-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-green">Update</button>
-                    </div>
-                </div>
-            </form>
-        </div>
-    </div>
     </body>
 </html>

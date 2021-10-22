@@ -10,6 +10,10 @@ import java.util.List;
 
 @Repository
 public interface BankAccountRepository extends JpaRepository<BankAccount, Long> {
+    //Service
+    BankAccount findByCardNumber(String cardNumber);
+
+    //Pagination
     List<BankAccount> findByUserEmailIgnoreCase(String email);
 
     Page<BankAccount> findByUserEmailIgnoreCase(String email, Pageable pageable);

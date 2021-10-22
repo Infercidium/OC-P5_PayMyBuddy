@@ -10,12 +10,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -40,10 +37,7 @@ public class TransferController {
     @GetMapping
     public String transfer(Model model, @RequestParam(defaultValue = "1") int page) {
         //Component
-        User user;
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String currentPrincipalName = authentication.getName();
-        user = userS.getUser(currentPrincipalName);
+        User user = userComponent.saveUser();
 
         // Creation of the Pagination
         Pageable pageable = PageRequest.of((page - 1), 3, Sort.by("dateTime").descending());

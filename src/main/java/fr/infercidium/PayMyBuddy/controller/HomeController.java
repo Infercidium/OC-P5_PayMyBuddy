@@ -6,14 +6,11 @@ import fr.infercidium.PayMyBuddy.model.Transfer;
 import fr.infercidium.PayMyBuddy.model.User;
 import fr.infercidium.PayMyBuddy.service.BankAccountI;
 import fr.infercidium.PayMyBuddy.service.TransferI;
-import fr.infercidium.PayMyBuddy.service.UserI;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -36,17 +33,11 @@ public class HomeController {
     @Autowired
     private BankAccountI bankAccountS;
 
-    @Autowired
-    private UserI userS;
-
-
     @GetMapping(value = {"/", "/home"})
     public String home(final Model model, @RequestParam(defaultValue = "1") int page) {
         //Component
-        User user;
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String currentPrincipalName = authentication.getName();
-        user = userS.getUser(currentPrincipalName);
+        userComponent.cleanUser();
+        User user = userComponent.saveUser();
 
         // Creation of the Pagination
         Pageable pageable = PageRequest.of((page - 1), 3, Sort.by("dateTime").descending());

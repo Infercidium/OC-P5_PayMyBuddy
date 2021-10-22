@@ -16,11 +16,7 @@ import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Table(name = "Users")
@@ -211,16 +207,29 @@ public class User {
     public String toString() {
         return "User{"
                 + "id = " + id
-                + ", email = '" + email + '\''
-                + ", password = '" + password + '\''
+                //+ ", email = '" + email + '\''
+                //+ ", password = '" + password + '\''
                 + ", userName = '" + userName + '\''
-                + ", pay = " + pay
-                + ", historyCredited = " + historyCredited
-                + ", historyDebited = " + historyDebited
-                + ", knowUser = " + this.knowUserString()
-                + ", authorities = " + authorities
-                + ", bankAccount = " + this.bankAccountString()
+                //+ ", pay = " + pay
+                //+ ", historyCredited = " + historyCredited
+                //+ ", historyDebited = " + historyDebited
+                //+ ", knowUser = " + this.knowUserString()
+                //+ ", authorities = " + authorities
+                //+ ", bankAccount = " + this.bankAccountString()
                 + '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof User)) return false;
+        User user = (User) o;
+        return getId().equals(user.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId());
     }
 
     public String knowUserString() {

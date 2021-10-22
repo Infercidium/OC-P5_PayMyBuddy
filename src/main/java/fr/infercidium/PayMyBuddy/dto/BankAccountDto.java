@@ -1,12 +1,15 @@
 package fr.infercidium.PayMyBuddy.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 public class BankAccountDto {
 
     private String name;
     private String holder;
-    private LocalDate expirationDate;
+    private String expirationDate;
     private String cardNumber;
     private String cryptogram;
     private String iban;
@@ -29,11 +32,11 @@ public class BankAccountDto {
         this.holder = holder;
     }
 
-    public LocalDate getExpirationDate() {
+    public String getExpirationDate() {
         return expirationDate;
     }
 
-    public void setExpirationDate(LocalDate expirationDate) {
+    public void setExpirationDate(String expirationDate) {
         this.expirationDate = expirationDate;
     }
 

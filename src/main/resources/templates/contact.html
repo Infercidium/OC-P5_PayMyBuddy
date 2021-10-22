@@ -63,19 +63,19 @@
         </nav>
         <!--Contenue-->
         <Section>
-            <div th:if="${param.remove}" class="alert alert-success text-center" style="font-size: medium;">
-                Connection successfully delete
-            </div>
-            <div th:if="${param.addCo}" class="alert alert-success text-center" style="font-size: medium;">
-                Connection successfully added
-            </div>
-            <div th:if="${param.addError}" class="alert alert-danger text-center" style="font-size: medium;">
-                Connection already in the list
-            </div>
-            <div th:if="${param.addMiss}" class="alert alert-danger text-center" style="font-size: medium;">
-                Connection not exist
-            </div>
             <div class="container">
+                <div th:if="${param.remove}" class="alert alert-success text-center" style="font-size: medium;">
+                    Connection successfully delete
+                </div>
+                <div th:if="${param.addCo}" class="alert alert-success text-center" style="font-size: medium;">
+                    Connection successfully added
+                </div>
+                <div th:if="${param.addError}" class="alert alert-danger text-center" style="font-size: medium;">
+                    Connection already in the list
+                </div>
+                <div th:if="${param.addMiss}" class="alert alert-danger text-center" style="font-size: medium;">
+                    Connection not exist
+                </div>
                 <div class="row pt-4">
                     <div class="col text-start">My Connections</div>
                     <div class="col">
@@ -85,13 +85,15 @@
                 <table class="table table-green text-center table-striped table-borderless table-hover mb-0">
                     <thead class="thead">
                     <tr>
-                        <th scope="col">Connection</th>
+                        <th scope="col">Username</th>
+                        <th scope="col">Email</th>
                         <th scope="col">Remove</th>
                     </tr>
                     </thead>
                     <tbody>
                     <tr th:each="connection : ${connexion}">
                         <td th:text="${connection.userName}">Example</td>
+                        <td th:text="${connection.email}">Example@exemple</td>
                         <td><button th:attr="data-bs-target=${'#removeModal'+ connection.id}" data-row="${connection}" type="button" class="btn btn-blue rounded-3" data-bs-toggle="modal"><i class="bi bi-x-lg"></i></button></td>
                     </tr>
                     </tbody>

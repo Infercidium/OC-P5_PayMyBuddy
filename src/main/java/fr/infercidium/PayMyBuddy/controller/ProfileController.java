@@ -13,8 +13,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -52,10 +50,7 @@ public class ProfileController {
     @GetMapping
     public String profile(Model model, @RequestParam(defaultValue = "1") int page) {
         //Component
-        User user;
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String currentPrincipalName = authentication.getName();
-        user = userS.getUser(currentPrincipalName);
+        User user = userComponent.saveUser();
 
         // Creation of the Pagination
         Pageable pageable = PageRequest.of((page - 1), 2, Sort.by("name").ascending());
@@ -94,10 +89,7 @@ public class ProfileController {
     @PostMapping(value = "/edit")
     public String editProfile(@ModelAttribute("user") UserRegistrationDto registrationDto) {
         //Component
-        User user;
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String currentPrincipalName = authentication.getName();
-        user = userS.getUser(currentPrincipalName);
+        User user = userComponent.saveUser();
 
         if (!registrationDto.getPassword().equals(registrationDto.getPassword2())) {
             return "redirect:/profile?errorPassword";
@@ -108,9 +100,6 @@ public class ProfileController {
             return "redirect:/profile?errorOldPassword";
         }
 
-        if (!registrationDto.getEmail().isEmpty()) {
-            user.setEmail(registrationDto.getEmail());
-        }
         if (!registrationDto.getPassword().isEmpty()) {
             user.setPassword(passwordEncoder.encode(registrationDto.getPassword()));
         }
@@ -119,7 +108,7 @@ public class ProfileController {
         }
 
         userS.updateUser(user);
-
+        userComponent.cleanUser();
         return "redirect:/profile?success";
     }
 }
