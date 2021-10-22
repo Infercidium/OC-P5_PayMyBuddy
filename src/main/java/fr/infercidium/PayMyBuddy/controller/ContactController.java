@@ -28,18 +28,20 @@ public class ContactController {
     private UserI userS;
 
     @GetMapping(value = "/contact")
-    public String contact(Model model, @RequestParam(defaultValue = "1") int page) {
+    public String contact(final Model model,
+                          @RequestParam(defaultValue = "1") final int page) {
         //Component
         User user = userComponent.saveUser();
 
         // Creation of the Pagination
-        Pageable pageable = PageRequest.of((page - 1), 5, Sort.by("userName").ascending());
+        Pageable pageable = PageRequest
+                .of(page - 1, 5, Sort.by("userName").ascending());
         Page<User> userPage = userS.getKnowUser(user.getEmail(), pageable);
 
         // Count the pages
         List<Integer> pagecount = new ArrayList<>();
         for (int i = 0; i < userPage.getTotalPages(); i++) {
-            pagecount.add(i+1);
+            pagecount.add(i + 1);
         }
 
         // Setting up the Pagination

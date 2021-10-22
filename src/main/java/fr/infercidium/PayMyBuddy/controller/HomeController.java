@@ -34,14 +34,17 @@ public class HomeController {
     private BankAccountI bankAccountS;
 
     @GetMapping(value = {"/", "/home"})
-    public String home(final Model model, @RequestParam(defaultValue = "1") int page) {
+    public String home(final Model model,
+                       @RequestParam(defaultValue = "1") final int page) {
         //Component
         userComponent.cleanUser();
         User user = userComponent.saveUser();
 
         // Creation of the Pagination
-        Pageable pageable = PageRequest.of((page - 1), 3, Sort.by("dateTime").descending());
-        Page<Transfer> creditedPage = transferS.getTransferPageCredited(user.getEmail(), pageable);
+        Pageable pageable = PageRequest
+                .of(page - 1, 3, Sort.by("dateTime").descending());
+        Page<Transfer> creditedPage
+                = transferS.getTransferPageCredited(user.getEmail(), pageable);
 
         // Count the pages
         List<Integer> pagecount = new ArrayList<>();
@@ -50,7 +53,8 @@ public class HomeController {
         }
 
         // Set up the information for the page
-        model.addAttribute("cards", bankAccountS.getUserBankAccount(user.getEmail()).stream().sorted(Comparator.comparing(BankAccount::getName)).collect(Collectors.toList()));
+        model.addAttribute("cards", bankAccountS.getUserBankAccount(user.getEmail())
+                .stream().sorted(Comparator.comparing(BankAccount::getName)).collect(Collectors.toList()));
         model.addAttribute("pay", user.getPay());
 
         // Setting up the Pagination

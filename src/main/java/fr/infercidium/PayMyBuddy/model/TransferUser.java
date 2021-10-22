@@ -58,10 +58,16 @@ public class TransferUser extends Transfer {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof TransferUser)) return false;
-        if (!super.equals(o)) return false;
+    public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof TransferUser)) {
+            return false;
+        }
+        if (!super.equals(o)) {
+            return false;
+        }
         TransferUser that = (TransferUser) o;
         return getId().equals(that.getId());
     }

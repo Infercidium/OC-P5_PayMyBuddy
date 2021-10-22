@@ -19,7 +19,7 @@ public class ConnexionController {
     private UserI userS;
 
     @GetMapping(value = "/remove{id}")
-    public String removecontact(@PathVariable Long id) {
+    public String removecontact(@PathVariable final Long id) {
         //Component
         User user = userComponent.saveUser();
 
@@ -32,7 +32,7 @@ public class ConnexionController {
     }
 
     @PostMapping(value = "/addCoC")
-    public String addcontactC(String email) {
+    public String addcontactC(final String email) {
         //Component
         User user = userComponent.saveUser();
 
@@ -42,7 +42,8 @@ public class ConnexionController {
             return "redirect:/contact?addMiss";
         }
 
-        if (user.getKnowUser().contains(userS.getUser(email)) || user.getEmail().equals(userS.getUser(email).getEmail())) {
+        if (user.getKnowUser().contains(userS.getUser(email))
+                || user.getEmail().equals(userS.getUser(email).getEmail())) {
             return "redirect:/contact?addError";
         }
 
@@ -55,7 +56,7 @@ public class ConnexionController {
     }
 
     @PostMapping(value = "/addCoT")
-    public String addcontactT(String email) {
+    public String addcontactT(final String email) {
         //Component
         User user = userComponent.saveUser();
 
@@ -64,7 +65,8 @@ public class ConnexionController {
             return "redirect:/transfer?addMiss";
         }
 
-        if (user.getKnowUser().contains(userS.getUser(email)) || user.getEmail().equals(userS.getUser(email).getEmail())) {
+        if (user.getKnowUser().contains(userS.getUser(email))
+                || user.getEmail().equals(userS.getUser(email).getEmail())) {
             return "redirect:/transfer?addError";
         }
 

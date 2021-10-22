@@ -33,7 +33,7 @@ public class Security extends WebSecurityConfigurerAdapter {
     }
 
     @Override
-    public void configure(AuthenticationManagerBuilder auth) {
+    public void configure(final AuthenticationManagerBuilder auth) {
         auth.authenticationProvider(authenticationProvider());
     }
 
@@ -52,7 +52,8 @@ public class Security extends WebSecurityConfigurerAdapter {
                     .defaultSuccessUrl("/home")
                     .permitAll()
                .and().logout()
-                    .invalidateHttpSession(true).clearAuthentication(true).deleteCookies("JSESSIONID")
+                    .invalidateHttpSession(true).clearAuthentication(true)
+                    .deleteCookies("JSESSIONID")
                     .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
                     .logoutSuccessUrl("/login?logout")
                     .permitAll();

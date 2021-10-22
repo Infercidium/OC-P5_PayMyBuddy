@@ -40,7 +40,7 @@ public class TransferController {
         User user = userComponent.saveUser();
 
         // Creation of the Pagination
-        Pageable pageable = PageRequest.of((page - 1), 3, Sort.by("dateTime").descending());
+        Pageable pageable = PageRequest.of(page - 1, 3, Sort.by("dateTime").descending());
         Page<Transfer> debitedPage = transferS.getTransferPageDebited(user.getEmail(), pageable);
 
         // Count the pages

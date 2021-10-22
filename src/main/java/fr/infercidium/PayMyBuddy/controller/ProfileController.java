@@ -53,7 +53,7 @@ public class ProfileController {
         User user = userComponent.saveUser();
 
         // Creation of the Pagination
-        Pageable pageable = PageRequest.of((page - 1), 2, Sort.by("name").ascending());
+        Pageable pageable = PageRequest.of(page - 1, 2, Sort.by("name").ascending());
         Page<BankAccount> bankPage = bankAccountS.getBankAccountPageUser(user.getEmail(), pageable);
 
         // Count the pages

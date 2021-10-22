@@ -58,10 +58,16 @@ public class TransferRemov extends Transfer {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof TransferRemov)) return false;
-        if (!super.equals(o)) return false;
+    public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof TransferRemov)) {
+            return false;
+        }
+        if (!super.equals(o)) {
+            return false;
+        }
         TransferRemov that = (TransferRemov) o;
         return getId().equals(that.getId());
     }

@@ -33,12 +33,14 @@ public class BankAccountController {
     }
 
     @PostMapping(value = "/newBank")
-    public String newBankAccount(@ModelAttribute("bankAccount") BankAccountDto bankAccountDto) {
+    public String newBankAccount(@ModelAttribute("bankAccount")
+                                     final BankAccountDto bankAccountDto) {
         //Component
         User user = userComponent.saveUser();
 
         //Gestion error
-        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        PasswordEncoder passwordEncoder
+                = new BCryptPasswordEncoder();
         if (!passwordEncoder.matches(bankAccountDto.getPassword(), user.getPassword())) {
             return "redirect:/profile?errorOldPassword";
         }
@@ -55,7 +57,7 @@ public class BankAccountController {
     }
 
     @GetMapping(value = "/removeBank{id}")
-    public String removebank(@PathVariable Long id) {
+    public String removebank(@PathVariable final Long id) {
         //Component
         User user = userComponent.saveUser();
 

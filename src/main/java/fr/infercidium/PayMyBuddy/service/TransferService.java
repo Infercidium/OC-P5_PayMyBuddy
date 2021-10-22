@@ -53,7 +53,7 @@ public class TransferService implements TransferI {
     public void transactMoney(final Transfer transferUser, User user) {
         User credited = transferUser.getCredited();
 
-        user.setPay(user.getPay().subtract((transferUser.getAmount().multiply(BigDecimal.valueOf(1.005)))));
+        user.setPay(user.getPay().subtract(transferUser.getAmount().multiply(BigDecimal.valueOf(1.005))));
         credited.setPay(credited.getPay().add(transferUser.getAmount()));
 
         transferUser.setDebited(user);

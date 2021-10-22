@@ -111,9 +111,13 @@ public class Transfer {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Transfer)) return false;
+    public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof Transfer)) {
+            return false;
+        }
         Transfer transfer = (Transfer) o;
         return getId().equals(transfer.getId());
     }

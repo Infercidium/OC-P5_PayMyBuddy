@@ -176,9 +176,13 @@ public class BankAccount {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof BankAccount)) return false;
+    public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof BankAccount)) {
+            return false;
+        }
         BankAccount that = (BankAccount) o;
         return getId().equals(that.getId());
     }

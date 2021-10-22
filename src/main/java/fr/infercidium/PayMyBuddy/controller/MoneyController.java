@@ -72,7 +72,7 @@ public class MoneyController {
         User user = userComponent.saveUser();
 
         //Gestion Error
-        if (user.getPay().compareTo((transferUser.getAmount().multiply(BigDecimal.valueOf(1.005)))) < 0) {
+        if (user.getPay().compareTo(transferUser.getAmount().multiply(BigDecimal.valueOf(1.005))) < 0) {
             return "redirect:/transfer?errorPay";
         }
 
