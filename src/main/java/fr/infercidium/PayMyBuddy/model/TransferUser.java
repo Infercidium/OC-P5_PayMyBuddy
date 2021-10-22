@@ -4,6 +4,7 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Entity
 public class TransferUser extends Transfer {
@@ -54,5 +55,19 @@ public class TransferUser extends Transfer {
                 + ", dateTime = " + getDateTime()
                 + ", debited = " + debited
                 + '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof TransferUser)) return false;
+        if (!super.equals(o)) return false;
+        TransferUser that = (TransferUser) o;
+        return getId().equals(that.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), getId());
     }
 }

@@ -18,8 +18,6 @@ public interface BankAccountI {
 
     BankAccount getBankAccount(Long id);
 
-    Long getBankAccount(String cardNumber);
-
     //Pagination
     List<BankAccount> getUserBankAccount(String email);
 

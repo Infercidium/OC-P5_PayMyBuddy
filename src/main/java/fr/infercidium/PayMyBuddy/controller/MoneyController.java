@@ -6,17 +6,14 @@ import fr.infercidium.PayMyBuddy.model.TransferRemov;
 import fr.infercidium.PayMyBuddy.model.TransferUser;
 import fr.infercidium.PayMyBuddy.model.User;
 import fr.infercidium.PayMyBuddy.service.TransferI;
-import fr.infercidium.PayMyBuddy.service.UserI;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import java.math.BigDecimal;
 
 @Controller
-@Transactional
 public class MoneyController {
 
     @Autowired
@@ -24,9 +21,6 @@ public class MoneyController {
 
     @Autowired
     private TransferI transferS;
-
-    @Autowired
-    private UserI userS;
 
     @ModelAttribute("transferAdd")
     public TransferAdd transferAdd() {
@@ -48,12 +42,10 @@ public class MoneyController {
         //Component
         User user = userComponent.saveUser();
 
-        user.setPay(user.getPay().add(transferAdd.getAmount()));
+        //Service
+        transferS.addCardMoney(transferAdd, user);
 
-        transferAdd.setCredited(user);
-        transferS.postTransfer(transferAdd);
-        userS.updateUser(user);
-
+        //return
         return "redirect:/home?success";
     }
 
@@ -62,16 +54,15 @@ public class MoneyController {
         //Component
         User user = userComponent.saveUser();
 
+        //Gestion Error
         if (user.getPay().compareTo(transferRemov.getAmount()) < 0) {
             return "redirect:/home?error";
         }
 
-        user.setPay(user.getPay().subtract(transferRemov.getAmount()));
+        //Service
+        transferS.removCardMoney(transferRemov, user);
 
-        transferRemov.setDebited(user);
-        transferS.postTransfer(transferRemov);
-        userS.updateUser(user);
-
+        //Return
         return "redirect:/home?success";
     }
 
@@ -80,20 +71,15 @@ public class MoneyController {
         //Component
         User user = userComponent.saveUser();
 
+        //Gestion Error
         if (user.getPay().compareTo((transferUser.getAmount().multiply(BigDecimal.valueOf(1.005)))) < 0) {
             return "redirect:/transfer?errorPay";
         }
 
-        User credited = transferUser.getCredited();
+        //Service
+        transferS.transactMoney(transferUser, user);
 
-        user.setPay(user.getPay().subtract((transferUser.getAmount().multiply(BigDecimal.valueOf(1.005)))));
-        credited.setPay(credited.getPay().add(transferUser.getAmount()));
-
-        transferUser.setDebited(user);
-        transferS.postTransfer(transferUser);
-        userS.updateUser(user);
-        userS.updateUser(credited);
-
+        //Return
         userComponent.cleanUser();
         return "redirect:/transfer?successPay";
     }

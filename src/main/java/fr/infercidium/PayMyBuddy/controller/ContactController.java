@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Controller
-@RequestMapping(value = "/contact")
+@RequestMapping
 public class ContactController {
 
     @Autowired
@@ -27,7 +27,7 @@ public class ContactController {
     @Autowired
     private UserI userS;
 
-    @GetMapping
+    @GetMapping(value = "/contact")
     public String contact(Model model, @RequestParam(defaultValue = "1") int page) {
         //Component
         User user = userComponent.saveUser();

@@ -16,7 +16,12 @@ import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import java.math.BigDecimal;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "Users")
@@ -48,13 +53,13 @@ public class User {
     @JoinTable(name = "User_User")
     private Set<User> knowUser;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany
     @JoinTable(name = "User_Role",
             joinColumns = @JoinColumn(name = "User_id"),
             inverseJoinColumns = @JoinColumn(name = "Authority_id"))
     private List<Authority> authorities;
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER)
     private List<BankAccount> bankAccounts;
 
     public User() {
@@ -207,15 +212,15 @@ public class User {
     public String toString() {
         return "User{"
                 + "id = " + id
-                //+ ", email = '" + email + '\''
-                //+ ", password = '" + password + '\''
+                + ", email = '" + email + '\''
+                + ", password = '" + password + '\''
                 + ", userName = '" + userName + '\''
-                //+ ", pay = " + pay
-                //+ ", historyCredited = " + historyCredited
-                //+ ", historyDebited = " + historyDebited
-                //+ ", knowUser = " + this.knowUserString()
-                //+ ", authorities = " + authorities
-                //+ ", bankAccount = " + this.bankAccountString()
+                + ", pay = " + pay
+                + ", historyCredited = " + historyCredited
+                + ", historyDebited = " + historyDebited
+                + ", knowUser = " + this.knowUserString()
+                + ", authorities = " + authorities
+                + ", bankAccount = " + this.bankAccountString()
                 + '}';
     }
 

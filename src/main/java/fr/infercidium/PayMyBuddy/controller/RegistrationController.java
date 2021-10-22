@@ -27,12 +27,18 @@ public class RegistrationController {
 
     @PostMapping
     public String userRegistration(@ModelAttribute("user")UserRegistrationDto registrationDto) {
+        //Gestion Error
         if (!registrationDto.getPassword().equals(registrationDto.getPassword2())) {
             return "redirect:/login?errorPassword";
         }
 
+        //Mappage
         User user = userM.dtoToModel(registrationDto);
+
+        //Service
         userS.postUser(user);
+
+        //Return
         return "redirect:/home?registration";
     }
 }

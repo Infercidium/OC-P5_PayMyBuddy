@@ -1,10 +1,5 @@
 package fr.infercidium.PayMyBuddy.dto;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-
 public class BankAccountDto {
 
     private String name;

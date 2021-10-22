@@ -5,13 +5,11 @@ import fr.infercidium.PayMyBuddy.model.User;
 import fr.infercidium.PayMyBuddy.service.UserI;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
-@Transactional
 public class ConnexionController {
 
     @Autowired
@@ -25,14 +23,10 @@ public class ConnexionController {
         //Component
         User user = userComponent.saveUser();
 
-        User removed = userS.getUser(id);
+        //Service
+        userS.removeConnection(id, user);
 
-        user.removeKnowUser(removed);
-        removed.removeKnowUser(user);
-
-        userS.updateUser(user);
-        userS.updateUser(removed);
-
+        //Return
         userComponent.cleanUser();
         return "redirect:/contact?remove";
     }
@@ -42,20 +36,20 @@ public class ConnexionController {
         //Component
         User user = userComponent.saveUser();
 
+
+        //Gestion Error
         if (userS.getUser(email) == null) {
             return "redirect:/contact?addMiss";
         }
-        User added = userS.getUser(email);
-        if (user.getKnowUser().contains(added) || user.getEmail().equals(added.getEmail())) {
+
+        if (user.getKnowUser().contains(userS.getUser(email)) || user.getEmail().equals(userS.getUser(email).getEmail())) {
             return "redirect:/contact?addError";
         }
 
-        user.addKnowUser(added);
-        added.addKnowUser(user);
+        //Service
+        userS.addConnection(email, user);
 
-        userS.updateUser(user);
-        userS.updateUser(added);
-
+        //Return
         userComponent.cleanUser();
         return "redirect:/contact?addCo";
     }
@@ -65,18 +59,19 @@ public class ConnexionController {
         //Component
         User user = userComponent.saveUser();
 
+        //Gestion Error
         if (userS.getUser(email) == null) {
             return "redirect:/transfer?addMiss";
         }
-        User added = userS.getUser(email);
-        if (user.getKnowUser().contains(added) || user.getEmail().equals(added.getEmail())) {
+
+        if (user.getKnowUser().contains(userS.getUser(email)) || user.getEmail().equals(userS.getUser(email).getEmail())) {
             return "redirect:/transfer?addError";
         }
-        user.addKnowUser(added);
-        added.addKnowUser(user);
-        userS.updateUser(user);
-        userS.updateUser(added);
 
+        //Service
+        userS.addConnection(email, user);
+
+        //Return
         userComponent.cleanUser();
         return "redirect:/transfer?addCo";
     }

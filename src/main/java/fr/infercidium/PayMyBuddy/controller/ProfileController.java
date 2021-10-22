@@ -91,6 +91,7 @@ public class ProfileController {
         //Component
         User user = userComponent.saveUser();
 
+        //Gestion Error
         if (!registrationDto.getPassword().equals(registrationDto.getPassword2())) {
             return "redirect:/profile?errorPassword";
         }
@@ -100,14 +101,10 @@ public class ProfileController {
             return "redirect:/profile?errorOldPassword";
         }
 
-        if (!registrationDto.getPassword().isEmpty()) {
-            user.setPassword(passwordEncoder.encode(registrationDto.getPassword()));
-        }
-        if (!registrationDto.getUserName().isEmpty()) {
-            user.setUserName(registrationDto.getUserName());
-        }
+        //Service
+        userS.editUser(registrationDto, user);
 
-        userS.updateUser(user);
+        //Return
         userComponent.cleanUser();
         return "redirect:/profile?success";
     }

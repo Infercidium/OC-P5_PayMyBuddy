@@ -34,12 +34,9 @@ public class BankAccountService implements BankAccountI {
         bankAccount.setCardNumber(BCrypt.hashpw(bankAccount.getCardNumber(), BCrypt.gensalt()));
         bankAccount.setCryptogram(BCrypt.hashpw(bankAccount.getCryptogram(), BCrypt.gensalt()));
 
-        if (getBankAccount(bankAccount.getCardNumber()) != null) {
-            bankAccount.setId(getBankAccount(bankAccount.getCardNumber())); //TODO Verifier le fonctionnement
-        }
-
         postBankAccount(bankAccount);
         user.addBankAccount(bankAccount);
+        userS.updateUser(user);
         LOGGER.info("BankAccount created and linked to the user");
     }
 
@@ -66,13 +63,6 @@ public class BankAccountService implements BankAccountI {
     public BankAccount getBankAccount(final Long id) {
         LOGGER.debug("BankAccount found");
         return bankAccountR.getById(id);
-    }
-
-    @Override
-    public Long getBankAccount(final String cardNumber) {
-        BankAccount bankAccount = bankAccountR.findByCardNumber(cardNumber);
-        LOGGER.debug("BankAccount found");
-        return bankAccount.getId();
     }
 
     //Pagination

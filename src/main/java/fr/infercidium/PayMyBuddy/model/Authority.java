@@ -8,6 +8,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -21,6 +22,7 @@ public class Authority {
     @JsonIgnore
     private Long id;
 
+    @NotBlank(message = "name cannot be null or empty.")
     private String name;
 
     @ManyToMany(mappedBy = "authorities")
@@ -57,14 +59,6 @@ public class Authority {
 
     public void setUsers(final List<User> usersS) {
         this.users = usersS;
-    }
-
-    public void addUser(final User user) {
-        users.add(user);
-    }
-
-    public void removeUser(final User user) {
-        users.remove(user);
     }
 
     @Override

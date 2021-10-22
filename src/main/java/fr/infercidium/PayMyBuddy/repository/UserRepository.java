@@ -10,8 +10,10 @@ import java.util.List;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
+   //Service
     User findByEmailIgnoreCase(String email);
 
+    //Pagination
     Page<User> findByKnowUserEmailIgnoreCase(String email, Pageable pageable);
 
     List<User> findByKnowUserEmailIgnoreCase(String email);
