@@ -10,12 +10,39 @@ import java.util.List;
 
 @Repository
 public interface TransferRepository extends JpaRepository<Transfer, Long> {
+
     //Pagination
-    Page<Transfer> findByCreditedEmailIgnoreCase(String email, Pageable pageable);
+    /**
+     * Find a list of Transfer linked
+     * to the creditor's email address in several pages.
+     * @param email used.
+     * @param pageable to make the pages.
+     * @return a multi-page Transfer list.
+     */
+    Page<Transfer> findByCreditedEmailIgnoreCase(String email,
+                                                 Pageable pageable);
 
-    Page<Transfer> findByDebitedEmailIgnoreCase(String email, Pageable pageable);
+    /**
+     * Find a list of Transfer linked
+     * to the debtor's email address in several pages.
+     * @param email used.
+     * @param pageable to make the pages.
+     * @return a multi-page Transfer list.
+     */
+    Page<Transfer> findByDebitedEmailIgnoreCase(String email,
+                                                Pageable pageable);
 
+    /**
+     * Find a Transfer list with his email.
+     * @param email used.
+     * @return a Transfer list.
+     */
     List<Transfer> findByCreditedEmailIgnoreCase(String email);
 
+    /**
+     * Find a Transfer list with his email.
+     * @param email used.
+     * @return a Transfer list.
+     */
     List<Transfer> findByDebitedEmailIgnoreCase(String email);
 }

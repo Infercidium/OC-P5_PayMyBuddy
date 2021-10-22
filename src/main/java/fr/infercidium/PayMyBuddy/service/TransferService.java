@@ -1,5 +1,6 @@
 package fr.infercidium.PayMyBuddy.service;
 
+import fr.infercidium.PayMyBuddy.Constants.MoneyConstant;
 import fr.infercidium.PayMyBuddy.model.Transfer;
 import fr.infercidium.PayMyBuddy.model.User;
 import fr.infercidium.PayMyBuddy.repository.TransferRepository;
@@ -18,15 +19,31 @@ import java.util.List;
 @Transactional
 public class TransferService implements TransferI {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(TransferService.class);
+    /**
+     * Instantiation of LOGGER in order to inform in console.
+     */
+    private static final Logger LOGGER
+            = LoggerFactory.getLogger(TransferService.class);
 
+    /**
+     * Instantiation of transferRepository.
+     */
     @Autowired
     private TransferRepository transfertR;
 
+    /**
+     * Instantiation of userInterface.
+     */
     @Autowired
     private UserI userS;
 
     //Service MoneyController
+
+    /**
+     * Adds money from bankAccount to the User.
+     * @param transferAdd : transfer with bankAccount.
+     * @param user : Affected user.
+     */
     @Override
     public void addCardMoney(final Transfer transferAdd, final User user) {
         user.setPay(user.getPay().add(transferAdd.getAmount()));
@@ -35,9 +52,15 @@ public class TransferService implements TransferI {
         postTransfer(transferAdd);
         user.addHistoryCredited(transferAdd);
         userS.updateUser(user);
-        LOGGER.info("Successful transaction between User and their bankAccount");
+        LOGGER.info("Successful transaction between User "
+                + "and their bankAccount");
     }
 
+    /**
+     * Adds money from User to the bankAccount.
+     * @param transferRemov : transfer with bankAccount.
+     * @param user : Affected user.
+     */
     @Override
     public void removCardMoney(final Transfer transferRemov, final User user) {
         user.setPay(user.getPay().subtract(transferRemov.getAmount()));
@@ -46,14 +69,21 @@ public class TransferService implements TransferI {
         postTransfer(transferRemov);
         user.addHistoryDebited(transferRemov);
         userS.updateUser(user);
-        LOGGER.info("Successful transaction between User and their bankAccount");
+        LOGGER.info("Successful transaction between User "
+                + "and their bankAccount");
     }
 
+    /**
+     * Transaction between user.
+     * @param transferUser transfer with credited User.
+     * @param user Affected debited User.
+     */
     @Override
-    public void transactMoney(final Transfer transferUser, User user) {
+    public void transactMoney(final Transfer transferUser, final User user) {
         User credited = transferUser.getCredited();
 
-        user.setPay(user.getPay().subtract(transferUser.getAmount().multiply(BigDecimal.valueOf(1.005))));
+        user.setPay(user.getPay().subtract(transferUser.getAmount()
+                .multiply(BigDecimal.valueOf(MoneyConstant.MONETISATION))));
         credited.setPay(credited.getPay().add(transferUser.getAmount()));
 
         transferUser.setDebited(user);
@@ -66,6 +96,11 @@ public class TransferService implements TransferI {
     }
 
     //Service
+
+    /**
+     * Save a transfer.
+     * @param transfer to save.
+     */
     @Override
     public void postTransfer(final Transfer transfer) {
         transfertR.save(transfer);
@@ -73,24 +108,51 @@ public class TransferService implements TransferI {
     }
 
     //Pagination
+
+    /**
+     * Use the user's email to find the Transfer Credited
+     * list and put them into pages.
+     * @param email used by Repository.
+     * @param pageable used by Repository.
+     * @return multi-page Transfer list found.
+     */
     @Override
-    public Page<Transfer> getTransferPageCredited(final String email, final Pageable pageable) {
+    public Page<Transfer> getTransferPageCredited(final String email,
+                                                  final Pageable pageable) {
         LOGGER.debug("User Transfers Page");
         return transfertR.findByCreditedEmailIgnoreCase(email, pageable);
     }
 
+    /**
+     * Use the user's email to find the Transfer Debited
+     * list and put them into pages.
+     * @param email used by Repository.
+     * @param pageable used by Repository.
+     * @return multi-page Transfer list found.
+     */
     @Override
-    public Page<Transfer> getTransferPageDebited(final String email, final Pageable pageable) {
+    public Page<Transfer> getTransferPageDebited(final String email,
+                                                 final Pageable pageable) {
         LOGGER.debug("User Transfers Page");
         return transfertR.findByDebitedEmailIgnoreCase(email, pageable);
     }
 
+    /**
+     * Use the user's email to find the Transfer Credited list.
+     * @param email used.
+     * @return a list of Transfer.
+     */
     @Override
     public List<Transfer> getTransferCredited(final String email) {
         LOGGER.debug("List of User Transfers");
         return transfertR.findByCreditedEmailIgnoreCase(email);
     }
 
+    /**
+     * Use the user's email to find the Transfer Debited list.
+     * @param email used.
+     * @return a list of Transfer.
+     */
     @Override
     public List<Transfer> getTransferDebited(final String email) {
         LOGGER.debug("List of User Transfers");

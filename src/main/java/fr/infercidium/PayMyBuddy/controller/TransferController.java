@@ -1,5 +1,6 @@
 package fr.infercidium.PayMyBuddy.controller;
 
+import fr.infercidium.PayMyBuddy.Constants.PageConstant;
 import fr.infercidium.PayMyBuddy.configuration.UserComponent;
 import fr.infercidium.PayMyBuddy.model.Transfer;
 import fr.infercidium.PayMyBuddy.model.User;
@@ -25,32 +26,54 @@ import java.util.stream.Collectors;
 @RequestMapping(value = "/transfer")
 public class TransferController {
 
+    /**
+     * Instantiation of userComponent.
+     */
     @Autowired
     private UserComponent userComponent;
 
+    /**
+     * Instantiation of userInterface.
+     */
     @Autowired
     private UserI userS;
 
+    /**
+     * Instantiation of transferInterface.
+     */
     @Autowired
     private TransferI transferS;
 
+    /**
+     * Generates the elements of the html page.
+     * @param model is used to send the elements to the html page.
+     * @param page indicates the number of the page to be generated and sent.
+     * @return the Transfer html page.
+     */
     @GetMapping
-    public String transfer(Model model, @RequestParam(defaultValue = "1") int page) {
+    public String transfer(final Model model,
+                           @RequestParam(defaultValue = "1") final int page) {
         //Component
         User user = userComponent.saveUser();
 
         // Creation of the Pagination
-        Pageable pageable = PageRequest.of(page - 1, 3, Sort.by("dateTime").descending());
-        Page<Transfer> debitedPage = transferS.getTransferPageDebited(user.getEmail(), pageable);
+        Pageable pageable = PageRequest
+                .of(page - 1, PageConstant.TRANSFERPAGE,
+                        Sort.by("dateTime").descending());
+        Page<Transfer> debitedPage
+                = transferS.getTransferPageDebited(user.getEmail(), pageable);
 
         // Count the pages
         List<Integer> pagecount = new ArrayList<>();
         for (int i = 0; i < debitedPage.getTotalPages(); i++) {
-            pagecount.add(i+1);
+            pagecount.add(i + 1);
         }
 
         // Set up the information for the page
-        model.addAttribute("connexion", userS.getKnowUser(user.getEmail()).stream().sorted(Comparator.comparing(User::getUserName)).collect(Collectors.toList()));
+        model.addAttribute("connexion",
+                userS.getKnowUser(user.getEmail()).stream()
+                        .sorted(Comparator.comparing(User::getUserName))
+                        .collect(Collectors.toList()));
 
         // Setting up the Pagination
         model.addAttribute("debitedHistory", debitedPage.getContent());

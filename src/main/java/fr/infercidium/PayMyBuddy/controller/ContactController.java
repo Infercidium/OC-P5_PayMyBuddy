@@ -1,5 +1,6 @@
 package fr.infercidium.PayMyBuddy.controller;
 
+import fr.infercidium.PayMyBuddy.Constants.PageConstant;
 import fr.infercidium.PayMyBuddy.configuration.UserComponent;
 import fr.infercidium.PayMyBuddy.model.User;
 import fr.infercidium.PayMyBuddy.service.UserI;
@@ -21,12 +22,24 @@ import java.util.List;
 @RequestMapping
 public class ContactController {
 
+    /**
+     * Instantiation of userComponent.
+     */
     @Autowired
     private UserComponent userComponent;
 
+    /**
+     * Instantiation of userInterface.
+     */
     @Autowired
     private UserI userS;
 
+    /**
+     * Generates the elements of the html page.
+     * @param model is used to send the elements to the html page.
+     * @param page indicates the number of the page to be generated and sent.
+     * @return the Contact html page.
+     */
     @GetMapping(value = "/contact")
     public String contact(final Model model,
                           @RequestParam(defaultValue = "1") final int page) {
@@ -35,7 +48,8 @@ public class ContactController {
 
         // Creation of the Pagination
         Pageable pageable = PageRequest
-                .of(page - 1, 5, Sort.by("userName").ascending());
+                .of(page - 1, PageConstant.USERPAGE,
+                        Sort.by("userName").ascending());
         Page<User> userPage = userS.getKnowUser(user.getEmail(), pageable);
 
         // Count the pages

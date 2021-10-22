@@ -9,12 +9,24 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface BankAccountRepository extends JpaRepository<BankAccount, Long> {
-    //Service
-    BankAccount findByCardNumber(String cardNumber);
+public interface BankAccountRepository
+        extends JpaRepository<BankAccount, Long> {
 
     //Pagination
+    /**
+     * Find a BankAccount list with his email.
+     * @param email used.
+     * @return a BankAccount list.
+     */
     List<BankAccount> findByUserEmailIgnoreCase(String email);
 
-    Page<BankAccount> findByUserEmailIgnoreCase(String email, Pageable pageable);
+    /**
+     * Find a list of BankAccount linked
+     * to the User email address in several pages.
+     * @param email
+     * @param pageable
+     * @return a list of BankAccount.
+     */
+    Page<BankAccount> findByUserEmailIgnoreCase(String email,
+                                                Pageable pageable);
 }

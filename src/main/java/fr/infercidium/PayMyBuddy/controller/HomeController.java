@@ -1,5 +1,6 @@
 package fr.infercidium.PayMyBuddy.controller;
 
+import fr.infercidium.PayMyBuddy.Constants.PageConstant;
 import fr.infercidium.PayMyBuddy.configuration.UserComponent;
 import fr.infercidium.PayMyBuddy.model.BankAccount;
 import fr.infercidium.PayMyBuddy.model.Transfer;
@@ -24,15 +25,30 @@ import java.util.stream.Collectors;
 @Controller
 public class HomeController {
 
+    /**
+     * Instantiation of userComponent.
+     */
     @Autowired
     private UserComponent userComponent;
 
+    /**
+     * Instantiation of TransferInterface.
+     */
     @Autowired
     private TransferI transferS;
 
+    /**
+     * Instantiation of bankaccountInterface.
+     */
     @Autowired
     private BankAccountI bankAccountS;
 
+    /**
+     * Generates the elements of the html page.
+     * @param model is used to send the elements to the html page.
+     * @param page indicates the number of the page to be generated and sent.
+     * @return the Home html page.
+     */
     @GetMapping(value = {"/", "/home"})
     public String home(final Model model,
                        @RequestParam(defaultValue = "1") final int page) {
@@ -42,19 +58,22 @@ public class HomeController {
 
         // Creation of the Pagination
         Pageable pageable = PageRequest
-                .of(page - 1, 3, Sort.by("dateTime").descending());
+                .of(page - 1, PageConstant.TRANSFERPAGE,
+                        Sort.by("dateTime").descending());
         Page<Transfer> creditedPage
                 = transferS.getTransferPageCredited(user.getEmail(), pageable);
 
         // Count the pages
         List<Integer> pagecount = new ArrayList<>();
         for (int i = 0; i < creditedPage.getTotalPages(); i++) {
-            pagecount.add(i+1);
+            pagecount.add(i + 1);
         }
 
         // Set up the information for the page
-        model.addAttribute("cards", bankAccountS.getUserBankAccount(user.getEmail())
-                .stream().sorted(Comparator.comparing(BankAccount::getName)).collect(Collectors.toList()));
+        model.addAttribute("cards", bankAccountS
+                .getUserBankAccount(user.getEmail()).stream()
+                .sorted(Comparator.comparing(BankAccount::getName))
+                .collect(Collectors.toList()));
         model.addAttribute("pay", user.getPay());
 
         // Setting up the Pagination

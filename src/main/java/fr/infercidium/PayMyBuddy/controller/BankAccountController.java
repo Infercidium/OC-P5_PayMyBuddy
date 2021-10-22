@@ -18,20 +18,40 @@ import org.springframework.web.bind.annotation.PostMapping;
 @Controller
 public class BankAccountController {
 
+    /**
+     * Instantiating userComponent.
+     */
     @Autowired
     private UserComponent userComponent;
 
+    /**
+     * Instantiation of bankAccountMapper.
+     */
     @Autowired
     private BankAccountMapper bankAccountM;
 
+    /**
+     * Instantiation of bankAccountInterface.
+     */
     @Autowired
     private BankAccountI bankAccountS;
 
+    /**
+     * Creation of the ModelAttribute capturing the html form.
+     * @return the bankAccountDto with the form values.
+     */
     @ModelAttribute("bankAccount")
     public BankAccountDto bankAccountDto() {
         return new BankAccountDto();
     }
 
+    /**
+     * Creation of a BankAccount.
+     * @param bankAccountDto : HTML form converted via
+     *                       the ModelAttribute to bankAccountDto.
+     * @return the html page with a message indicating
+     * the statue of the requested request.
+     */
     @PostMapping(value = "/newBank")
     public String newBankAccount(@ModelAttribute("bankAccount")
                                      final BankAccountDto bankAccountDto) {
@@ -41,7 +61,8 @@ public class BankAccountController {
         //Gestion error
         PasswordEncoder passwordEncoder
                 = new BCryptPasswordEncoder();
-        if (!passwordEncoder.matches(bankAccountDto.getPassword(), user.getPassword())) {
+        if (!passwordEncoder.matches(bankAccountDto.getPassword(),
+                user.getPassword())) {
             return "redirect:/profile?errorOldPassword";
         }
 
@@ -56,6 +77,12 @@ public class BankAccountController {
         return "redirect:/profile?successUpBank";
     }
 
+    /**
+     * Deletion of a BankAccount.
+     * @param id of the bankAccount to be deleted.
+     * @return the html page with a message indicating
+     * the statue of the requested request.
+     */
     @GetMapping(value = "/removeBank{id}")
     public String removebank(@PathVariable final Long id) {
         //Component

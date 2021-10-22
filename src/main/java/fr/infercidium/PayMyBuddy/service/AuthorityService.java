@@ -12,11 +12,22 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class AuthorityService implements AuthorityI {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(AuthorityService.class);
+    /**
+     * Instantiation of LOGGER in order to inform in console.
+     */
+    private static final Logger LOGGER
+            = LoggerFactory.getLogger(AuthorityService.class);
 
+    /**
+     * Instantiation of AuthorityRepository.
+     */
     @Autowired
     private AuthorityRepository authorityR;
 
+    /**
+     * find authority with name role.
+     * @return authority found.
+     */
     @Override
     public Authority getUser() {
         LOGGER.debug("'User' role found");

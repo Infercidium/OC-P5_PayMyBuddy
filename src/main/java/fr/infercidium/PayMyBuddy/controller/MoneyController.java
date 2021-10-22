@@ -1,5 +1,6 @@
 package fr.infercidium.PayMyBuddy.controller;
 
+import fr.infercidium.PayMyBuddy.Constants.MoneyConstant;
 import fr.infercidium.PayMyBuddy.configuration.UserComponent;
 import fr.infercidium.PayMyBuddy.model.TransferAdd;
 import fr.infercidium.PayMyBuddy.model.TransferRemov;
@@ -16,29 +17,54 @@ import java.math.BigDecimal;
 @Controller
 public class MoneyController {
 
+    /**
+     * Instantiation of userComponent.
+     */
     @Autowired
     private UserComponent userComponent;
 
+    /**
+     * Instantiation of transferInterface.
+     */
     @Autowired
     private TransferI transferS;
 
+    /**
+     * Creation of the ModelAttribute capturing the html form.
+     * @return the transferAdd with the form values.
+     */
     @ModelAttribute("transferAdd")
     public TransferAdd transferAdd() {
         return new TransferAdd();
     }
 
+    /**
+     * Creation of the ModelAttribute capturing the html form.
+     * @return the transferRemov with the form values.
+     */
     @ModelAttribute("transferRemov")
     public TransferRemov transferRemov() {
         return new TransferRemov();
     }
 
-    @ModelAttribute("TransferUser")
+    /**
+     * Creation of the ModelAttribute capturing the html form.
+     * @return the transferUser with the form values.
+     */
+    @ModelAttribute("transferUser")
     public TransferUser transferUser() {
         return new TransferUser();
     }
 
+    /**
+     * Create a Transfer between a User and his bank account.
+     * @param transferAdd the transfer with the form values.
+     * @return the html page with a message indicating
+     * the statue of the requested request.
+     */
     @PostMapping(value = "/addmoney")
-    public String addMoney(@ModelAttribute("transferAdd") TransferAdd transferAdd) {
+    public String addMoney(
+            @ModelAttribute("transferAdd") final TransferAdd transferAdd) {
         //Component
         User user = userComponent.saveUser();
 
@@ -49,8 +75,15 @@ public class MoneyController {
         return "redirect:/home?success";
     }
 
+    /**
+     * Create a Transfer between a User and his bank account.
+     * @param transferRemov the transfer with the form values.
+     * @return the html page with a message indicating
+     * the statue of the requested request.
+     */
     @PostMapping(value = "/removmoney")
-    public String removMoney(@ModelAttribute("transferRemov") TransferRemov transferRemov) {
+    public String removMoney(@ModelAttribute("transferRemov")
+                                 final TransferRemov transferRemov) {
         //Component
         User user = userComponent.saveUser();
 
@@ -66,13 +99,22 @@ public class MoneyController {
         return "redirect:/home?success";
     }
 
+    /**
+     * Create a Transfer between two Users.
+     * @param transferUser the transfer with the form values.
+     * @return the html page with a message indicating
+     * the statue of the requested request.
+     */
     @PostMapping(value = "/pay")
-    public String pay(@ModelAttribute("transferUser")TransferUser transferUser) {
+    public String pay(
+            @ModelAttribute("transferUser") final TransferUser transferUser) {
         //Component
         User user = userComponent.saveUser();
 
         //Gestion Error
-        if (user.getPay().compareTo(transferUser.getAmount().multiply(BigDecimal.valueOf(1.005))) < 0) {
+        if (user.getPay().compareTo(transferUser.getAmount()
+                .multiply(BigDecimal
+                        .valueOf(MoneyConstant.MONETISATION))) < 0) {
             return "redirect:/transfer?errorPay";
         }
 

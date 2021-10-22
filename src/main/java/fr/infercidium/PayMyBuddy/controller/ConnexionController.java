@@ -12,12 +12,24 @@ import org.springframework.web.bind.annotation.PostMapping;
 @Controller
 public class ConnexionController {
 
+    /**
+     * Instantiating userComponent.
+     */
     @Autowired
     private UserComponent userComponent;
 
+    /**
+     * Instantiation of userInterface.
+     */
     @Autowired
     private UserI userS;
 
+    /**
+     * Deleting a Connection.
+     * @param id of the Connection to be deleted.
+     * @return the html page with a message indicating
+     * the statue of the requested request.
+     */
     @GetMapping(value = "/remove{id}")
     public String removecontact(@PathVariable final Long id) {
         //Component
@@ -31,6 +43,12 @@ public class ConnexionController {
         return "redirect:/contact?remove";
     }
 
+    /**
+     * Creation of a Connection.
+     * @param email of the user to add.
+     * @return the html page with a message indicating
+     * the statue of the requested request.
+     */
     @PostMapping(value = "/addCoC")
     public String addcontactC(final String email) {
         //Component
@@ -55,6 +73,12 @@ public class ConnexionController {
         return "redirect:/contact?addCo";
     }
 
+    /**
+     * Creation of a Connection.
+     * @param email of the user to add.
+     * @return the html page with a message indicating
+     * the statue of the requested request.
+     */
     @PostMapping(value = "/addCoT")
     public String addcontactT(final String email) {
         //Component

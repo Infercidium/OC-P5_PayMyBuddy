@@ -8,16 +8,33 @@ import java.util.Objects;
 
 @Entity
 public class TransferRemov extends Transfer {
+
+    /**
+     * Attribute debited corresponding to debited user.
+     */
     @ManyToOne
     private User debited;
 
+    /**
+     * Attribute bankAccount corresponding to bankAccount user.
+     */
     @ManyToOne
     private BankAccount bankAccount;
 
+    /**
+     * Basic builder.
+     */
     public TransferRemov() {
         setDateTime(LocalDateTime.now());
     }
 
+    /**
+     * Complete builder.
+     * @param amountC attribute.
+     * @param descriptionC attribute.
+     * @param debitedC attribute.
+     * @param bankAccountC attribute.
+     */
     public TransferRemov(final BigDecimal amountC,
                     final String descriptionC,
                     final User debitedC,
@@ -29,22 +46,42 @@ public class TransferRemov extends Transfer {
         this.bankAccount = bankAccountC;
     }
 
+    /**
+     * Getter of debited.
+     * @return debited.
+     */
     public User getDebited() {
         return new User(debited);
     }
 
+    /**
+     * Setter of debited.
+     * @param debitedS : new debited.
+     */
     public void setDebited(final User debitedS) {
         this.debited = debitedS;
     }
 
+    /**
+     * Getter of bankAccount.
+     * @return bankAccount.
+     */
     public BankAccount getBankAccount() {
         return new BankAccount(bankAccount);
     }
 
-    public void setBankAccount(BankAccount bankAccount) {
-        this.bankAccount = bankAccount;
+    /**
+     * Setter of bankAccount.
+     * @param bankAccountS : new bankAccount.
+     */
+    public void setBankAccount(final BankAccount bankAccountS) {
+        this.bankAccount = bankAccountS;
     }
 
+    /**
+     * ToString method.
+     * @return toString.
+     */
     @Override
     public String toString() {
         return "Transfert{"
@@ -57,6 +94,11 @@ public class TransferRemov extends Transfer {
                 + '}';
     }
 
+    /**
+     * Equals method.
+     * @param o : element to compare.
+     * @return result of the comparison.
+     */
     @Override
     public boolean equals(final Object o) {
         if (this == o) {
@@ -72,6 +114,10 @@ public class TransferRemov extends Transfer {
         return getId().equals(that.getId());
     }
 
+    /**
+     * HashCode method.
+     * @return hashCode.
+     */
     @Override
     public int hashCode() {
         return Objects.hash(super.hashCode(), getId());

@@ -6,5 +6,10 @@ import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")
 public interface UserMapper {
+    /**
+     * Transform a dto into a model.
+     * @param userRegistrationDto : the dto.
+     * @return User model.
+     */
     User dtoToModel(UserRegistrationDto userRegistrationDto);
 }

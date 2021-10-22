@@ -6,5 +6,10 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface AuthorityRepository extends JpaRepository<Authority, Long> {
-    Authority findByNameIgnoreCase(String user);
+    /**
+     * Find Authority with name role.
+     * @param role research.
+     * @return Authority.
+     */
+    Authority findByNameIgnoreCase(String role);
 }

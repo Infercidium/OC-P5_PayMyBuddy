@@ -12,16 +12,31 @@ import org.springframework.stereotype.Component;
 @Component
 public class UserComponent {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(UserComponent.class);
+    /**
+     * Instantiation of LOGGER in order to inform in console.
+     */
+    private static final Logger LOGGER
+            = LoggerFactory.getLogger(UserComponent.class);
 
+    /**
+     * Instantiation of userInterface.
+     */
     @Autowired
     private UserI userS;
 
+    /**
+     * User attribute stored in order not to reload it every time.
+     */
     private User user = null;
 
+    /**
+     * Used to find the user and save it in the attribute of the class.
+     * @return the logged in user.
+     */
     public User saveUser() {
         if (user == null) {
-            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            Authentication authentication
+                    = SecurityContextHolder.getContext().getAuthentication();
             String currentPrincipalName = authentication.getName();
             user = userS.getUser(currentPrincipalName);
             LOGGER.info("Current User loaded");
@@ -29,6 +44,10 @@ public class UserComponent {
         return user;
     }
 
+    /**
+     * Used to reset the user attribute to null in order to reload it,
+     * update it.
+     */
     public void cleanUser() {
         LOGGER.info("Emptying User caches");
         user = null;

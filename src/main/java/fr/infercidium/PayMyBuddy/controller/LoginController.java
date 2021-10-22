@@ -12,14 +12,26 @@ import javax.servlet.http.HttpServletResponse;
 @Controller
 public class LoginController {
 
+    /**
+     * Used to connect to the application.
+     * @return the home page.
+     */
     @GetMapping("/login")
     public String login() {
         return "login";
     }
 
+    /**
+     * Allows you to log out of the application.
+     * @param request of disconnection.
+     * @param response of disconnection.
+     * @return the login page.
+     */
     @GetMapping("/logout")
-    public String logout(final HttpServletRequest request, final HttpServletResponse response) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+    public String logout(final HttpServletRequest request,
+                         final HttpServletResponse response) {
+        Authentication auth
+                = SecurityContextHolder.getContext().getAuthentication();
         if (auth != null) {
             new SecurityContextLogoutHandler().logout(request, response, auth);
         }

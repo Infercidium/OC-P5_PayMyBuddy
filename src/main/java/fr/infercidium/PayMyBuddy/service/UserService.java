@@ -26,18 +26,36 @@ import java.util.stream.Collectors;
 @Transactional
 public class UserService implements UserI {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(UserService.class);
+    /**
+     * Instantiation of LOGGER in order to inform in console.
+     */
+    private static final Logger LOGGER
+            = LoggerFactory.getLogger(UserService.class);
 
+    /**
+     * Instantiation of bCryptPasswordEncoder.
+     */
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
 
+    /**
+     * Instantiation of userRepository.
+     */
     @Autowired
     private UserRepository userR;
 
+    /**
+     * Instantiation of authorityInterface.
+     */
     @Autowired
-    private AuthorityService authorityS;
+    private AuthorityI authorityS;
 
     //Service ConnexionController
+    /**
+     * Removes a Connection.
+     * @param id of the connection to delete.
+     * @param user : Affected user.
+     */
     @Override
     public void removeConnection(final Long id, final User user) {
         User removed = getUser(id);
@@ -50,6 +68,11 @@ public class UserService implements UserI {
         LOGGER.info("Connection deleted");
     }
 
+    /**
+     * Add a connection.
+     * @param email of connection to add.
+     * @param user : Affected user.
+     */
     @Override
     public void addConnection(final String email, final User user) {
         User added = getUser(email);
@@ -63,10 +86,18 @@ public class UserService implements UserI {
     }
 
     //Service ProfileController
+
+    /**
+     * Modifies user data.
+     * @param registrationDto new informations.
+     * @param user to update.
+     */
     @Override
-    public void editUser(final UserRegistrationDto registrationDto, final User user) {
+    public void editUser(final UserRegistrationDto registrationDto,
+                         final User user) {
         if (!registrationDto.getPassword().isEmpty()) {
-            user.setPassword(passwordEncoder.encode(registrationDto.getPassword()));
+            user.setPassword(passwordEncoder
+                    .encode(registrationDto.getPassword()));
         }
         if (!registrationDto.getUserName().isEmpty()) {
             user.setUserName(registrationDto.getUserName());
@@ -77,6 +108,10 @@ public class UserService implements UserI {
     }
 
     //Service
+    /**
+     * Save a transfer.
+     * @param user to save.
+     */
     @Override
     public void postUser(final User user) {
         Authority authority = authorityS.getUser();
@@ -86,18 +121,32 @@ public class UserService implements UserI {
         LOGGER.debug("User creation");
     }
 
+    /**
+     * Update a transfer.
+     * @param user to update.
+     */
     @Override
-    public void updateUser(final User user){
+    public void updateUser(final User user) {
         userR.save(user);
         LOGGER.debug("User updated");
     }
 
+    /**
+     * Find a User by their email.
+     * @param email used.
+     * @return User found.
+     */
     @Override
     public User getUser(final String email) {
         LOGGER.debug("User found");
         return userR.findByEmailIgnoreCase(email);
     }
 
+    /**
+     * Find a User by their id.
+     * @param id used.
+     * @return User found.
+     */
     @Override
     public User getUser(final Long id) {
         LOGGER.debug("User found");
@@ -105,12 +154,24 @@ public class UserService implements UserI {
     }
 
     //Pagination
+    /**
+     * Use the user's email to find the Knowuser
+     * list and put them into pages.
+     * @param email used by Repository.
+     * @param pageable used by Repository.
+     * @return multi-page Knowuser list found.
+     */
     @Override
     public Page<User> getKnowUser(final String email, final Pageable pageable) {
         LOGGER.debug("User connections page");
         return userR.findByKnowUserEmailIgnoreCase(email, pageable);
     }
 
+    /**
+     * Use the user's email to find the Knowuser list.
+     * @param email used.
+     * @return a list of Knowuser.
+     */
     @Override
     public List<User> getKnowUser(final String email) {
         LOGGER.debug("List of User Connections");
@@ -118,16 +179,35 @@ public class UserService implements UserI {
     }
 
     // UserDetailsService
+
+    /**
+     * Load User security from the Username of a User model.
+     * @param username research.
+     * @return User of Security Springframework.
+     * @throws UsernameNotFoundException if Username is not found.
+     */
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(final String username)
+            throws UsernameNotFoundException {
         User user = userR.findByEmailIgnoreCase(username);
         if (user == null) {
-            throw  new UsernameNotFoundException("Could not find user with that email");
+            throw  new UsernameNotFoundException("Could not find user "
+                    + "with that email");
         }
-        return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), mapRolesToAuthorities(user.getAuthorities()));
+        return new org.springframework.security.core.userdetails.User(
+                user.getEmail(), user.getPassword(),
+                mapRolesToAuthorities(user.getAuthorities()));
     }
 
-    private Collection<? extends GrantedAuthority> mapRolesToAuthorities(Collection<Authority> authorities) {
-        return authorities.stream().map(authority -> new SimpleGrantedAuthority(authority.getName())).collect(Collectors.toList());
+    /**
+     * Used by loadUserByUsername.
+     * @param authorities : role like User or Admin.
+     * @return Authorities.
+     */
+    private Collection<? extends GrantedAuthority> mapRolesToAuthorities(
+            final Collection<Authority> authorities) {
+        return authorities.stream().map(authority
+                -> new SimpleGrantedAuthority(authority.getName()))
+                .collect(Collectors.toList());
     }
 }

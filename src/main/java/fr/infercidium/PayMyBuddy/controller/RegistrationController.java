@@ -14,21 +14,39 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/registration")
 public class RegistrationController {
 
+    /**
+     * Instantiation of userInterface.
+     */
     @Autowired
     private UserI userS;
 
+    /**
+     * Instantiation of userMappage.
+     */
     @Autowired
     private UserMapper userM;
 
+    /**
+     * Creation of the ModelAttribute capturing the html form.
+     * @return the userRegistrationDto with the form values.
+     */
     @ModelAttribute("user")
     public UserRegistrationDto userRegistrationDto() {
         return new UserRegistrationDto();
     }
 
+    /**
+     * Allows you to create your account.
+     * @param registrationDto : information.
+     * @return the html page with a message indicating
+     * the statue of the requested request.
+     */
     @PostMapping
-    public String userRegistration(@ModelAttribute("user")UserRegistrationDto registrationDto) {
+    public String userRegistration(
+            @ModelAttribute("user") final UserRegistrationDto registrationDto) {
         //Gestion Error
-        if (!registrationDto.getPassword().equals(registrationDto.getPassword2())) {
+        if (!registrationDto.getPassword()
+                .equals(registrationDto.getPassword2())) {
             return "redirect:/login?errorPassword";
         }
 
