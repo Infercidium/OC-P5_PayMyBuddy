@@ -90,7 +90,7 @@
                 </div>
                 <form class="row row-element align-items-center" th:action="@{/pay}" method="post">
                     <div class="col">
-                        <select class="custom-select px-3 py-2" aria-label="Connection Select" name="Credited">
+                        <select class="custom-select px-3 py-2" aria-label="Connection Select" name="Credited" required>
                             <option selected>Select A Connection</option>
                             <div th:each="connection : ${connexion}">
                                 <option th:value="${connection.id}"  th:text="${connection.userName}">Exemple</option>

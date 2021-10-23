@@ -5,12 +5,16 @@ import fr.infercidium.PayMyBuddy.model.User;
 import fr.infercidium.PayMyBuddy.repository.BankAccountRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 
 import java.time.LocalDate;
+import java.util.Collections;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -37,38 +41,33 @@ class BankAccountServiceTest {
         bankAccount.setId(1L);
         bankAccount2.setId(2L);
         bankAccount.setUser(user);
-    }
 
-    @Test
-    void creatBankAccount() {
-        bankAccountS.creatBankAccount(bankAccount2, user);
-    }
-
-    @Test
-    void removeBankAccount() {
-        User userMock = mock(User.class);
-        BankAccount bankAccountMock = mock(BankAccount.class);
-        when(bankAccountMock.getId()).thenReturn(1L);
-        doNothing().when(userMock).removeBankAccount(isA(BankAccount.class));
-        doNothing().when(bankAccountMock).setUser(isNull());
-        doNothing().when(userS).updateUser(isA(User.class));
-        bankAccountS.removeBankAccount(bankAccountMock.getId(), userMock);
-
+        when(bankAccountR.getById(isA(Long.class))).thenReturn(bankAccount);
     }
 
     @Test
     void postBankAccount() {
+        bankAccountS.postBankAccount(bankAccount);
+        verify(bankAccountR, times(1)).save(isA(BankAccount.class));
     }
 
     @Test
     void getBankAccount() {
+        BankAccount bankAccountTest = bankAccountS.getBankAccount(bankAccount.getId());
+        assertEquals(bankAccount, bankAccountTest);
     }
 
     @Test
     void getUserBankAccount() {
+        when(bankAccountR.findByUserEmailIgnoreCase(isA(String.class))).thenReturn(Collections.singletonList(bankAccount));
+        List<BankAccount> bankAccountList = bankAccountS.getUserBankAccount(user.getEmail());
+        assertEquals(Collections.singletonList(bankAccount), bankAccountList);
     }
 
     @Test
     void getBankAccountPageUser() {
+        when(bankAccountR.findByUserEmailIgnoreCase(isA(String.class), isA(Pageable.class))).thenReturn(new PageImpl<>(Collections.singletonList(bankAccount)));
+        Page<BankAccount> bankAccountPage = bankAccountS.getBankAccountPageUser(user.getEmail(), Pageable.unpaged());
+        assertEquals(new PageImpl<>(Collections.singletonList(bankAccount)), bankAccountPage);
     }
 }
