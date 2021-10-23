@@ -75,4 +75,10 @@ public interface UserI extends UserDetailsService {
      * @return a list of Knowuser.
      */
     List<User> getKnowUser(String email);
+
+    /**
+     * Allows you to have the complete list of users.
+     * @return full user in List.
+     */
+    List<User> getUsers();
 }

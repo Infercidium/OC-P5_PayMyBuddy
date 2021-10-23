@@ -25,6 +25,9 @@
             <div th:if="${param.errorPassword}" class="alert alert-danger text-center" style="font-size: medium;">
                 Passwords are not the same
             </div>
+            <div th:if="${param.emailUsed}" class="alert alert-danger text-center" style="font-size: medium;">
+                Email already in use
+            </div>
             <div class="row">
                 <div class="col-3"></div>
                 <div class="input-group col email my-5 form-group">

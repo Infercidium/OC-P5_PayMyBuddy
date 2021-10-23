@@ -68,6 +68,11 @@ public class MoneyController {
         //Component
         User user = userComponent.saveUser();
 
+        //Gestion Error
+        if (transferAdd.getAmount().equals(BigDecimal.ZERO)) {
+            return "redirect:/home?noAmount";
+        }
+
         //Service
         transferS.addCardMoney(transferAdd, user);
 
@@ -90,6 +95,10 @@ public class MoneyController {
         //Gestion Error
         if (user.getPay().compareTo(transferRemov.getAmount()) < 0) {
             return "redirect:/home?error";
+        }
+
+        if (transferRemov.getAmount().equals(BigDecimal.ZERO)) {
+            return "redirect:/home?noAmount";
         }
 
         //Service
@@ -116,6 +125,10 @@ public class MoneyController {
                 .multiply(BigDecimal
                         .valueOf(MoneyConstant.MONETISATION))) < 0) {
             return "redirect:/transfer?errorPay";
+        }
+
+        if (transferUser.getAmount().equals(BigDecimal.ZERO)) {
+            return "redirect:/transfer?noAmount";
         }
 
         //Service

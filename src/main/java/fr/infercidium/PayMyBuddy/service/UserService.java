@@ -89,7 +89,7 @@ public class UserService implements UserI {
 
     /**
      * Modifies user data.
-     * @param registrationDto new informations.
+     * @param registrationDto new information.
      * @param user to update.
      */
     @Override
@@ -176,6 +176,15 @@ public class UserService implements UserI {
     public List<User> getKnowUser(final String email) {
         LOGGER.debug("List of User Connections");
         return userR.findByKnowUserEmailIgnoreCase(email);
+    }
+
+    /**
+     * Allows you to have the complete list of users.
+     * @return full user in List.
+     */
+    @Override
+    public List<User> getUsers() {
+        return userR.findAll();
     }
 
     // UserDetailsService

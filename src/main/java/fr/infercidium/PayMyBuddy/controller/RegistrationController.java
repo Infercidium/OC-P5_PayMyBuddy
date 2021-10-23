@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.util.stream.Collectors;
+
 @Controller
 @RequestMapping("/registration")
 public class RegistrationController {
@@ -48,6 +50,11 @@ public class RegistrationController {
         if (!registrationDto.getPassword()
                 .equals(registrationDto.getPassword2())) {
             return "redirect:/login?errorPassword";
+        }
+
+        if (userS.getUsers().stream().anyMatch(user -> registrationDto.getEmail()
+                .equals(user.getEmail()))) {
+            return "redirect:/login?emailUsed";
         }
 
         //Mappage

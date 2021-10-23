@@ -74,7 +74,7 @@ public class BankAccountController {
 
         //Return
         userComponent.cleanUser();
-        return "redirect:/profile?successUpBank";
+        return "redirect:/profile?successBank";
     }
 
     /**

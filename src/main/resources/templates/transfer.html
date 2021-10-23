@@ -79,6 +79,9 @@
                 <div th:if="${param.errorPay}" class="alert alert-danger text-center" style="font-size: medium;">
                     Transaction error
                 </div>
+                <div th:if="${param.noAmount}" class="alert alert-danger text-center" style="font-size: medium;">
+                    Choose an correct amount to make the transfer
+                </div>
                 <div class="row pt-4">
                     <div class="col text-start">Send Money</div>
                     <div class="col">
