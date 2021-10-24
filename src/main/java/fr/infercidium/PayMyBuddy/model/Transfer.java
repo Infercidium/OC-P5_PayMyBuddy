@@ -67,27 +67,6 @@ public class Transfer {
     }
 
     /**
-     * Complete builder.
-     * @param creditedC attribute.
-     * @param amountC attribute.
-     * @param descriptionC attribute.
-     * @param debitedC attribute.
-     * @param bankAccountC attribute.
-     */
-    public Transfer(final User creditedC,
-                    final BigDecimal amountC,
-                    final String descriptionC,
-                    final User debitedC,
-                    final BankAccount bankAccountC) {
-        this.credited = creditedC;
-        this.amount = amountC;
-        this.description = descriptionC;
-        this.dateTime = LocalDateTime.now();
-        this.debited = debitedC;
-        this.bankAccount = bankAccountC;
-    }
-
-    /**
      * Getter of id.
      * @return id.
      */

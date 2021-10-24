@@ -52,4 +52,8 @@ public class UserComponent {
         LOGGER.info("Emptying User caches");
         user = null;
     }
+
+    public User getUser() {
+        return user;
+    }
 }
