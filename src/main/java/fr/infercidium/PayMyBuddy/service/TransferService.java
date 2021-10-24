@@ -1,85 +1,161 @@
 package fr.infercidium.PayMyBuddy.service;
 
+import fr.infercidium.PayMyBuddy.Constants.MoneyConstant;
 import fr.infercidium.PayMyBuddy.model.Transfer;
+import fr.infercidium.PayMyBuddy.model.User;
 import fr.infercidium.PayMyBuddy.repository.TransferRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.List;
-import java.util.Optional;
 
 @Service
+@Transactional
 public class TransferService implements TransferI {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(TransferService.class);
+    /**
+     * Instantiation of LOGGER in order to inform in console.
+     */
+    private static final Logger LOGGER
+            = LoggerFactory.getLogger(TransferService.class);
 
-    private final TransferRepository transfertR;
+    /**
+     * Instantiation of transferRepository.
+     */
+    @Autowired
+    private TransferRepository transfertR;
 
-    public TransferService(final TransferRepository transfertRe) {
-        this.transfertR = transfertRe;
-    }
+    /**
+     * Instantiation of userInterface.
+     */
+    @Autowired
+    private UserI userS;
 
+    //Service MoneyController
+
+    /**
+     * Adds money from bankAccount to the User.
+     * @param transferAdd : transfer with bankAccount.
+     * @param user : Affected user.
+     */
     @Override
-    public Transfer postTransfer(final Transfer transfer) {
-        return this.transfertR.save(transfer);
+    public void addCardMoney(final Transfer transferAdd, final User user) {
+        user.setPay(user.getPay().add(transferAdd.getAmount()));
+
+        transferAdd.setCredited(user);
+        postTransfer(transferAdd);
+        user.addHistoryCredited(transferAdd);
+        userS.updateUser(user);
+        LOGGER.info("Successful transaction between User "
+                + "and their bankAccount");
     }
 
+    /**
+     * Adds money from User to the bankAccount.
+     * @param transferRemov : transfer with bankAccount.
+     * @param user : Affected user.
+     */
     @Override
-    public void editTransfer(final Long id, final Transfer transfer) {
-        Transfer verifiedTransfer = transferVerification(id, transfer);
-        postTransfer(verifiedTransfer);
+    public void removCardMoney(final Transfer transferRemov, final User user) {
+        user.setPay(user.getPay().subtract(transferRemov.getAmount()));
+
+        transferRemov.setDebited(user);
+        postTransfer(transferRemov);
+        user.addHistoryDebited(transferRemov);
+        userS.updateUser(user);
+        LOGGER.info("Successful transaction between User "
+                + "and their bankAccount");
     }
 
+    /**
+     * Transaction between user.
+     * @param transferUser transfer with credited User.
+     * @param user Affected debited User.
+     */
     @Override
-    public void removeTransfer(Long id) {
-        Transfer transfer = getTransfer(id);
-        if (transfer != null) {
-            this.transfertR.delete(transfer);
-        } else {
-            throw new NullPointerException();
-        }
+    public void transactMoney(final Transfer transferUser, final User user) {
+        User credited = transferUser.getCredited();
+
+        user.setPay(user.getPay().subtract(transferUser.getAmount()
+                .multiply(BigDecimal.valueOf(MoneyConstant.MONETISATION))));
+        credited.setPay(credited.getPay().add(transferUser.getAmount()));
+
+        transferUser.setDebited(user);
+        postTransfer(transferUser);
+        user.addHistoryDebited(transferUser);
+        credited.addHistoryCredited(transferUser);
+        userS.updateUser(user);
+        userS.updateUser(credited);
+        LOGGER.info("Successful User Transaction");
     }
 
+    //Service
+
+    /**
+     * Save a transfer.
+     * @param transfer to save.
+     */
     @Override
-    public Transfer getTransfer(Long id) {
-        Optional<Transfer> transfer = this.transfertR.findById(id);
-        if (transfer.isPresent()) {
-            return transfer.get();
-        } else {
-            throw new NullPointerException();
-        }
+    public void postTransfer(final Transfer transfer) {
+        transfertR.save(transfer);
+        LOGGER.debug("Creation of the Transfer");
     }
 
+    //Pagination
+
+    /**
+     * Use the user's email to find the Transfer Credited
+     * list and put them into pages.
+     * @param email used by Repository.
+     * @param pageable used by Repository.
+     * @return multi-page Transfer list found.
+     */
     @Override
-    public List<Transfer> getTransfers() {
-        List<Transfer> transferList = this.transfertR.findAll();
-        if (!transferList.isEmpty()) {
-            return transferList;
-        } else {
-            throw new NullPointerException();
-        }
+    public Page<Transfer> getTransferPageCredited(final String email,
+                                                  final Pageable pageable) {
+        LOGGER.debug("User Transfers Page");
+        return transfertR.findByCreditedEmailIgnoreCase(email, pageable);
     }
 
-    private Transfer transferVerification(final Long id, final Transfer transfer) {
-        Transfer origineTransfer = getTransfer(id);
-        transfer.setId(origineTransfer.getId());
-        if (transfer.getAmount() == null) {
-            transfer.setAmount(origineTransfer.getAmount());
-        }
-        if (transfer.getCredited() == null) {
-            transfer.setCredited(origineTransfer.getCredited());
-        }
-        if (transfer.getDebited() == null) {
-            transfer.setDebited(origineTransfer.getDebited());
-        }
-        if (transfer.getDateTime() == null) {
-            transfer.setDateTime(origineTransfer.getDateTime());
-        }
-        if (transfer.getDescription() == null) {
-            transfer.setDescription(origineTransfer.getDescription());
-        }
-        LOGGER.debug("Verification of Transfer fields");
-        return transfer;
+    /**
+     * Use the user's email to find the Transfer Debited
+     * list and put them into pages.
+     * @param email used by Repository.
+     * @param pageable used by Repository.
+     * @return multi-page Transfer list found.
+     */
+    @Override
+    public Page<Transfer> getTransferPageDebited(final String email,
+                                                 final Pageable pageable) {
+        LOGGER.debug("User Transfers Page");
+        return transfertR.findByDebitedEmailIgnoreCase(email, pageable);
+    }
+
+    /**
+     * Use the user's email to find the Transfer Credited list.
+     * @param email used.
+     * @return a list of Transfer.
+     */
+    @Override
+    public List<Transfer> getTransferCredited(final String email) {
+        LOGGER.debug("List of User Transfers");
+        return transfertR.findByCreditedEmailIgnoreCase(email);
+    }
+
+    /**
+     * Use the user's email to find the Transfer Debited list.
+     * @param email used.
+     * @return a list of Transfer.
+     */
+    @Override
+    public List<Transfer> getTransferDebited(final String email) {
+        LOGGER.debug("List of User Transfers");
+        return transfertR.findByDebitedEmailIgnoreCase(email);
     }
 }
