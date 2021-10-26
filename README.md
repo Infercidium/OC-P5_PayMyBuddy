@@ -42,7 +42,7 @@ There are other Urls allowing various actions, all leading to one of its pages a
 Application uses spring boot, use the following command to start it:
 `./mvnw.cmd spring-boot:run`
 
-##First Launch
+### First Launch
 During the first launch it will be necessary to create the `paymybuddy` schema or to have modified it in `application.properties`, 
 and as mentioned previously to have in mySQL `root` identifier and `rootroot` password or to have also modify them in the same file.
 
@@ -50,7 +50,7 @@ Then do the `./mvnw.cmd spring-boot:run` command.
 
 And finally in the Authorities array, added the id `1` with the name `User`.
 
-##Demo
+### Demo
 To activate the demo, you have to perform the first two lines of the first launch.
 
 Then copy the Script to the same folder as this ReadMe in mySQL.
