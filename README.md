@@ -13,6 +13,10 @@ But also to modify the username and password, root and rootroot.
 
 A demonstration script to run in the shema is also available.
 
+Physical data model :
+![Modèle Physique de Données](https://user-images.githubusercontent.com/82523651/138967776-b082cfa7-4e5d-48cb-8b84-26bed7164ab5.png)
+
+
 ### APPLICATION
 The application is composed of html page allowing various actions and displaying corresponding information.
 
@@ -37,6 +41,10 @@ The application is composed of html page allowing various actions and displaying
   * The login form email password, a Remember me box, the login button and a registration button at the bottom right.
   
 There are other Urls allowing various actions, all leading to one of its pages above.
+
+Class diagram :
+![Diagramme de Classe P6](https://user-images.githubusercontent.com/82523651/138967853-927211f3-f33c-4e12-b94c-29311ab16b50.png)
+
 
 ## Launch
 Application uses spring boot, use the following command to start it:
