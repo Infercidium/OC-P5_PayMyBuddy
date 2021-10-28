@@ -90,7 +90,7 @@ public class User {
     /**
      * Attribute bankAccounts corresponding to bankAccounts user.
      */
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     private List<BankAccount> bankAccounts;
 
     /**
