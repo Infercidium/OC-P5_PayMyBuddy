@@ -40,6 +40,10 @@ The application is composed of html page allowing various actions and displaying
 5. `Login`
   * A rectangle gathering all of the information with the 'Pay My Buddy' logo centered at the top.
   * The login form email password, a Remember me box, the login button and a registration button at the bottom right.
+
+6. `billing`
+  * Displays a table containing all the invoices made on the application.
+  * Only a User logged in with the `Admin` role can have access to it.
   
 There are other Urls allowing various actions, all leading to one of its pages above.
 
@@ -61,9 +65,9 @@ Then do the `./mvnw.cmd spring-boot:run` command.
 And finally in the Authorities array, added the id `1` with the name `User`.
 
 ### Demo
-To activate the demo, you have to perform the first two lines of the first launch.
+Just use `Script_Demo` to the same folder as this ReadMe in mySQL.
 
-Then copy the Script to the same folder as this ReadMe in mySQL.
+The script will create the shema, the database and fill it, if you have changed the shema in `application.properties`, you must modify the first two lines of the script.
 
 And finally launch the application with `./mvnw.cmd spring-boot:run`.
 
