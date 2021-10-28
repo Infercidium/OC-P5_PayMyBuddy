@@ -109,6 +109,7 @@ public class User {
         this.knowUser = new HashSet<>();
         this.authorities = new ArrayList<>();
         this.bankAccounts = new ArrayList<>();
+        this.billings = new ArrayList<>();
     }
 
     /**
@@ -131,6 +132,7 @@ public class User {
         this.knowUser = new HashSet<>();
         this.authorities = new ArrayList<>();
         this.bankAccounts = Collections.singletonList(bankAccountC);
+        this.billings = new ArrayList<>();
     }
 
     /**
