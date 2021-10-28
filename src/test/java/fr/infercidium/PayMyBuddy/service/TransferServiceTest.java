@@ -1,11 +1,6 @@
 package fr.infercidium.PayMyBuddy.service;
 
-import fr.infercidium.PayMyBuddy.model.BankAccount;
-import fr.infercidium.PayMyBuddy.model.Transfer;
-import fr.infercidium.PayMyBuddy.model.TransferAdd;
-import fr.infercidium.PayMyBuddy.model.TransferRemov;
-import fr.infercidium.PayMyBuddy.model.TransferUser;
-import fr.infercidium.PayMyBuddy.model.User;
+import fr.infercidium.PayMyBuddy.model.*;
 import fr.infercidium.PayMyBuddy.repository.TransferRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,6 +61,7 @@ class TransferServiceTest {
         transferS.transactMoney(transferUser, user);
         verify(userS, times(2)).updateUser(isA(User.class));
         verify(transferR, times(1)).save(isA(Transfer.class));
+        verify(billingS, times(1)).postBilling(isA(Billing.class));
     }
 
     @Test
