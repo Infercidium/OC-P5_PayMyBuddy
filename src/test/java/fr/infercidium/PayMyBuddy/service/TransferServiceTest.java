@@ -35,6 +35,9 @@ class TransferServiceTest {
     @MockBean
     private UserService userS;
 
+    @MockBean
+    private BillingService billingS;
+
     @Autowired
     private TransferService transferS;
 

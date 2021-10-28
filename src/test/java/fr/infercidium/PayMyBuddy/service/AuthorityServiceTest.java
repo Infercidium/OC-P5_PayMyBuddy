@@ -32,7 +32,7 @@ class AuthorityServiceTest {
     @Test
     void getUser() {
         when(authorityR.findByNameIgnoreCase("user")).thenReturn(authority);
-        Authority authority2 = authorityS.getUser();
+        Authority authority2 = authorityS.getRole("user");
         assertEquals(authority, authority);
     }
 }

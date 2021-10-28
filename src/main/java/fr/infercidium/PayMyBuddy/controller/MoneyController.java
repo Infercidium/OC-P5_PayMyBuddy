@@ -119,7 +119,7 @@ public class MoneyController {
             @ModelAttribute("transferUser") final TransferUser transferUser) {
         //Component
         User user = userComponent.saveUser();
-
+        System.out.println(user.getUserName());
         //Gestion Error
         if (user.getPay().compareTo(transferUser.getAmount()
                 .multiply(BigDecimal

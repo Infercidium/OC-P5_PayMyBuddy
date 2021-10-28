@@ -90,8 +90,14 @@ public class User {
     /**
      * Attribute bankAccounts corresponding to bankAccounts user.
      */
-    @OneToMany(fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "user")
     private List<BankAccount> bankAccounts;
+
+    /**
+     * Attribute billings corresponding to billing.
+     */
+    @OneToMany(mappedBy = "user")
+    private List<Billing> billings;
 
     /**
      * Basic builder.
@@ -142,6 +148,7 @@ public class User {
         this.knowUser = user.getKnowUser();
         this.authorities = user.getAuthorities();
         this.bankAccounts = user.getBankAccounts();
+        this.billings = user.getBillings();
     }
 
     /**
@@ -302,6 +309,22 @@ public class User {
      */
     public void setBankAccounts(final List<BankAccount> bankAccountsS) {
         this.bankAccounts = bankAccountsS;
+    }
+
+    /**
+     * Getter of Billing.
+     * @return Billing.
+     */
+    public List<Billing> getBillings() {
+        return new ArrayList<>(billings);
+    }
+
+    /**
+     * Setter of Billing.
+     * @param billingsS : it's billing.
+     */
+    public void setBillings(final List<Billing> billingsS) {
+        this.billings = billingsS;
     }
 
     /**

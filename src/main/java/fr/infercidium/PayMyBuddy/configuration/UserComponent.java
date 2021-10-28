@@ -53,6 +53,10 @@ public class UserComponent {
         user = null;
     }
 
+    /**
+     * Used for test user attribute.
+     * @return user attribute.
+     */
     public User getUser() {
         return user;
     }

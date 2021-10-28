@@ -64,6 +64,7 @@ public class Security extends WebSecurityConfigurerAdapter {
                .antMatchers("/custom.css").permitAll()
                .antMatchers("/registration**").permitAll()
                .antMatchers("/login**").permitAll()
+               .antMatchers("/billing**").hasAuthority("Admin")
                .anyRequest().authenticated()
                .and().formLogin()
                     .loginPage("/login")

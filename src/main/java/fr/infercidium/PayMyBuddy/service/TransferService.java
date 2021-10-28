@@ -1,7 +1,11 @@
 package fr.infercidium.PayMyBuddy.service;
 
 import fr.infercidium.PayMyBuddy.Constants.MoneyConstant;
+import fr.infercidium.PayMyBuddy.model.Billing;
 import fr.infercidium.PayMyBuddy.model.Transfer;
+import fr.infercidium.PayMyBuddy.model.TransferAdd;
+import fr.infercidium.PayMyBuddy.model.TransferRemov;
+import fr.infercidium.PayMyBuddy.model.TransferUser;
 import fr.infercidium.PayMyBuddy.model.User;
 import fr.infercidium.PayMyBuddy.repository.TransferRepository;
 import org.slf4j.Logger;
@@ -37,6 +41,12 @@ public class TransferService implements TransferI {
     @Autowired
     private UserI userS;
 
+    /**
+     * Instantiation of billingInterface.
+     */
+    @Autowired
+    private BillingI billingS;
+
     //Service MoneyController
 
     /**
@@ -45,7 +55,7 @@ public class TransferService implements TransferI {
      * @param user : Affected user.
      */
     @Override
-    public void addCardMoney(final Transfer transferAdd, final User user) {
+    public void addCardMoney(final TransferAdd transferAdd, final User user) {
         user.setPay(user.getPay().add(transferAdd.getAmount()));
 
         transferAdd.setCredited(user);
@@ -62,7 +72,8 @@ public class TransferService implements TransferI {
      * @param user : Affected user.
      */
     @Override
-    public void removCardMoney(final Transfer transferRemov, final User user) {
+    public void removCardMoney(final TransferRemov transferRemov,
+                               final User user) {
         user.setPay(user.getPay().subtract(transferRemov.getAmount()));
 
         transferRemov.setDebited(user);
@@ -79,19 +90,26 @@ public class TransferService implements TransferI {
      * @param user Affected debited User.
      */
     @Override
-    public void transactMoney(final Transfer transferUser, final User user) {
+    public void transactMoney(final TransferUser transferUser,
+                              final User user) {
         User credited = transferUser.getCredited();
 
-        user.setPay(user.getPay().subtract(transferUser.getAmount()
-                .multiply(BigDecimal.valueOf(MoneyConstant.MONETISATION))));
+        BigDecimal total = transferUser.getAmount()
+                .multiply(BigDecimal.valueOf(MoneyConstant.MONETISATION));
+        user.setPay(user.getPay().subtract(total));
         credited.setPay(credited.getPay().add(transferUser.getAmount()));
+
+        Billing billing = new Billing(user, transferUser, total
+                .subtract(transferUser.getAmount()));
 
         transferUser.setDebited(user);
         postTransfer(transferUser);
         user.addHistoryDebited(transferUser);
         credited.addHistoryCredited(transferUser);
+
         userS.updateUser(user);
         userS.updateUser(credited);
+        billingS.postBilling(billing);
         LOGGER.info("Successful User Transaction");
     }
 

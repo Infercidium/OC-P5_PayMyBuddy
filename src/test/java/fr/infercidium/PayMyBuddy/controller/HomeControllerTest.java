@@ -4,6 +4,7 @@ import fr.infercidium.PayMyBuddy.configuration.UserComponent;
 import fr.infercidium.PayMyBuddy.model.BankAccount;
 import fr.infercidium.PayMyBuddy.model.TransferUser;
 import fr.infercidium.PayMyBuddy.model.User;
+import fr.infercidium.PayMyBuddy.service.AuthorityService;
 import fr.infercidium.PayMyBuddy.service.BankAccountService;
 import fr.infercidium.PayMyBuddy.service.TransferService;
 import org.junit.jupiter.api.BeforeEach;
@@ -34,6 +35,9 @@ class HomeControllerTest {
 
     @MockBean
     private BankAccountService bankAccountS;
+
+    @MockBean
+    private AuthorityService authorityS;
 
     @MockBean
     private Model model;
