@@ -14,7 +14,8 @@ But also to modify the username and password, root and rootroot.
 A demonstration script to run in the shema is also available.
 
 Physical data model :
-![Modèle Physique de Données](https://user-images.githubusercontent.com/82523651/138967776-b082cfa7-4e5d-48cb-8b84-26bed7164ab5.png)
+
+![Modèle Physique de Données](https://user-images.githubusercontent.com/82523651/139237847-864f9c20-1142-48a8-817f-27d4d8caf671.png)
 
 
 ### APPLICATION
@@ -43,7 +44,8 @@ The application is composed of html page allowing various actions and displaying
 There are other Urls allowing various actions, all leading to one of its pages above.
 
 Class diagram :
-![Diagramme de Classe P6](https://user-images.githubusercontent.com/82523651/138967853-927211f3-f33c-4e12-b94c-29311ab16b50.png)
+
+![Diagramme de Classe P6](https://user-images.githubusercontent.com/82523651/139237948-73bf61ff-c23c-4e5f-a21a-a3f4c6db75c5.png)
 
 
 ## Launch
@@ -64,6 +66,15 @@ To activate the demo, you have to perform the first two lines of the first launc
 Then copy the Script to the same folder as this ReadMe in mySQL.
 
 And finally launch the application with `./mvnw.cmd spring-boot:run`.
+
+### Connection to the Demo
+Two accounts are interesting for the demonstration, but all are accessible.
+
+- Demonstration account: email: `demo@email.com` password: `123`
+- Admin account: email: `admin@email.com` password: `admin`
+- 
+- Test account: email `testx@email.com` password: `x123`
+The test accounts have a number instead of the "x", to connect to test 2 for example we will use the email `test2@email.com` and the password `2123`.
 
 ## Testing
 This application has Unit tests written.
