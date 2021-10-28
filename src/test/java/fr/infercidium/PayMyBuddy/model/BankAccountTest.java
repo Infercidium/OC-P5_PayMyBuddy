@@ -16,6 +16,6 @@ class BankAccountTest {
     @Test
     void testToString() {
         bankAccount.setUser(user);
-        assertEquals("BankAccount{id = null, name = 'test1', holder = 'Jean Jean', user = JeanJ', expirationDate = 2021-12-24, cardNumber = '123456789', cryptogram = '123', iban = 'FR123', bic = 'C123', deer = '89'}", bankAccount.toString());
+        assertEquals("BankAccount{id = null, name = 'test1', holder = 'Jean Jean', user = JeanJ', expirationDate = " + bankAccount.getExpirationDate() + ", cardNumber = '123456789', cryptogram = '123', iban = 'FR123', bic = 'C123', deer = '89'}", bankAccount.toString());
     }
 }

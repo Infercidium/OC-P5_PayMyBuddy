@@ -26,11 +26,12 @@ public class AuthorityService implements AuthorityI {
 
     /**
      * find authority with name role.
+     * @param name of role.
      * @return authority found.
      */
     @Override
-    public Authority getUser() {
+    public Authority getRole(final String name) {
         LOGGER.debug("'User' role found");
-        return authorityR.findByNameIgnoreCase("user");
+        return authorityR.findByNameIgnoreCase(name);
     }
 }

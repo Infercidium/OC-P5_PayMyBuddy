@@ -20,4 +20,9 @@ public final class PageConstant {
      * Number of pages for the User's BankAccount.
      */
     public static final int BANKPAGE = 2;
+
+    /**
+     * Number of pages for the Billing.
+     */
+    public static final int BILLINGPAGE = 5;
 }

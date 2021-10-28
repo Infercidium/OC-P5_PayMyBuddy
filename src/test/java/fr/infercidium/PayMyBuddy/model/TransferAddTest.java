@@ -18,6 +18,6 @@ class TransferAddTest {
     @Test
     void testToString() {
         bankAccount.setUser(user);
-        assertEquals("Transfert{id = null, credited = User{id = null, email = 'Jean@email.com', password = '123', userName = 'JeanJ', pay = 0, historyCredited = [], historyDebited = [], knowUser = User : {}, authorities = [], bankAccount = BankAccount : {test1, }}, amount = 100, description = 'test', dateTime = " + transferAdd.getDateTime() + ", bankAccount = BankAccount{id = null, name = 'test1', holder = 'Jean Jean', user = JeanJ', expirationDate = 2021-12-24, cardNumber = '123456789', cryptogram = '123', iban = 'FR123', bic = 'C123', deer = '89'}}", transferAdd.toString());
+        assertEquals("Transfert{id = null, credited = User{id = null, email = 'Jean@email.com', password = '123', userName = 'JeanJ', pay = 0, historyCredited = [], historyDebited = [], knowUser = User : {}, authorities = [], bankAccount = BankAccount : {test1, }}, amount = 100, description = 'test', dateTime = " + transferAdd.getDateTime() + ", bankAccount = BankAccount{id = null, name = 'test1', holder = 'Jean Jean', user = JeanJ', expirationDate = " + bankAccount.getExpirationDate() + ", cardNumber = '123456789', cryptogram = '123', iban = 'FR123', bic = 'C123', deer = '89'}}", transferAdd.toString());
     }
 }

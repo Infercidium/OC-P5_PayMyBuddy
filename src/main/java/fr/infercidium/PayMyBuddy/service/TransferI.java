@@ -1,6 +1,9 @@
 package fr.infercidium.PayMyBuddy.service;
 
 import fr.infercidium.PayMyBuddy.model.Transfer;
+import fr.infercidium.PayMyBuddy.model.TransferAdd;
+import fr.infercidium.PayMyBuddy.model.TransferRemov;
+import fr.infercidium.PayMyBuddy.model.TransferUser;
 import fr.infercidium.PayMyBuddy.model.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -14,21 +17,21 @@ public interface TransferI {
      * @param transferAdd : transfer with bankAccount.
      * @param user : Affected user.
      */
-    void addCardMoney(Transfer transferAdd, User user);
+    void addCardMoney(TransferAdd transferAdd, User user);
 
     /**
      * Adds money from User to the bankAccount.
      * @param transferRemov : transfer with bankAccount.
      * @param user : Affected user.
      */
-    void removCardMoney(Transfer transferRemov, User user);
+    void removCardMoney(TransferRemov transferRemov, User user);
 
     /**
      * Transaction between user.
      * @param transferUser transfer with credited User.
      * @param user Affected debited User.
      */
-    void transactMoney(Transfer transferUser, User user);
+    void transactMoney(TransferUser transferUser, User user);
 
     //Service
     /**

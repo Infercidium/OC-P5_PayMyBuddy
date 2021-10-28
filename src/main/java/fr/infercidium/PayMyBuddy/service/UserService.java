@@ -114,7 +114,7 @@ public class UserService implements UserI {
      */
     @Override
     public void postUser(final User user) {
-        Authority authority = authorityS.getUser();
+        Authority authority = authorityS.getRole("User");
         user.setAuthorities(Collections.singletonList(authority));
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userR.save(user);

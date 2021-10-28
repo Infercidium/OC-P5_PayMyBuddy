@@ -5,6 +5,7 @@ import fr.infercidium.PayMyBuddy.configuration.UserComponent;
 import fr.infercidium.PayMyBuddy.model.BankAccount;
 import fr.infercidium.PayMyBuddy.model.Transfer;
 import fr.infercidium.PayMyBuddy.model.User;
+import fr.infercidium.PayMyBuddy.service.AuthorityI;
 import fr.infercidium.PayMyBuddy.service.BankAccountI;
 import fr.infercidium.PayMyBuddy.service.TransferI;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +45,12 @@ public class HomeController {
     private BankAccountI bankAccountS;
 
     /**
+     * Instantiation of AuthorityInterface.
+     */
+    @Autowired
+    private AuthorityI authorityS;
+
+    /**
      * Generates the elements of the html page.
      * @param model is used to send the elements to the html page.
      * @param page indicates the number of the page to be generated and sent.
@@ -75,6 +82,8 @@ public class HomeController {
                 .sorted(Comparator.comparing(BankAccount::getName))
                 .collect(Collectors.toList()));
         model.addAttribute("pay", user.getPay());
+        model.addAttribute("role", user.getAuthorities()
+                .contains(authorityS.getRole("admin")));
 
         // Setting up the Pagination
         model.addAttribute("creditedHistory", creditedPage.getContent());
