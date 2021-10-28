@@ -72,8 +72,9 @@ Two accounts are interesting for the demonstration, but all are accessible.
 
 - Demonstration account: email: `demo@email.com` password: `123`
 - Admin account: email: `admin@email.com` password: `admin`
-- 
+
 - Test account: email `testx@email.com` password: `x123`
+
 The test accounts have a number instead of the "x", to connect to test 2 for example we will use the email `test2@email.com` and the password `2123`.
 
 ## Testing
